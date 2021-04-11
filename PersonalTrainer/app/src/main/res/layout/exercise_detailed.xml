@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="5dp"
+    android:layout_marginHorizontal="20dp"
+    android:background="#EAF6C7"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="2dp"
+            android:layout_gravity="center"
+            tools:text="Name"
+            android:textSize="16sp"
+            />
+        <TextView
+            android:id="@+id/tv_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="2dp"
+            tools:text="Category: "
+            android:textSize="12sp"
+            />
+        <TextView
+            android:id="@+id/tv_equipment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="2dp"
+            tools:text="Equipment: "
+            android:textSize="12sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="2dp"
+            android:text="Description: "
+            android:textSize="12sp"
+            />
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:layout_marginHorizontal="25dp"
+            android:layout_gravity="center"
+            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tincidunt vitae semper quis lectus nulla. Placerat vestibulum lectus mauris ultrices eros in cursus. Non sodales neque sodales ut etiam sit amet nisl. Elementum facilisis leo vel fringilla est ullamcorper. Ipsum faucibus vitae aliquet nec ullamcorper sit amet. Vitae et leo duis ut diam quam nulla porttitor massa. Cursus in hac habitasse platea dictumst quisque sagittis purus. Feugiat vivamus at augue eget arcu. Sed adipiscing diam donec adipiscing tristique risus nec. Ac odio tempor orci dapibus. Tempor orci eu lobortis elementum. Tellus molestie nunc non blandit massa. Placerat orci nulla pellentesque dignissim enim sit amet venenatis urna. Fusce id velit ut tortor pretium viverra suspendisse potenti nullam. Auctor augue mauris augue neque gravida in."
+            android:textSize="12sp"
+            />
+        <ImageView
+            android:id="@+id/iv_exercise_image"
+            android:layout_width="120dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            tools:src="@color/black"
+            />
+        <TextView
+            android:id="@+id/tv_comments_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="2dp"
+            android:text="Comments: "
+            android:textSize="12sp"
+            />
+        <TextView
+            android:id="@+id/tv_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            tools:text="● uno\n● dos\n● tres"
+            android:textSize="12sp"
+            />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
