@@ -9,5 +9,7 @@ class ExerciseViewModel:ViewModel() {
                                                 null,
                                                 "Lorem Ipsum Some Description",
                                                 null,
+                                                null,
+                                                null,
                                                 null)
 }

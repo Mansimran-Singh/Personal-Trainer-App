@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="5dp"
-    android:layout_marginHorizontal="20dp"
+    android:layout_marginHorizontal="5dp"
     android:background="#EAF6C7"
     app:cardCornerRadius="8dp"
     app:cardElevation="5dp">
@@ -18,70 +18,156 @@
 
         <TextView
             android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
             android:layout_marginVertical="2dp"
-            android:layout_gravity="center"
-            tools:text="Name"
-            android:textSize="16sp"
-            />
-        <TextView
-            android:id="@+id/tv_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="2dp"
-            tools:text="Category: "
-            android:textSize="12sp"
-            />
-        <TextView
-            android:id="@+id/tv_equipment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="2dp"
-            tools:text="Equipment: "
-            android:textSize="12sp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="2dp"
-            android:text="Description: "
-            android:textSize="12sp"
-            />
-        <TextView
-            android:id="@+id/tv_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="5dp"
-            android:layout_marginHorizontal="25dp"
-            android:layout_gravity="center"
-            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tincidunt vitae semper quis lectus nulla. Placerat vestibulum lectus mauris ultrices eros in cursus. Non sodales neque sodales ut etiam sit amet nisl. Elementum facilisis leo vel fringilla est ullamcorper. Ipsum faucibus vitae aliquet nec ullamcorper sit amet. Vitae et leo duis ut diam quam nulla porttitor massa. Cursus in hac habitasse platea dictumst quisque sagittis purus. Feugiat vivamus at augue eget arcu. Sed adipiscing diam donec adipiscing tristique risus nec. Ac odio tempor orci dapibus. Tempor orci eu lobortis elementum. Tellus molestie nunc non blandit massa. Placerat orci nulla pellentesque dignissim enim sit amet venenatis urna. Fusce id velit ut tortor pretium viverra suspendisse potenti nullam. Auctor augue mauris augue neque gravida in."
-            android:textSize="12sp"
-            />
-        <ImageView
-            android:id="@+id/iv_exercise_image"
-            android:layout_width="120dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center"
-            tools:src="@color/black"
-            />
-        <TextView
-            android:id="@+id/tv_comments_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="2dp"
-            android:text="Comments: "
-            android:textSize="12sp"
-            />
-        <TextView
-            android:id="@+id/tv_comments"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            tools:text="● uno\n● dos\n● tres"
-            android:textSize="12sp"
-            />
+            android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24"
+            android:padding="10dp"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="Name" />
+
+        <LinearLayout
+            android:id="@+id/expanded_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="10dp" >
+
+            <TextView
+                android:id="@+id/tv_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Category: "
+                android:textSize="12sp"
+                />
+            <TextView
+                android:id="@+id/tv_equipment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Equipment: "
+                android:textSize="12sp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description: "
+                android:textSize="12sp"
+                />
+            <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_gravity="center"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tincidunt vitae semper quis lectus nulla. Placerat vestibulum lectus mauris ultrices eros in cursus. Non sodales neque sodales ut etiam sit amet nisl. Elementum facilisis leo vel fringilla est ullamcorper. Ipsum faucibus vitae aliquet nec ullamcorper sit amet. Vitae et leo duis ut diam quam nulla porttitor massa. Cursus in hac habitasse platea dictumst quisque sagittis purus. Feugiat vivamus at augue eget arcu. Sed adipiscing diam donec adipiscing tristique risus nec. Ac odio tempor orci dapibus. Tempor orci eu lobortis elementum. Tellus molestie nunc non blandit massa. Placerat orci nulla pellentesque dignissim enim sit amet venenatis urna. Fusce id velit ut tortor pretium viverra suspendisse potenti nullam. Auctor augue mauris augue neque gravida in."
+                android:textSize="12sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="5dp"
+                android:drawableLeft="@drawable/ic_muscle_main_color"
+                android:text=" Main Muscle"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:drawableLeft="@drawable/ic_muscle_secondary_color"
+                android:text=" Secondary Muscle"
+                android:textSize="12sp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:gravity="center_horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="81dp"
+                    android:layout_height="150dp"
+                    android:layout_marginHorizontal="40dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:src="@drawable/ic_muscle_back" />
+
+                <ImageView
+                    android:id="@+id/iv_muscle_back"
+                    android:layout_width="81dp"
+                    android:layout_height="150dp"
+                    android:layout_marginHorizontal="40dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.801"
+                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"/>
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="81dp"
+                    android:layout_height="150dp"
+                    android:layout_marginHorizontal="40dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:src="@drawable/ic_muscle_front" />
+
+                <ImageView
+                    android:id="@+id/iv_muscle_front"
+                    android:layout_width="81dp"
+                    android:layout_height="150dp"
+                    android:layout_marginHorizontal="40dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView"
+                    app:layout_constraintHorizontal_bias="0.21"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <ImageView
+                android:id="@+id/iv_exercise_image"
+                android:layout_width="120dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                tools:src="@color/black"
+                />
+            <TextView
+                android:id="@+id/tv_comments_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Comments: "
+                android:textSize="12sp"
+                />
+            <TextView
+                android:id="@+id/tv_comments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                tools:text="● uno\n● dos\n● tres"
+                android:textSize="12sp"
+                />
+
+        </LinearLayout>
 
     </LinearLayout>
+
+
 
 </androidx.cardview.widget.CardView>

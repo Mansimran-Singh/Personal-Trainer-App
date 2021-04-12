@@ -7,6 +7,7 @@ data class ExerciseInfo(
         val equipment: String?,
         val description:String,
         val image: ArrayList<String>?,
-        val comments: String?
-) {
-}
+        val comments: String?,
+        val musclesMain: ArrayList<MuscleInfo>?,
+        val musclesSecondary: ArrayList<MuscleInfo>?
+) {var expand : Boolean = false}

@@ -1,17 +1,13 @@
 package com.lemedebug.personaltrainer
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.LinearLayout
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.koushikdutta.ion.Ion
 import com.lemedebug.personaltrainer.exercise.ExerciseAdapter
 import com.lemedebug.personaltrainer.exercise.ExerciseInfo
-import com.lemedebug.personaltrainer.exercise.ExerciseViewModel
+import com.lemedebug.personaltrainer.exercise.MuscleInfo
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
 
@@ -105,7 +101,7 @@ class MainActivity : AppCompatActivity() {
             // Images
             val imagesObjArray = exercise.getJSONArray("images")
             var imageArray = ArrayList<String>()
-            if (equipmentArray.length()>0){
+            if (imagesObjArray.length()>0){
 //                Log.d("EXERCISE_DATA","Equipment Size: ${equipmentArray.length()}")
                 for (j in 0 until imagesObjArray.length()){
                     val imageObj = imagesObjArray.getJSONObject(j)
@@ -128,12 +124,42 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+
+            // Muscles
+            val muscleMainArray = ArrayList<MuscleInfo>()
+            val muscleMainObjArray = exercise.getJSONArray("muscles")
+            var muscleMain: MuscleInfo? = null
+            if (muscleMainObjArray.length()>0){
+                Log.d("EXERCISE_DATA","Muscle Size: ${muscleMainObjArray.length()}")
+                for(j in 0 until muscleMainObjArray.length()){
+                    val muscleObj = muscleMainObjArray.getJSONObject(j)
+                    val muscleImage = muscleObj.getString("image_url_main")
+                    val isFront = muscleObj.getBoolean("is_front")
+                    if (muscleImage.isNotEmpty()) muscleMain = MuscleInfo(muscleImage,isFront)
+                    if (muscleMain!=null) muscleMainArray.add(muscleMain)
+                    Log.d("EXERCISE_DATA","Muscle: ${muscleMainArray}")
+                }
+            }
+
+            val muscleSecondaryArray = ArrayList<MuscleInfo>()
+            val muscleSecondaryObjArray = exercise.getJSONArray("muscles_secondary")
+            var muscleSecondary:MuscleInfo? = null
+            if (muscleSecondaryObjArray.length()>0){
+                for(j in 0 until muscleSecondaryObjArray.length()){
+                    val muscleObj = muscleSecondaryObjArray.getJSONObject(j)
+                    val muscleImage = muscleObj.getString("image_url_secondary")
+                    val isFront = muscleObj.getBoolean("is_front")
+                    if (muscleImage.isNotEmpty()) muscleSecondary = MuscleInfo(muscleImage,isFront)
+                    if (muscleSecondary!=null) muscleSecondaryArray.add(muscleSecondary)
+                }
+            }
+
 //            Log.d("EXERCISE_DATA","Comments: $comments")
 
-            if (imageArray.isNotEmpty()){
-                val exercise = ExerciseInfo(id,name,category,equipment,description,imageArray,comments)
-                exerciseList.add(exercise)
-            }
+//            if (imageArray.isNotEmpty()){
+                val exerciseObj = ExerciseInfo(id,name,category,equipment,description,imageArray,comments,muscleMainArray,muscleSecondaryArray)
+                exerciseList.add(exerciseObj)
+//            }
 
         }
 
