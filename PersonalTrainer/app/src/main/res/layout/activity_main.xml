@@ -8,14 +8,6 @@
     tools:context=".MainActivity">
 
 
-    <Button
-        android:id="@+id/tv_view_available_exercises"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="65dp"
-        android:text="VIEW AVAILABLE EXERCISES"
-        />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_exercise_list"
         android:layout_width="match_parent"

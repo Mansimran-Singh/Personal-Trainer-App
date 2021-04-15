@@ -4,167 +4,68 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.koushikdutta.ion.Ion
-import com.lemedebug.personaltrainer.exercise.ExerciseAdapter
-import com.lemedebug.personaltrainer.exercise.ExerciseInfo
-import com.lemedebug.personaltrainer.exercise.MuscleInfo
+import com.lemedebug.personaltrainer.exercise.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
-    var exerciseList = ArrayList<ExerciseInfo>()
+    private val BASE_URL = "https://wger.de/api/v2/exerciseinfo/"
+    private val TAG = "MAIN_ACTIVITY"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        exerciseList =
-        generateExerciseData()
-        // Initialize viewModel val from provider
-//        val viewModel = ViewModelProvider(this).get(ExerciseViewModel::class.java)
-//
-//        // Initialize viewModel value of animal to variable
-//        viewModel.exerciseList = exerciseList
+        val exerciseList = ArrayList<Exercise>()
 
-        tv_view_available_exercises.setOnClickListener {
+        val adapter = ExerciseAdapter(exerciseList)
 
-            Log.d("EXERCISE_DATA", exerciseList.size.toString())
+        val recyclerView = findViewById<RecyclerView>(R.id.rv_exercise_list)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
-            rv_exercise_list.adapter = ExerciseAdapter(exerciseList)
-            rv_exercise_list.layoutManager = LinearLayoutManager(this)
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
-            Log.d("EXERCISE","Clicked")
-        }
-
-
-    }
-
-    private fun generateExerciseData(){
-        // REST Call
-        Ion.with(this)
-                .load("https://wger.de/api/v2/exerciseinfo/?language=2&limit=500")
-                .asString()
-                .setCallback { e, result ->
-//                    Log.d("EXERCISE_DATA","$result")
-                    parseExerciseData(result)
+        val randomExerciseAPI = retrofit.create(ExerciseService::class.java)
+        randomExerciseAPI.getExerciseList(2, 200).enqueue(object : Callback<ExerciseData> {
+            override fun onResponse(call: Call<ExerciseData>, response: Response<ExerciseData>) {
+                Log.d(TAG, "OnResponse: $response")
+                val body = response.body()
+                if (body == null) {
+                    Log.d(TAG, "Invalid Response Found")
+                    return
                 }
 
-    }
+                Log.d(TAG, body.results[0].id)
+                Log.d(TAG, body.results[0].name)
+                Log.d(TAG, body.results[0].description)
+                Log.d(TAG, body.results[0].category.name)
+                Log.d(TAG, body.results[0].comments.toString())
+                Log.d(TAG, body.results[0].equipment.toString())
+                Log.d(TAG, body.results[0].images.toString())
+                Log.d(TAG, body.results[0].muscles.toString())
+                Log.d(TAG, body.results[0].muscles_secondary.toString())
 
-    private fun parseExerciseData(output: String?){
-
-        val data = JSONObject(output)
-        // Count of exercises
-        val count = data.getString("count")
-//        Log.d("EXERCISE_DATA","Total Exercise Count: $count")
-        // Exercise Info
-        val results = data.getJSONArray("results")
-        // Iterate through Exercise Info
-        for (i in 0 until (count).toInt()){
-
-            val exercise = results.getJSONObject(i)
-
-            // id
-            val id = exercise.getString("id")
-//            Log.d("EXERCISE_DATA","id: $id")
-
-            // Name
-            val name = exercise.getString("name")
-//            Log.d("EXERCISE_DATA","Exercise Name: $name")
-
-            // Category
-            val categoryObj = exercise.getJSONObject("category")
-            val category = categoryObj.getString("name")
-//            Log.d("EXERCISE_DATA","Category: $category")
-
-            // Equipment
-            val equipmentArray = exercise.getJSONArray("equipment")
-            var equipment:String = "None Required"
-            if (equipmentArray.length()>0){
-//                Log.d("EXERCISE_DATA","Equipment Size: ${equipmentArray.length()}")
-                for (j in 0 until equipmentArray.length()){
-                    val equipmentObj = equipmentArray.getJSONObject(j)
-                    if (equipment != "None Required"){
-                        equipment += ", ${equipmentObj.getString("name")}"
-                    }else{
-                        equipment = equipmentObj.getString("name")
-                    }
-                }
-            }
-//            Log.d("EXERCISE_DATA","Equipment: $equipment")
-
-            // Description
-            val description = exercise.getString("description")
-//            Log.d("EXERCISE_DATA","Description: $description")
-
-            // Images
-            val imagesObjArray = exercise.getJSONArray("images")
-            var imageArray = ArrayList<String>()
-            if (imagesObjArray.length()>0){
-//                Log.d("EXERCISE_DATA","Equipment Size: ${equipmentArray.length()}")
-                for (j in 0 until imagesObjArray.length()){
-                    val imageObj = imagesObjArray.getJSONObject(j)
-                    imageArray.add(imageObj.getString("image"))
-                }
-            }
-//            Log.d("EXERCISE_DATA","Images Array: $imageArray")
-
-            // Comments
-            val commentsArray = exercise.getJSONArray("comments")
-            var comments:String = ""
-            if (commentsArray.length()>0){
-//                Log.d("EXERCISE_DATA","Equipment Size: ${equipmentArray.length()}")
-                for (j in 0 until commentsArray.length()){
-                    val equipmentObj = commentsArray.getJSONObject(j)
-                    if (comments != ""){
-                        comments += "● ${equipmentObj.getString("comment")}\n"
-                    }else{
-                        comments = "● ${equipmentObj.getString("comment")}\n"
-                    }
-                }
+                exerciseList.addAll(body.results)
+                adapter.notifyDataSetChanged()
             }
 
-            // Muscles
-            val muscleMainArray = ArrayList<MuscleInfo>()
-            val muscleMainObjArray = exercise.getJSONArray("muscles")
-            var muscleMain: MuscleInfo? = null
-            if (muscleMainObjArray.length()>0){
-                Log.d("EXERCISE_DATA","Muscle Size: ${muscleMainObjArray.length()}")
-                for(j in 0 until muscleMainObjArray.length()){
-                    val muscleObj = muscleMainObjArray.getJSONObject(j)
-                    val muscleImage = muscleObj.getString("image_url_main")
-                    val isFront = muscleObj.getBoolean("is_front")
-                    if (muscleImage.isNotEmpty()) muscleMain = MuscleInfo(muscleImage,isFront)
-                    if (muscleMain!=null) muscleMainArray.add(muscleMain)
-                    Log.d("EXERCISE_DATA","Muscle: ${muscleMainArray}")
-                }
+            override fun onFailure(call: Call<ExerciseData>, t: Throwable) {
+                Log.d(TAG, "OnFailure: $t")
             }
 
-            val muscleSecondaryArray = ArrayList<MuscleInfo>()
-            val muscleSecondaryObjArray = exercise.getJSONArray("muscles_secondary")
-            var muscleSecondary:MuscleInfo? = null
-            if (muscleSecondaryObjArray.length()>0){
-                for(j in 0 until muscleSecondaryObjArray.length()){
-                    val muscleObj = muscleSecondaryObjArray.getJSONObject(j)
-                    val muscleImage = muscleObj.getString("image_url_secondary")
-                    val isFront = muscleObj.getBoolean("is_front")
-                    if (muscleImage.isNotEmpty()) muscleSecondary = MuscleInfo(muscleImage,isFront)
-                    if (muscleSecondary!=null) muscleSecondaryArray.add(muscleSecondary)
-                }
-            }
-
-//            Log.d("EXERCISE_DATA","Comments: $comments")
-
-//            if (imageArray.isNotEmpty()){
-                val exerciseObj = ExerciseInfo(id,name,category,equipment,description,imageArray,comments,muscleMainArray,muscleSecondaryArray)
-                exerciseList.add(exerciseObj)
-//            }
-
-        }
-
-        Log.d("EXERCISE_DATA", exerciseList.size.toString())
-//        Log.d("EXERCISE_DATA", exercises.toString())
+        })
     }
 
 

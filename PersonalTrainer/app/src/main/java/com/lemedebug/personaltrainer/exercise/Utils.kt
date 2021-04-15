@@ -1,8 +1,9 @@
 package com.lemedebug.personaltrainer.exercise
 
-import android.R
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import com.pixplicity.sharp.Sharp
 import okhttp3.*
@@ -13,7 +14,7 @@ object Utils {
     private var httpClient: OkHttpClient? = null
 
     // this method is used to fetch svg and load it into target imageview.
-    fun fetchSvg(context: Context, url: String?, target: ImageView) {
+    fun fetchSvg(context: Context, url: String?, target: View) {
         if (httpClient == null) {
             httpClient = OkHttpClient.Builder()
                 .cache(Cache(context.cacheDir, 5 * 1024 * 1014))
@@ -38,5 +39,9 @@ object Utils {
                 stream.close()
             }
         })
+
     }
+
+
+
 }
