@@ -7,6 +7,11 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="colorLightAccent">#b8dca0</color>
     <color name="colorAccent">#4EA912</color>
+    <color name="colorDarkAccent">#2e650a</color>
+
+    <color name="selectedColor">#F0EEFE</color>
     <color name="main_muscle_color">#fc0000</color>
 </resources>

@@ -35,6 +35,9 @@ android {
 
 
 dependencies {
+    //Zoomable
+    implementation 'com.aghajari.zoomhelper:ZoomHelper:1.0.1'
+
     // GSON
     implementation 'com.google.code.gson:gson:2.8.6'
     // Retrofit

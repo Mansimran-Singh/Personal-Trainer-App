@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="filterList">
+        <item>None</item>
+        <item>Shoulders</item>
+        <item>Back</item>
+        <item>Chest</item>
+        <item>Arms</item>
+        <item>Abs</item>
+        <item>Legs</item>
+        <item>Calves</item>
+    </string-array>
+</resources>

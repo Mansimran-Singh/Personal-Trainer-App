@@ -15,7 +15,7 @@ data class Exercise(
     val equipment:List<Equipment>,
     val images:List<ExerciseImage>,
     val comments:List<Comment>
-){var expand : Boolean = false}
+)
 
 data class Category(
     val name: String
@@ -37,7 +37,7 @@ data class Equipment(
 
 data class ExerciseImage(
     val image: String,
-    val is_main:String
+    val is_main: Boolean
 )
 
 data class Comment(

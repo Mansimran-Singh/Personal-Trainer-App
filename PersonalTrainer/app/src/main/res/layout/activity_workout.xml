@@ -6,21 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#EFEEEF"
     tools:context=".WorkoutActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_workout_activity"
+    <FrameLayout
+        android:id="@+id/exercise_view_container"
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:background="#FFFFFF" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_exercise_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:layout_marginTop="5dp"
+        android:layout_height="match_parent"
         />
 </LinearLayout>

@@ -13,13 +13,13 @@
         android:theme="@style/Theme.PersonalTrainer">
         <activity android:name=".WorkoutActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"/>
+            />
         <activity android:name=".BMIActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"/>
+            />
         <activity android:name=".MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
