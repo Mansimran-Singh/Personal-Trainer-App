@@ -37,19 +37,25 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        getData()
+
+    }
+
+
+    private fun getData(){
         db = Room.databaseBuilder(
-            applicationContext,
-            PersonalTrainerDatabase::class.java,
-            "exercise.db"
+                applicationContext,
+                PersonalTrainerDatabase::class.java,
+                "exercise.db"
         ).build()
 
         Thread{
             val exerciseCount = db.exerciseDAO().getExerciseCount()
             if (exerciseCount < 1){
                 val retrofit = Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
+                        .baseUrl(BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build()
 
                 val randomExerciseAPI = retrofit.create(ExerciseService::class.java)
                 randomExerciseAPI.getExerciseList(2, 250).enqueue(object : Callback<ExerciseData> {
@@ -79,7 +85,6 @@ class MainActivity : AppCompatActivity() {
                 })
             }
         }.start()
-
     }
 
 

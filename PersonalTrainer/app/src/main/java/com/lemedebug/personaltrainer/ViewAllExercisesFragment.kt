@@ -59,7 +59,7 @@ class ViewAllExercisesFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.rv_exercise_list)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        
+
 
         return view
     }
@@ -74,55 +74,7 @@ class ViewAllExercisesFragment : Fragment() {
         ).build()
 
         Thread{
-//
-//            val exerciseCount = db.exerciseDAO().getExerciseCount()
-//            if (exerciseCount < 1){
-//                val retrofit = Retrofit.Builder()
-//                    .baseUrl(BASE_URL)
-//                    .addConverterFactory(GsonConverterFactory.create())
-//                    .build()
-//
-//                val randomExerciseAPI = retrofit.create(ExerciseService::class.java)
-//                randomExerciseAPI.getExerciseList(2, 250).enqueue(object : Callback<ExerciseData> {
-//                    override fun onResponse(call: Call<ExerciseData>, response: Response<ExerciseData>) {
-//                        Log.d(TAG, "OnResponse: $response")
-//                        val body = response.body()
-//                        if (body == null) {
-//                            Log.d(TAG, "Invalid Response Found")
-//                            return
-//                        }
-//
-//                        Log.d(TAG, body.results[0].id)
-//                        Log.d(TAG, body.results[0].name)
-//                        Log.d(TAG, body.results[0].description)
-//                        Log.d(TAG, body.results[0].category.name)
-//                        Log.d(TAG, body.results[0].comments.toString())
-//                        Log.d(TAG, body.results[0].equipment.toString())
-//                        Log.d(TAG, body.results[0].images.toString())
-//                        Log.d(TAG, body.results[0].muscles.toString())
-//                        Log.d(TAG, body.results[0].muscles_secondary.toString())
-//
-//
-//                        Thread{
-//                            body.results.forEach {
-//                                db.exerciseDAO().insertExercise(it)
-//                            }
-//                        }.start()
-//
-////                        exerciseList.addAll(body.results) CHANGE THIS TO ADD INTO TABLE
-////                        adapter.notifyDataSetChanged()
-//                    }
-//
-//                    override fun onFailure(call: Call<ExerciseData>, t: Throwable) {
-//                        Log.d(TAG, "OnFailure: $t")
-//                    }
-//
-//                })
-//            }
-
             exerciseList.addAll(db.exerciseDAO().viewAllExercises())
-
-
             activity.runOnUiThread{
                 adapter.notifyDataSetChanged()
             }

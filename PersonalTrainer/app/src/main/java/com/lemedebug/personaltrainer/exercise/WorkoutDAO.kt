@@ -5,7 +5,7 @@ import androidx.room.*
 @Dao
 interface WorkoutDAO {
     // OnConflictStrategy is optional, but good idea to specify
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertWorkout(workout: WorkoutEntity)
 
     @Update
@@ -17,9 +17,8 @@ interface WorkoutDAO {
     @Query("SELECT * FROM workout_table ")
     fun viewAllWorkouts() : List<WorkoutEntity>
 
-    @Query("SELECT * FROM workout_table WHERE id LIKE :workoutId")
-    fun findWorkout(workoutId: Int) : WorkoutEntity
-
+    @Query("SELECT * FROM workout_table WHERE name LIKE :workoutName")
+    fun findWorkout(workoutName: String) : WorkoutEntity
 }
 
 @Dao
@@ -59,7 +58,7 @@ interface RepsDAO {
     @Query("SELECT * FROM reps_table ")
     fun viewAllReps() : List<RepsEntity>
 
-    @Query("SELECT * FROM reps_table WHERE workoutID LIKE :workoutID AND exerciseID LIKE :exerciseID")
-    fun findReps(workoutID: Int,exerciseID: Int) : RepsEntity
+    @Query("SELECT * FROM reps_table WHERE workoutName LIKE :workoutName AND exerciseID LIKE :exerciseID")
+    fun findReps(workoutName: String,exerciseID: Int) : RepsEntity
 
 }
