@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="5dp"
-        android:layout_marginHorizontal="5dp"
+        android:layout_marginHorizontal="8dp"
         android:background="#EAF6C7"
         app:cardCornerRadius="8dp"
         app:cardElevation="5dp">
@@ -160,19 +160,6 @@
 
                     <ImageView
                         android:id="@+id/iv_exercise_image_second"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_centerInParent="true"
-                        />
-                    <ImageView
-                        android:id="@+id/iv_exercise_image_third"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_centerInParent="true"
-                        />
-
-                    <ImageView
-                        android:id="@+id/iv_exercise_image_fourth"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_centerInParent="true"

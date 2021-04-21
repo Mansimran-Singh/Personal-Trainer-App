@@ -1,11 +1,34 @@
 package com.lemedebug.personaltrainer.exercise
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 data class ExerciseData(
     val results: List<Exercise>
 )
 
+@Entity(tableName = "workout_table")
+data class WorkoutEntity(
+    @PrimaryKey(autoGenerate = true)
+    var id : Int,
+    var name : String,
+    var exerciseList: List<Exercise>
+)
 
+@Entity(tableName = "reps_table")
+data class RepsEntity(
+    @PrimaryKey(autoGenerate = true)
+    var id : Int,
+    var reps : Int,
+    val workoutID : Int,
+    val exerciseID: Int
+)
+
+
+@Entity(tableName = "exercise_table")
 data class Exercise(
+    @PrimaryKey
     val id:String,
     val name:String,
     val description:String,

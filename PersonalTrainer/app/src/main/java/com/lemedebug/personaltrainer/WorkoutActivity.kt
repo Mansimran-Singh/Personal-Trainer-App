@@ -16,7 +16,7 @@ class WorkoutActivity : AppCompatActivity() {
 
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.exercise_view_container, CreateWorkoutFragment())
+            .replace(R.id.exercise_view_container, AllWorkoutsFragment())
             .commit()
 
 

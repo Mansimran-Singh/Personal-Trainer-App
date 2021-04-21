@@ -18,6 +18,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.view.get
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -39,8 +40,6 @@ class ExerciseAdapter(private val exerciseList: ArrayList<Exercise>) : RecyclerV
 
         val image: ImageView = exerciseView.findViewById(R.id.iv_exercise_image)
         val imageSecond: ImageView = exerciseView.findViewById(R.id.iv_exercise_image_second)
-        val imageThird: ImageView = exerciseView.findViewById(R.id.iv_exercise_image_third)
-        val imageFourth: ImageView = exerciseView.findViewById(R.id.iv_exercise_image_fourth)
 
         val comments: TextView = exerciseView.findViewById(R.id.tv_comments)
         val commentsLabel: TextView = exerciseView.findViewById(R.id.tv_comments_label)
@@ -50,6 +49,7 @@ class ExerciseAdapter(private val exerciseList: ArrayList<Exercise>) : RecyclerV
         val bodyFront: FrameLayout = exerciseView.findViewById(R.id.body_front)
         val bodyBack: FrameLayout = exerciseView.findViewById(R.id.body_back)
         val cardView: CardView = exerciseView.findViewById(R.id.cv_exercise)
+        val exerciseImageLayout: RelativeLayout = exerciseView.findViewById(R.id.image_layout)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseViewHolder {
@@ -68,8 +68,6 @@ class ExerciseAdapter(private val exerciseList: ArrayList<Exercise>) : RecyclerV
 
         holder.comments.visibility = View.VISIBLE
         holder.commentsLabel.visibility = View.VISIBLE
-        holder.image.visibility = View.VISIBLE
-        holder.imageSecond.visibility = View.VISIBLE
 
         Utils.fetchSvg(holder.bodyBack.context, "https://wger.de/static/images/muscles/muscular_system_back.svg", holder.bodyBack)
         Utils.fetchSvg(holder.bodyFront.context, "https://wger.de/static/images/muscles/muscular_system_front.svg", holder.bodyFront)
@@ -111,17 +109,9 @@ class ExerciseAdapter(private val exerciseList: ArrayList<Exercise>) : RecyclerV
 
         if (currentItem.images.isNotEmpty()){
 
-            if (currentItem.images[0].is_main){
-
-            }
             Picasso.get().load(currentItem.images[0].image).into(holder.image)
             Picasso.get().load(currentItem.images[1].image).into(holder.imageSecond)
-            Picasso.get().load(currentItem.images[2].image).into(holder.imageThird)
-            Picasso.get().load(currentItem.images[3].image).into(holder.imageFourth)
 
-        }else{
-            holder.image.visibility = View.GONE
-            holder.imageSecond.visibility = View.GONE
         }
 
             if (currentItem.muscles.isNotEmpty()){
@@ -189,11 +179,14 @@ class ExerciseAdapter(private val exerciseList: ArrayList<Exercise>) : RecyclerV
 
 //            holder.image.animate().alpha(0F).setDuration(6000)
 //            holder.imageBehind.animate().alpha(1F).setDuration(6000)
-
-
-
-
-        }else{
+            if (currentItem.images.isNotEmpty()){
+                holder.exerciseImageLayout.visibility = View.VISIBLE
+                mainImageAnimation(holder)
+            }else{
+                holder.exerciseImageLayout.visibility = View.GONE
+            }
+        }
+        else{
             holder.expandedView.visibility =  View.GONE
             holder.cardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
         }
@@ -209,8 +202,9 @@ class ExerciseAdapter(private val exerciseList: ArrayList<Exercise>) : RecyclerV
                 viewModel.exercise = exercise
 
                 showDialog(activity)
+//                handleImageView(holder,exercise!!.images)
 
-                mainImageAnimation(holder)
+
 
             }
 
@@ -267,37 +261,22 @@ class ExerciseAdapter(private val exerciseList: ArrayList<Exercise>) : RecyclerV
         dialog.show()
     }
 
-    private fun handleImageView(view:View, holder: ExerciseViewHolder,images:Array<ExerciseImage>){
-        val layout:RelativeLayout? = view.findViewById(R.id.image_layout)
-        for (i in images.indices){
-            val imageView = ImageView(holder.image.context)
-
-            if (images[i].is_main){
-                // setting height and width of imageview
-                imageView.layoutParams= RelativeLayout.LayoutParams(120,150)
-                Picasso.get().load(images[i].image).into(imageView)
-                // Add ImageView to LinearLayout
-                layout?.addView(imageView) // adding image to the layout
-            }else{
-
-            }
-        }
-    }
 
     private fun mainImageAnimation(holder: ExerciseViewHolder){
 
-        val fadeOut = ObjectAnimator.ofFloat(holder.image, "alpha", 1f, 0f)
-        fadeOut.duration = 2000
         val fadeIn = ObjectAnimator.ofFloat(holder.image, "alpha", 0f, 1f)
         fadeIn.duration = 4000
+        val fadeOut = ObjectAnimator.ofFloat(holder.image, "alpha", 1f, 0f)
+        fadeOut.duration = 2000
         val fadeInBehind = ObjectAnimator.ofFloat(holder.imageSecond, "alpha", 0f, 1f)
         fadeInBehind.duration = 4000
         val fadeOutBehind = ObjectAnimator.ofFloat(holder.imageSecond, "alpha", 1f, 0f)
-        fadeOutBehind.duration = 5500
+        fadeOutBehind.duration = 4001
 
         val mAnimationSet = AnimatorSet()
 
         mAnimationSet.play(fadeIn).after(fadeOutBehind).after(fadeInBehind).after(fadeOut)
+
 
         mAnimationSet.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
@@ -306,5 +285,7 @@ class ExerciseAdapter(private val exerciseList: ArrayList<Exercise>) : RecyclerV
             }
         })
         mAnimationSet.start()
+
+
     }
 }

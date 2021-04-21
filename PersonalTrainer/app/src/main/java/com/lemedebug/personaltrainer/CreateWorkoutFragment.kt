@@ -25,11 +25,13 @@ class CreateWorkoutFragment : Fragment() {
         val activity = requireActivity() as AppCompatActivity
         activity.setSupportActionBar(view.findViewById(R.id.toolbar_create_workout))
         activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        activity.supportActionBar?.title = "CREATE WORKOUT"
+        activity.supportActionBar?.title = "CREATE NEW WORKOUT"
 
         view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_create_workout).setNavigationOnClickListener {
             // Change it to required fragment back button
-            activity.onBackPressed()
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.exercise_view_container, AllWorkoutsFragment())
+                .commit()
         }
 
 
