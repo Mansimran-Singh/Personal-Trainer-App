@@ -3,11 +3,14 @@ package com.lemedebug.personaltrainer.userlogin
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import com.google.firebase.auth.FirebaseAuth
 import com.lemedebug.personaltrainer.MainActivity
 import com.lemedebug.personaltrainer.R
+import com.lemedebug.personaltrainer.firestore.FirestoreClass
+import com.lemedebug.personaltrainer.models.User
 import kotlinx.android.synthetic.main.activity_login.*
 
 /**
@@ -101,18 +104,28 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
 
-                        // Hide the progress dialog
-                        hideProgressDialog()
-
                         if (task.isSuccessful) {
-                            showErrorSnackBar("You are logged in successfully.", false)
-                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
+                            FirestoreClass().getUserDetails(this@LoginActivity)
+
                         } else {
+                            hideProgressDialog()
                             showErrorSnackBar(task.exception!!.message.toString(), true)
                         }
                     }
         }
+    }
+
+    fun userLoggedInSuccess(user:User){
+
+        hideProgressDialog()
+
+        Log.i("LoginActivity",user.firstName)
+        Log.i("LoginActivity",user.lastName)
+        Log.i("LoginActivity",user.email)
+
+        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+
     }
 }
