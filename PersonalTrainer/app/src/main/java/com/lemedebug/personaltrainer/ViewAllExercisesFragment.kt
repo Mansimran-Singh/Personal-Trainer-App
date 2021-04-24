@@ -24,9 +24,9 @@ class ViewAllExercisesFragment : Fragment() {
 
     private val BASE_URL = "https://wger.de/api/v2/exerciseinfo/"
     private val TAG = "CREATE_WORKOUT_ACTIVITY"
-    private val exerciseList = ArrayList<Exercise>()
+    private var exerciseList = ArrayList<Exercise>()
     private val adapter = ExerciseAdapter(exerciseList)
-
+    private var tempList = ArrayList<Exercise>()
     lateinit var db: PersonalTrainerDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,19 +62,22 @@ class ViewAllExercisesFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         val searchView = view.findViewById<SearchView>(R.id.searchView)
+        val spinner_cat: Spinner = view.findViewById(R.id.spinner_category)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                exerciseList = tempList
+                spinner_category.setSelection(0)
                 adapter.getFilter().filter(newText)
                 return false
             }
 
         })
 
-        val spinner_cat: Spinner = view.findViewById(R.id.spinner_category)
+
         ArrayAdapter.createFromResource(
                 requireActivity(),
                 R.array.filterList,
@@ -87,9 +90,11 @@ class ViewAllExercisesFragment : Fragment() {
         }
         spinner_cat.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                adapter.getFilter().filter(" ")
+                exerciseList = tempList
 
-            }
+                adapter.getFilter().filter(" ")}
+
+
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 //val selectedItem = parent?.getItemAtPosition(position).toString()
@@ -98,8 +103,7 @@ class ViewAllExercisesFragment : Fragment() {
                 if (newText == "None")
                     newText = ""
 
-                adapter.getFilter().filter(newText)
-            }
+                adapter.getFilter().filter(newText)}
 
         }
         return view

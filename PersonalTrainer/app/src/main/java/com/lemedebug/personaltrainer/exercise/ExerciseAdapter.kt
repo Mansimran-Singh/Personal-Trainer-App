@@ -32,6 +32,7 @@ import kotlin.collections.ArrayList
 class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>(),Filterable {
 
     private var exercise:Exercise? = null
+    var tempexerciseList: ArrayList<Exercise> = exerciseList
 
     inner class ExerciseViewHolder(exerciseView: View):RecyclerView.ViewHolder(exerciseView){
         val expandedView: LinearLayout = exerciseView.findViewById(R.id.expanded_view)
@@ -294,20 +295,39 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
+                var tempExerciseList = ArrayList<Exercise>()
+                tempExerciseList = tempexerciseList
                 val charSearch = constraint.toString()
                 if (charSearch.isEmpty()) {
-                    exerciseList = exerciseList
+                    tempExerciseList = tempexerciseList
                 } else {
                     val resultList = ArrayList<Exercise>()
-                    for (row in exerciseList) {
-                        if (row.name.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) {
+                    var search: String
+
+
+
+                    for (row in tempExerciseList) {
+
+                        when(charSearch){
+                            "Shoulders" -> search = row.category.name
+                            "Back" -> search = row.category.name
+                            "Chest" -> search = row.category.name
+                            "Arms" -> search = row.category.name
+                            "Abs" -> search = row.category.name
+                            "Legs" -> search = row.category.name
+                            "Calves" -> search = row.category.name
+                            else -> search = row.name
+                        }
+
+                        if (search.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) {
                             resultList.add(row)
                         }
+
                     }
-                    exerciseList = resultList
+                    tempExerciseList = resultList
                 }
                 val filterResults = FilterResults()
-                filterResults.values = exerciseList
+                filterResults.values = tempExerciseList
                 return filterResults
             }
 
@@ -320,6 +340,5 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
 
         }
     }
-
 
 }
