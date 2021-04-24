@@ -25,9 +25,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.lemedebug.personaltrainer.CreateWorkoutFragment
 import com.lemedebug.personaltrainer.R
 import com.squareup.picasso.Picasso
+import java.util.*
+import kotlin.collections.ArrayList
 
 
-class ExerciseAdapter(private val exerciseList: ArrayList<Exercise>) : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>() {
+class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>(),Filterable {
 
     private var exercise:Exercise? = null
 
@@ -288,4 +290,36 @@ class ExerciseAdapter(private val exerciseList: ArrayList<Exercise>) : RecyclerV
 
 
     }
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val charSearch = constraint.toString()
+                if (charSearch.isEmpty()) {
+                    exerciseList = exerciseList
+                } else {
+                    val resultList = ArrayList<Exercise>()
+                    for (row in exerciseList) {
+                        if (row.name.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) {
+                            resultList.add(row)
+                        }
+                    }
+                    exerciseList = resultList
+                }
+                val filterResults = FilterResults()
+                filterResults.values = exerciseList
+                return filterResults
+            }
+
+            @Suppress("UNCHECKED_CAST")
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+
+                exerciseList = results?.values as ArrayList<Exercise>
+                notifyDataSetChanged()
+            }
+
+        }
+    }
+
+
 }
