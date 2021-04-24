@@ -117,19 +117,19 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
 
         }
 
-            if (currentItem.muscles.isNotEmpty()){
-                for (i in currentItem.muscles.indices){
-                    val path =  "https://wger.de${currentItem.muscles[i].image_url_main}"
-                    Log.d("EXERCISE_ADAPTER", path)
-                    if (currentItem.muscles[i].is_front){
-                        Utils.fetchSvg(holder.muscleFront.context, path, holder.muscleFront)
+        if (currentItem.muscles.isNotEmpty()){
+            for (i in currentItem.muscles.indices){
+                val path =  "https://wger.de${currentItem.muscles[i].image_url_main}"
+                Log.d("EXERCISE_ADAPTER", path)
+                if (currentItem.muscles[i].is_front){
+                    Utils.fetchSvg(holder.muscleFront.context, path, holder.muscleFront)
 //                        Picasso.get().load(path).into(holder.muscleFront)
-                    }else{
-                        Utils.fetchSvg(holder.muscleFront.context, path, holder.muscleBack)
+                }else{
+                    Utils.fetchSvg(holder.muscleFront.context, path, holder.muscleBack)
 //                        Picasso.get().load(path).into(holder.muscleBack)
-                    }
                 }
             }
+        }
 
 //                    val path =  "https://wger.de${currentItem.muscles[0].image_url_main}"
 //                    Log.d("EXERCISE_ADAPTER", path)

@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         Thread{
             val exerciseCount = db.exerciseDAO().getExerciseCount()
-            if (exerciseCount < 1){
+            if (exerciseCount < 0){
                 val retrofit = Retrofit.Builder()
                         .baseUrl(BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create())

@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
@@ -23,15 +24,17 @@ class AllWorkoutsFragment : Fragment() {
 
     lateinit var db: PersonalTrainerDatabase
 
-    private val workoutList = mutableListOf<String>()
+    private val workoutList = ArrayList<WorkoutEntity>()
+    private val adapter = AllWorkoutsAdapter(workoutList)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_all_workouts, container, false)
@@ -42,15 +45,9 @@ class AllWorkoutsFragment : Fragment() {
         activity.supportActionBar?.title = "AVAILABLE WORKOUTS"
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.rv_all_workouts)
-        val lvTasksAdapter : ArrayAdapter<String> = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, workoutList)
-
-        //CREATE AN ADAPTER CLASS
-//        val inflater = layoutInflater
-//        val workoutShort = inflater.inflate(R.layout.workout_short,null)
-//        val editTextName = workoutShort.findViewById<EditText>(R.id.tv_workout_name)
-
-//        recyclerView.adapter = lvTasksAdapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = GridLayoutManager(requireContext(),2)
+//        getData()
 
         view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_all_workouts).setNavigationOnClickListener {
             // Change it to required fragment back button
@@ -115,6 +112,26 @@ class AllWorkoutsFragment : Fragment() {
         val dialog = builder.create()
         dialog.setView(dialogLayout)
         dialog.show()
+    }
+
+
+
+    private fun getData(){
+
+        val activity = requireActivity() as AppCompatActivity
+        db = Room.databaseBuilder(
+                activity.applicationContext,
+                PersonalTrainerDatabase::class.java,
+                "exercise.db"
+        ).build()
+
+        Thread{
+            workoutList.addAll(db.workoutDAO().viewAllWorkouts())
+            activity.runOnUiThread{
+                adapter.notifyDataSetChanged()
+            }
+
+        }.start()
     }
 
 }

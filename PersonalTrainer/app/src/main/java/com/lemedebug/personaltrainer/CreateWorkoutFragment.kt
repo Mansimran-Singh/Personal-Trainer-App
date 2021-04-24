@@ -37,9 +37,11 @@ class CreateWorkoutFragment : Fragment() {
         val activity = requireActivity() as AppCompatActivity
         activity.setSupportActionBar(view.findViewById(R.id.toolbar_create_workout))
         activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        activity.supportActionBar?.title = "CREATE NEW WORKOUT"
+        activity.supportActionBar?.title = "EDIT WORKOUT"
 
         val viewModel = ViewModelProvider(requireActivity()).get(ExerciseViewModel::class.java)
+        val textViewWorkOutName = view.findViewById<TextView>(R.id.et_workout_name_label)
+        textViewWorkOutName.text = viewModel.selectedWorkoutID
 
         db = Room.databaseBuilder(
                 activity.applicationContext,

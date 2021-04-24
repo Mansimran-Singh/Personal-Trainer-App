@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "674976935257",
+    "project_id": "personal-trainer-7e850",
+    "storage_bucket": "personal-trainer-7e850.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:674976935257:android:fc8d9c7a91b47043bcb048",
+        "android_client_info": {
+          "package_name": "com.lemedebug.personaltrainer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "674976935257-0k6nhirittvcas9n2nutikderj98mmr9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2_F112OoHAgXpMeA2FW1wUn_zg-J_7_0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "674976935257-0k6nhirittvcas9n2nutikderj98mmr9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

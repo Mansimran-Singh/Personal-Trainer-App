@@ -17,7 +17,7 @@ data class WorkoutEntity(
 @Entity(tableName = "reps_table")
 data class RepsEntity(
         @PrimaryKey(autoGenerate = true)
-    var id : Int,
+        var id : Int,
         var reps : Int,
         val workoutName : String,
         val exerciseID: Int
