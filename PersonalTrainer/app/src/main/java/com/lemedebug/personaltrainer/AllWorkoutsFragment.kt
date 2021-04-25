@@ -15,14 +15,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.lemedebug.personaltrainer.exercise.*
 import kotlinx.android.synthetic.main.fragment_view_all_exercises.*
 
 class AllWorkoutsFragment : Fragment() {
 
-    lateinit var db: PersonalTrainerDatabase
 
     private val workoutList = ArrayList<WorkoutEntity>()
     private val adapter = AllWorkoutsAdapter(workoutList)
@@ -42,6 +40,7 @@ class AllWorkoutsFragment : Fragment() {
         val activity = requireActivity() as AppCompatActivity
         activity.setSupportActionBar(view.findViewById(R.id.toolbar_all_workouts))
         activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        activity.supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
         activity.supportActionBar?.title = "AVAILABLE WORKOUTS"
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.rv_all_workouts)
@@ -85,15 +84,7 @@ class AllWorkoutsFragment : Fragment() {
                     if (!viewModel.selectedWorkoutID.isNullOrEmpty()){
 
                         val activity = requireActivity() as AppCompatActivity
-                        db = Room.databaseBuilder(
-                                activity.applicationContext,
-                                PersonalTrainerDatabase::class.java,
-                                "exercise.db"
-                        ).build()
-                        Thread{
-                            val workoutEntity = WorkoutEntity(viewModel.selectedWorkoutID.toString(),null)
-                            db.workoutDAO().insertWorkout(workoutEntity)
-                        }.start()
+
                     }
 
                     requireActivity().supportFragmentManager.beginTransaction()
@@ -115,23 +106,5 @@ class AllWorkoutsFragment : Fragment() {
     }
 
 
-
-    private fun getData(){
-
-        val activity = requireActivity() as AppCompatActivity
-        db = Room.databaseBuilder(
-                activity.applicationContext,
-                PersonalTrainerDatabase::class.java,
-                "exercise.db"
-        ).build()
-
-        Thread{
-            workoutList.addAll(db.workoutDAO().viewAllWorkouts())
-            activity.runOnUiThread{
-                adapter.notifyDataSetChanged()
-            }
-
-        }.start()
-    }
 
 }

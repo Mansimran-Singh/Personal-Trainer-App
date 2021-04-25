@@ -106,6 +106,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
                         if (task.isSuccessful) {
                             FirestoreClass().getUserDetails(this@LoginActivity)
+                            FirestoreClass().getExerciseList(this@LoginActivity)
 
                         } else {
                             hideProgressDialog()

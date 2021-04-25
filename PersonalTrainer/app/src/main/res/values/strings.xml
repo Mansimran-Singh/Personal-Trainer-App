@@ -3,7 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="content_description">image</string>
-    <string name="title_login">LOGIN</string>
+    <string name="title_login">Personal Trainer Login</string>
     <string name="et_hint_email_id">Email ID</string>
     <string name="et_hint_password">Password</string>
     <string name="lbl_forgot_password">Forgot Password?</string>

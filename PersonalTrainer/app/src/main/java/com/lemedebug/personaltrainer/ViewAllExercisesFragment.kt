@@ -1,5 +1,6 @@
 package com.lemedebug.personaltrainer
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +14,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.lemedebug.personaltrainer.exercise.Exercise
 import com.lemedebug.personaltrainer.exercise.ExerciseAdapter
 import com.lemedebug.personaltrainer.exercise.ExerciseViewModel
-import com.lemedebug.personaltrainer.exercise.PersonalTrainerDatabase
+import com.lemedebug.personaltrainer.utils.Constants
 import kotlinx.android.synthetic.main.fragment_view_all_exercises.*
 
 class ViewAllExercisesFragment : Fragment() {
@@ -25,13 +27,12 @@ class ViewAllExercisesFragment : Fragment() {
     private val BASE_URL = "https://wger.de/api/v2/exerciseinfo/"
     private val TAG = "CREATE_WORKOUT_ACTIVITY"
     private var exerciseList = ArrayList<Exercise>()
-    private val adapter = ExerciseAdapter(exerciseList)
+//    private val adapter = ExerciseAdapter(exerciseList)
     private var tempList = ArrayList<Exercise>()
-    lateinit var db: PersonalTrainerDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getData()
+//        getData()
 
     }
 
@@ -46,7 +47,18 @@ class ViewAllExercisesFragment : Fragment() {
         val activity = requireActivity() as AppCompatActivity
         activity.setSupportActionBar(view.findViewById(R.id.toolbar_view_all_exercises))
         activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        activity.supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
         activity.supportActionBar?.title = "ADD EXERCISE"
+
+
+        val sharedPreferences = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
+        val exerciseStringList = sharedPreferences.getString(Constants.EXERCISES,"")
+
+        val sType = object : TypeToken<List<Exercise>>() { }.type
+        exerciseList.addAll(Gson().fromJson<List<Exercise>>(exerciseStringList,sType) as ArrayList<Exercise>)
+        val adapter  = ExerciseAdapter(exerciseList)
+        adapter.notifyDataSetChanged()
+
 
         view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_view_all_exercises).setNavigationOnClickListener {
             val viewModel = ViewModelProvider(requireActivity()).get(ExerciseViewModel::class.java)
@@ -61,6 +73,7 @@ class ViewAllExercisesFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.rv_exercise_list)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
         val searchView = view.findViewById<SearchView>(R.id.searchView)
         val spinner_cat: Spinner = view.findViewById(R.id.spinner_category)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -109,22 +122,5 @@ class ViewAllExercisesFragment : Fragment() {
         return view
     }
 
-    private fun getData(){
-
-        val activity = requireActivity() as AppCompatActivity
-        db = Room.databaseBuilder(
-                activity.applicationContext,
-                PersonalTrainerDatabase::class.java,
-                "exercise.db"
-        ).build()
-
-        Thread{
-            exerciseList.addAll(db.exerciseDAO().viewAllExercises())
-            activity.runOnUiThread{
-                adapter.notifyDataSetChanged()
-            }
-
-        }.start()
-    }
 
 }

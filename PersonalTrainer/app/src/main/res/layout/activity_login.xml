@@ -38,6 +38,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:textStyle="bold"
         android:text="@string/title_login"
         android:textColor="@color/colorPrimaryText"
         android:textSize="@dimen/title_textSize"

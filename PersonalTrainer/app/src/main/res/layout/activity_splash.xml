@@ -30,7 +30,8 @@
             android:textColor="@color/white"
             android:textSize="70sp"
             android:textStyle="bold"
-            android:fontFamily="cursive" />
+            android:fontFamily="cursive"
+            />
 
     </LinearLayout>
 
