@@ -9,8 +9,8 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.lemedebug.personaltrainer.R
-import com.lemedebug.personaltrainer.firestore.FirestoreClass
 import com.lemedebug.personaltrainer.models.User
+import com.lemedebug.personaltrainer.firestore.FirestoreClass
 import kotlinx.android.synthetic.main.activity_register.*
 
 @Suppress("DEPRECATION")

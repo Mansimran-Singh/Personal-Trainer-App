@@ -4,13 +4,14 @@ import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.lemedebug.personaltrainer.MainActivity
-import com.lemedebug.personaltrainer.exercise.Exercise
+import com.lemedebug.personaltrainer.exercise.ExerciseViewModel
+import com.lemedebug.personaltrainer.models.Exercise
 import com.lemedebug.personaltrainer.models.User
 import com.lemedebug.personaltrainer.userlogin.LoginActivity
 import com.lemedebug.personaltrainer.userlogin.RegisterActivity
@@ -37,10 +38,24 @@ class FirestoreClass {
                 }
     }
 
+    fun updateUser(activity: Activity, userInfo: User){
+        mFireStore.collection(Constants.USERS)
+            // document UID
+            .document(userInfo.id)
+            // add whatever userInfo present
+            .set(userInfo, SetOptions.merge())
+            // On Success listener
+            .addOnSuccessListener {
+            }
+            // on fail
+            .addOnFailureListener {
+                Log.e("Register_Activity","Error while registering")
+            }
+    }
+
     fun getCurrentUserID(): String {
 
         val currentUser = FirebaseAuth.getInstance().currentUser
-
         var currentUserID = ""
         if (currentUser != null){
             currentUserID = currentUser.uid
@@ -49,7 +64,7 @@ class FirestoreClass {
         return currentUserID
     }
 
-    fun getUserDetails(activity: Activity){
+    fun getUserDetails(activity: AppCompatActivity){
         mFireStore.collection(Constants.USERS)
                 .document(getCurrentUserID())
                 .get()
@@ -65,11 +80,26 @@ class FirestoreClass {
                             )
 
                     val editor: SharedPreferences.Editor = sharedPreferences.edit()
+//                    editor.putString(
+//                            Constants.LOGGED_IN_USERNAME,
+//                            "${user.firstName} ${user.lastName}"
+//                    )
+//                    editor.apply()
+
+//                    val viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
+////                    viewModel.user = user
+
+                    // Convert Workouts to json
+                    val jsonArrayLoggedUser = Gson().toJson(user)
                     editor.putString(
-                            Constants.LOGGED_IN_USERNAME,
-                            "${user.firstName} ${user.lastName}"
+                            Constants.LOGGED_USER,
+                            jsonArrayLoggedUser
                     )
                     editor.apply()
+
+//
+//                    Log.e("USER","${viewModel.user}")
+//                    Log.e("USER","${user}")
 
                     // Convert Workouts to json
                     val jsonArrayWorkouts = Gson().toJson(user.workoutList)
@@ -78,6 +108,7 @@ class FirestoreClass {
                             Constants.WORKOUTS,
                             jsonArrayWorkouts
                     )
+                    editor.apply()
 
 
                     when(activity){
@@ -108,7 +139,7 @@ class FirestoreClass {
                         // The result (documents) contains all the records in db, each of them is a document
                         for (document in documents) {
                             Log.d("EXERCISE_LIST", "${document.id} => $document")
-                            val exercise = document.toObject(Exercise::class.java)!!
+                            val exercise = document.toObject(Exercise::class.java)
                             exerciseInfoList.add(exercise)
                         }
 
@@ -128,19 +159,19 @@ class FirestoreClass {
     }
 
 
-    fun addExerciseList(activity: MainActivity, exerciseInfo: Exercise){
+    fun addExerciseList(activity: Activity, exerciseInfo: Exercise){
         mFireStore.collection(Constants.EXERCISES)
                 // document UID
                 .document(exerciseInfo.id)
-                // add whatever userInfo present
+                // add whatever exerciseInfo present
                 .set(exerciseInfo, SetOptions.merge())
                 // On Success listener
                 .addOnSuccessListener {
-                    Log.e("ExerciseList","Successfully added")
+//                    Log.e("ExerciseList","Successfully added")
                 }
                 // on fail
                 .addOnFailureListener {
-                    Log.e("ExerciseList","Failure adding")
+//                    Log.e("ExerciseList","Failure adding")
                 }
     }
 }

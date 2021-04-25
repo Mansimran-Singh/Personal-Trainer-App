@@ -18,12 +18,12 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.core.view.get
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.lemedebug.personaltrainer.CreateWorkoutFragment
+import com.lemedebug.personaltrainer.EditWorkoutFragment
 import com.lemedebug.personaltrainer.R
+import com.lemedebug.personaltrainer.models.Exercise
 import com.squareup.picasso.Picasso
 import java.util.*
 import kotlin.collections.ArrayList
@@ -31,7 +31,7 @@ import kotlin.collections.ArrayList
 
 class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>(),Filterable {
 
-    private var exercise:Exercise? = null
+    private var exercise: Exercise? = null
     var tempexerciseList: ArrayList<Exercise> = exerciseList
 
     inner class ExerciseViewHolder(exerciseView: View):RecyclerView.ViewHolder(exerciseView){
@@ -202,7 +202,7 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
 
                 val viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
 
-                viewModel.exercise = exercise
+                viewModel.selectedExercise.exercise  = exercise as Exercise
 
                 showDialog(activity)
 //                handleImageView(holder,exercise!!.images)
@@ -222,7 +222,7 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
     private fun showDialog(activity: AppCompatActivity) {
 
         val viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
-        val name = viewModel.exercise?.name
+        val name = viewModel.selectedExercise!!.exercise.name
         val repsData = arrayOf("1x $name", "2x $name", "3x $name", "4x $name")
         var selectedReps:Int = 0
 
@@ -237,17 +237,15 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
             if (selectedReps<1){
                 Toast.makeText(activity.applicationContext, "Please select Reps to add", Toast.LENGTH_SHORT).show()
             }else{
-                viewModel.reps = selectedReps
+                viewModel.selectedExercise!!.reps = selectedReps
 
                 activity.supportFragmentManager.beginTransaction()
-                        .replace(R.id.exercise_view_container, CreateWorkoutFragment())
+                        .replace(R.id.exercise_view_container, EditWorkoutFragment())
                         .commit()
-
-
             }
         }
         builder.setNeutralButton("Cancel"){ dialog, which ->
-            viewModel.reps = null
+            viewModel.selectedExercise?.reps = null
         }
 
 

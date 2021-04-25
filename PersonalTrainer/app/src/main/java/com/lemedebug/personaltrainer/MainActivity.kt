@@ -1,14 +1,20 @@
 package com.lemedebug.personaltrainer
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.lemedebug.personaltrainer.exercise.Exercise
-import com.lemedebug.personaltrainer.exercise.ExerciseData
+import androidx.lifecycle.ViewModelProvider
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.lemedebug.personaltrainer.models.Exercise
+import com.lemedebug.personaltrainer.models.ExerciseData
 import com.lemedebug.personaltrainer.exercise.ExerciseService
+import com.lemedebug.personaltrainer.exercise.ExerciseViewModel
 import com.lemedebug.personaltrainer.firestore.FirestoreClass
+import com.lemedebug.personaltrainer.models.User
 import com.lemedebug.personaltrainer.utils.Constants
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_register.*
@@ -22,14 +28,19 @@ class MainActivity : AppCompatActivity() {
 
     private val BASE_URL = "https://wger.de/api/v2/exerciseinfo/"
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val sharedPreferences = getSharedPreferences(Constants.PT_PREFERENCES,Context.MODE_PRIVATE)
-        val userName = sharedPreferences.getString(Constants.LOGGED_IN_USERNAME,"")
+        val sharedPreferences = getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
+        val user = sharedPreferences.getString(Constants.LOGGED_USER,"")
+        val sType = object : TypeToken<User>() { }.type
+        val loggedUser = Gson().fromJson<User>(user,sType) as User
 
-        main_title.text = "Welcome $userName!"
+        val viewModel = ViewModelProvider(this).get(ExerciseViewModel::class.java)
+        viewModel.user = loggedUser
+        main_title.text = "Welcome ${loggedUser.firstName}!"
 
 
         btn_bmi_calculator.setOnClickListener {

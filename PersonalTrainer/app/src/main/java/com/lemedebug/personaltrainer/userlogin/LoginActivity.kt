@@ -9,8 +9,8 @@ import android.view.WindowManager
 import com.google.firebase.auth.FirebaseAuth
 import com.lemedebug.personaltrainer.MainActivity
 import com.lemedebug.personaltrainer.R
-import com.lemedebug.personaltrainer.firestore.FirestoreClass
 import com.lemedebug.personaltrainer.models.User
+import com.lemedebug.personaltrainer.firestore.FirestoreClass
 import kotlinx.android.synthetic.main.activity_login.*
 
 /**
@@ -116,7 +116,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    fun userLoggedInSuccess(user:User){
+    fun userLoggedInSuccess(user: User){
 
         hideProgressDialog()
 

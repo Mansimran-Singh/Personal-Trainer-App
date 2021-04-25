@@ -1,29 +1,28 @@
 package com.lemedebug.personaltrainer
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.EditText
-import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.lemedebug.personaltrainer.exercise.*
-import kotlinx.android.synthetic.main.fragment_view_all_exercises.*
+import com.lemedebug.personaltrainer.models.User
+import com.lemedebug.personaltrainer.models.Workout
+import com.lemedebug.personaltrainer.utils.Constants
 
 class AllWorkoutsFragment : Fragment() {
 
-
-    private val workoutList = ArrayList<WorkoutEntity>()
-    private val adapter = AllWorkoutsAdapter(workoutList)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +41,14 @@ class AllWorkoutsFragment : Fragment() {
         activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         activity.supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
         activity.supportActionBar?.title = "AVAILABLE WORKOUTS"
+
+        val sharedPreferences = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
+        val user = sharedPreferences.getString(Constants.LOGGED_USER,"")
+        val sType = object : TypeToken<User>() { }.type
+        val loggedUser = Gson().fromJson<User>(user,sType) as User
+
+        val workoutList = loggedUser.workoutList as ArrayList<Workout>
+        val adapter = AllWorkoutsAdapter(workoutList)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.rv_all_workouts)
         recyclerView.adapter = adapter
@@ -78,17 +85,17 @@ class AllWorkoutsFragment : Fragment() {
                 if (editTextName.text.trim().isEmpty()){
                     Toast.makeText(requireContext(),"Please enter a valid workout name",Toast.LENGTH_SHORT).show()
                 }else{
-                    viewModel.selectedWorkoutID = editTextName.text.toString()
+                    viewModel.selectedWorkout?.name = editTextName.text.toString()
 //                    Log.d("TEXTTT",viewModel.selectedWorkoutID.toString())
 
-                    if (!viewModel.selectedWorkoutID.isNullOrEmpty()){
+                    if (viewModel.selectedWorkout?.name.isNullOrEmpty()){
 
                         val activity = requireActivity() as AppCompatActivity
 
                     }
 
                     requireActivity().supportFragmentManager.beginTransaction()
-                            .replace(R.id.exercise_view_container, CreateWorkoutFragment())
+                            .replace(R.id.exercise_view_container, EditWorkoutFragment())
                             .commit()
 
 

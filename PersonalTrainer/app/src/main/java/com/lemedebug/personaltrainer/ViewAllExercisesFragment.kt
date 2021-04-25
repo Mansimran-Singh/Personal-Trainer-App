@@ -16,18 +16,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.lemedebug.personaltrainer.exercise.Exercise
+import com.lemedebug.personaltrainer.models.Exercise
 import com.lemedebug.personaltrainer.exercise.ExerciseAdapter
 import com.lemedebug.personaltrainer.exercise.ExerciseViewModel
+import com.lemedebug.personaltrainer.models.SelectedExercise
 import com.lemedebug.personaltrainer.utils.Constants
 import kotlinx.android.synthetic.main.fragment_view_all_exercises.*
 
 class ViewAllExercisesFragment : Fragment() {
 
-    private val BASE_URL = "https://wger.de/api/v2/exerciseinfo/"
-    private val TAG = "CREATE_WORKOUT_ACTIVITY"
     private var exerciseList = ArrayList<Exercise>()
-//    private val adapter = ExerciseAdapter(exerciseList)
     private var tempList = ArrayList<Exercise>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,10 +60,9 @@ class ViewAllExercisesFragment : Fragment() {
 
         view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_view_all_exercises).setNavigationOnClickListener {
             val viewModel = ViewModelProvider(requireActivity()).get(ExerciseViewModel::class.java)
-            viewModel.exercise = null
-            viewModel.reps = null
+            viewModel.selectedExercise = SelectedExercise()
             requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.exercise_view_container, CreateWorkoutFragment())
+                    .replace(R.id.exercise_view_container, EditWorkoutFragment())
                     .commit()
         }
 
@@ -119,6 +116,10 @@ class ViewAllExercisesFragment : Fragment() {
                 adapter.getFilter().filter(newText)}
 
         }
+
+
+
+
         return view
     }
 

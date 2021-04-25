@@ -1,5 +1,6 @@
 package com.lemedebug.personaltrainer.exercise
 
+import com.lemedebug.personaltrainer.models.ExerciseData
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
