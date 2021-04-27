@@ -1,5 +1,6 @@
 package com.lemedebug.personaltrainer
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -25,6 +26,7 @@ class EditWorkoutFragment : Fragment() {
 
 //    private var selectedExerciseList = ArrayList<SelectedExercise>()
 
+    @SuppressLint("CutPasteId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -77,6 +79,11 @@ class EditWorkoutFragment : Fragment() {
                 val user = sharedPreferences.getString(Constants.LOGGED_USER,"")
                 val sType = object : TypeToken<User>() { }.type
                 val loggedUser = Gson().fromJson<User>(user,sType) as User
+                if (user != null) {
+                    Log.i("LOGGED USER",user)
+                }else{
+                    Log.i("LOGGED USER","NOT FOUND")
+                }
 
                 for (w in loggedUser.workoutList){
                     if (w.name.equals(viewModel.selectedWorkout?.name)){

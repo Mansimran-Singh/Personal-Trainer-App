@@ -8,4 +8,5 @@ object Constants {
     const val LOGGED_USER: String = "logged_user"
     const val WORKOUTS: String = "workouts"
     const val EXERCISES: String = "exercises"
+    const val WORKOUT_TO_PLAY: String = "WORKOUT_TO_PLAY"
 }

@@ -24,6 +24,14 @@ data class SelectedExercise(
 )
 
 
+data class ExerciseModel(
+    var id: Int,
+    var name: String,
+    val images:List<ExerciseImage>,
+    var isCompleted: Boolean,
+    var isSelected: Boolean
+)
+
 data class Exercise(
     val id:String = "",
     val name:String = "",

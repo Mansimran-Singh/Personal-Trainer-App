@@ -1,7 +1,9 @@
 package com.lemedebug.personaltrainer.exercise
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +14,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.gson.Gson
 import com.lemedebug.personaltrainer.EditWorkoutFragment
 import com.lemedebug.personaltrainer.R
 import com.lemedebug.personaltrainer.models.Workout
+import com.lemedebug.personaltrainer.playworkout.ExerciseActivity
+import com.lemedebug.personaltrainer.utils.Constants
+
 
 class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : RecyclerView.Adapter<AllWorkoutsAdapter.AllWorkoutsAdapterViewHolder>() {
 
@@ -29,9 +35,9 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllWorkoutsAdapterViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(
-                R.layout.workout_short,
-                parent,
-                false
+            R.layout.workout_short,
+            parent,
+            false
         )
 
 
@@ -49,12 +55,20 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
 
 
         if (workout != null && currentItem == workout){
+            val viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
+            viewModel.selectedWorkout = currentItem
+            Log.i("PLAY EXERCISE", "Setting workout to ${viewModel.selectedWorkout}")
+
             holder.cv.setCardBackgroundColor(Color.parseColor("#e6ffe6"))
             holder.playButton.visibility = View.VISIBLE
             holder.editButton.visibility = View.VISIBLE
 
             holder.playButton.setOnClickListener {
                 // START PLAY WORKOUT ACTIVITY
+                val intent = Intent(activity, ExerciseActivity::class.java)
+                val listSerializedToJson = Gson().toJson(viewModel.selectedWorkout)
+                intent.putExtra(Constants.WORKOUT_TO_PLAY,listSerializedToJson)
+                activity.startActivity(intent)
             }
 
             holder.editButton.setOnClickListener {
@@ -65,8 +79,8 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
 
         }else{
             holder.cv.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
-            holder.playButton.visibility = View.GONE
-            holder.editButton.visibility = View.GONE
+            holder.playButton.visibility = View.INVISIBLE
+            holder.editButton.visibility = View.INVISIBLE
         }
 
         holder.cv.setOnClickListener {
