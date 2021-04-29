@@ -18,7 +18,7 @@ import com.lemedebug.personaltrainer.utils.Constants
 
 class FirestoreClass {
 
-    private val mFireStore = FirebaseFirestore.getInstance()
+    val mFireStore = FirebaseFirestore.getInstance()
 
     fun registerUser(activity: RegisterActivity, userInfo: User){
         mFireStore.collection(Constants.USERS)
@@ -179,22 +179,5 @@ class FirestoreClass {
         docRef.update("workoutList",userInfo.workoutList)
     }
 
-    fun getSnapshot(userInfo: User)
-    {
-        val docRef = mFireStore.collection(Constants.USERS).document(userInfo.id)
-        docRef.get()
-                .addOnSuccessListener { document ->
-                    if (document != null) {
-                        document.data
-                        Log.d("firestore", "DocumentSnapshot data: ${document.data}")
-                    } else {
-                        //Log.d(TAG, "No such document")
-                    }
-                }
-                .addOnFailureListener { exception ->
-                   // Log.d(TAG, "get failed with ", exception)
-                }
-
-    }
 
 }

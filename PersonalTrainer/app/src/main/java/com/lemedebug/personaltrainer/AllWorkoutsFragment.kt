@@ -2,14 +2,17 @@ package com.lemedebug.personaltrainer
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.Message
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +21,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.lemedebug.personaltrainer.exercise.*
 import com.lemedebug.personaltrainer.firestore.FirestoreClass
-import com.lemedebug.personaltrainer.models.SelectedExercise
 import com.lemedebug.personaltrainer.models.User
 import com.lemedebug.personaltrainer.models.Workout
 import com.lemedebug.personaltrainer.utils.Constants
@@ -47,11 +49,11 @@ class AllWorkoutsFragment : Fragment() {
         activity.supportActionBar?.title = "AVAILABLE WORKOUTS"
 
         val sharedPreferences = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
-        val user = sharedPreferences.getString(Constants.LOGGED_USER,"")
+        val user = sharedPreferences.getString(Constants.LOGGED_USER, "")
         val sType = object : TypeToken<User>() { }.type
-        val loggedUser = Gson().fromJson<User>(user,sType) as User
+        val loggedUser = Gson().fromJson<User>(user, sType) as User
 
-        val workoutList = loggedUser.workoutList
+        var workoutList = loggedUser.workoutList
         val adapter = AllWorkoutsAdapter(workoutList)
 
         viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
@@ -60,11 +62,10 @@ class AllWorkoutsFragment : Fragment() {
         dummyWorkout.name = ""
         dummyWorkout.listSelectedExercises = ArrayList()
         viewModel.selectedWorkout = dummyWorkout
-        FirestoreClass().getSnapshot(loggedUser)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.rv_all_workouts)
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = GridLayoutManager(requireContext(),2)
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 //        getData()
 
         view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_all_workouts).setNavigationOnClickListener {
@@ -79,34 +80,45 @@ class AllWorkoutsFragment : Fragment() {
 
         }
 
+        val docRef = FirestoreClass().mFireStore.collection(Constants.USERS).document(loggedUser.id)
+        docRef.get()
+        docRef.addSnapshotListener { snapshot, e ->
+            if (snapshot != null) {
+                workoutList = snapshot.get("workoutList") as ArrayList<Workout>
+                // val adapter = AllWorkoutsAdapter(workoutList)
+                adapter.notifyDataSetChanged()
+
+                Log.d("onstart", "DocumentSnapshot data: ${snapshot.data}")
+            } else {
+                //Log.d(TAG, "No such document")
+            }
+        }
+
+
         return view
     }
 
-    override fun onStart() {
-        super.onStart()
-
-    }
 
    private fun showDialog(activity: AppCompatActivity) {
        // viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
 
         val builder = AlertDialog.Builder(activity)
         val inflater = layoutInflater
-        val dialogLayout = inflater.inflate(R.layout.edittext_workout_name,null)
+        val dialogLayout = inflater.inflate(R.layout.edittext_workout_name, null)
         val editTextName = dialogLayout.findViewById<EditText>(R.id.et_workout_name)
 
         with(builder){
             setTitle("CREATE WORKOUT")
-            setPositiveButton("PROCEED"){dialog,which ->
+            setPositiveButton("PROCEED"){ dialog, which ->
                 if (editTextName.text.trim().isEmpty()){
-                    Toast.makeText(requireContext(),"Please enter a valid workout name",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Please enter a valid workout name", Toast.LENGTH_SHORT).show()
                 }else{
                     val toFind = editTextName.text.toString()
                     var found: Boolean = false
                     val sharedPreferences = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
-                    val user = sharedPreferences.getString(Constants.LOGGED_USER,"")
+                    val user = sharedPreferences.getString(Constants.LOGGED_USER, "")
                     val sType = object : TypeToken<User>() { }.type
-                    val loggedUser = Gson().fromJson<User>(user,sType) as User
+                    val loggedUser = Gson().fromJson<User>(user, sType) as User
                     val sharedPreferences_list = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
                     sharedPreferences_list.edit().remove(Constants.SELECTED_EXERCISE).commit();
                     val workoutList = loggedUser.workoutList
@@ -120,7 +132,7 @@ class AllWorkoutsFragment : Fragment() {
                     }
                     if (found)
                     {
-                        Toast.makeText(requireContext(),"Please enter a different workout name. Entered workout already exists",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Please enter a different workout name. Entered workout already exists", Toast.LENGTH_SHORT).show()
                     }
                     else {
                         viewModel.selectedWorkout?.name = editTextName.text.toString()
@@ -140,7 +152,7 @@ class AllWorkoutsFragment : Fragment() {
 
                 }
             }
-            setNegativeButton("CANCEL"){dialog,which->
+            setNegativeButton("CANCEL"){ dialog, which->
                 // DO NOTHING
             }
         }
