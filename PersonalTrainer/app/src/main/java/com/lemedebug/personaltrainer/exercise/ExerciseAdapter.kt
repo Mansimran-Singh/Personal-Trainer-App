@@ -5,7 +5,9 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.DialogInterface
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Build
 import android.text.Html
@@ -21,9 +23,15 @@ import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.lemedebug.personaltrainer.EditWorkoutFragment
 import com.lemedebug.personaltrainer.R
 import com.lemedebug.personaltrainer.models.Exercise
+import com.lemedebug.personaltrainer.models.SelectedExercise
+import com.lemedebug.personaltrainer.models.User
+import com.lemedebug.personaltrainer.models.Workout
+import com.lemedebug.personaltrainer.utils.Constants
 import com.squareup.picasso.Picasso
 import java.util.*
 import kotlin.collections.ArrayList
@@ -33,6 +41,7 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
 
     private var exercise: Exercise? = null
     var tempexerciseList: ArrayList<Exercise> = exerciseList
+
 
     inner class ExerciseViewHolder(exerciseView: View):RecyclerView.ViewHolder(exerciseView){
         val expandedView: LinearLayout = exerciseView.findViewById(R.id.expanded_view)
@@ -68,6 +77,8 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
+
+
 
         holder.comments.visibility = View.VISIBLE
         holder.commentsLabel.visibility = View.VISIBLE
@@ -166,6 +177,8 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
 
         val activity: AppCompatActivity = holder.expandedView.context as AppCompatActivity
         val selectedItemName: TextView = activity.findViewById(R.id.tv_selected_item)
+        val viewModel_item = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
+
 
         holder.exerciseName.setOnClickListener {
             notifyDataSetChanged()
@@ -199,15 +212,27 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
             if(exercise==null){
                 Toast.makeText(activity.applicationContext, "Please select an exercise to add", Toast.LENGTH_SHORT).show()
             }else{
+                val sharedPreferences_list = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
+                sharedPreferences_list.edit().remove(Constants.SELECTED_EXERCISE).commit();
+                val selExercise: SelectedExercise = SelectedExercise()
+                selExercise.exercise = exercise as Exercise
 
-                val viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
+                val sharedPreferences =
+                        activity.getSharedPreferences(
+                                Constants.PT_PREFERENCES,
+                                Context.MODE_PRIVATE
+                        )
 
-                viewModel.selectedExercise.exercise  = exercise as Exercise
+                val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                val jsonArraySelectedExercises = Gson().toJson(selExercise)
+                editor.putString(
+                        Constants.SELECTED_EXERCISE,
+                        jsonArraySelectedExercises
+                )
+                editor.apply()
 
                 showDialog(activity)
 //                handleImageView(holder,exercise!!.images)
-
-
 
             }
 
@@ -221,11 +246,14 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
 
     private fun showDialog(activity: AppCompatActivity) {
 
-        val viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
-        val name = viewModel.selectedExercise!!.exercise.name
-        val repsData = arrayOf("1x $name", "2x $name", "3x $name", "4x $name")
         var selectedReps:Int = 0
 
+        val sharedPreferences = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
+        val selectedexercise = sharedPreferences.getString(Constants.SELECTED_EXERCISE,"")
+        val sTypeExer = object : TypeToken<SelectedExercise>() { }.type
+        val selExercise = Gson().fromJson<SelectedExercise>(selectedexercise,sTypeExer) as SelectedExercise
+        val name = selExercise.exercise.name
+        val repsData = arrayOf("1x $name", "2x $name", "3x $name", "4x $name")
         // Create an alertdialog builder object,
         // then set attributes that you want the dialog to have
         val builder = AlertDialog.Builder(activity)
@@ -237,7 +265,23 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
             if (selectedReps<1){
                 Toast.makeText(activity.applicationContext, "Please select Reps to add", Toast.LENGTH_SHORT).show()
             }else{
-                viewModel.selectedExercise!!.reps = selectedReps
+                //viewModel.selectedExercise!!.reps = selectedReps
+
+                selExercise.reps = selectedReps
+
+                val sharedPreferences =
+                        activity.getSharedPreferences(
+                                Constants.PT_PREFERENCES,
+                                Context.MODE_PRIVATE
+                        )
+
+                val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                val jsonArraySelectedExercises = Gson().toJson(selExercise)
+                editor.putString(
+                        Constants.SELECTED_EXERCISE,
+                        jsonArraySelectedExercises
+                )
+                editor.apply()
 
                 activity.supportFragmentManager.beginTransaction()
                         .replace(R.id.exercise_view_container, EditWorkoutFragment())
@@ -245,7 +289,7 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
             }
         }
         builder.setNeutralButton("Cancel"){ dialog, which ->
-            viewModel.selectedExercise?.reps = null
+            //viewModel.selectedExercise?.reps = null
         }
 
 

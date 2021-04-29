@@ -3,14 +3,13 @@ package com.lemedebug.personaltrainer.firestore
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Message
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.gson.Gson
-import com.lemedebug.personaltrainer.exercise.ExerciseViewModel
 import com.lemedebug.personaltrainer.models.Exercise
 import com.lemedebug.personaltrainer.models.User
 import com.lemedebug.personaltrainer.userlogin.LoginActivity
@@ -34,7 +33,7 @@ class FirestoreClass {
                 // on fail
                 .addOnFailureListener {
                     activity.hideProgressDialog()
-                    Log.e("Register_Activity","Error while registering")
+                    Log.e("Register_Activity", "Error while registering")
                 }
     }
 
@@ -49,7 +48,7 @@ class FirestoreClass {
             }
             // on fail
             .addOnFailureListener {
-                Log.e("Register_Activity","Error while registering")
+                Log.e("Register_Activity", "Error while registering")
             }
     }
 
@@ -70,7 +69,7 @@ class FirestoreClass {
                 .get()
                 .addOnSuccessListener { document ->
 
-                    Log.i("FirestoreClass",document.toString())
+                    Log.i("FirestoreClass", document.toString())
                     val user = document.toObject(User::class.java)!!
 
                     val sharedPreferences =
@@ -122,8 +121,8 @@ class FirestoreClass {
 
     fun getExerciseList(activity: Activity){
 
-        val sharedPreferences = activity.getSharedPreferences(Constants.PT_PREFERENCES,Context.MODE_PRIVATE)
-        val exerciseList = sharedPreferences.getString(Constants.EXERCISES,"")
+        val sharedPreferences = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
+        val exerciseList = sharedPreferences.getString(Constants.EXERCISES, "")
         val exerciseInfoList = ArrayList<Exercise>()
 
         if (exerciseList.isNullOrEmpty()){
@@ -174,4 +173,28 @@ class FirestoreClass {
 //                    Log.e("ExerciseList","Failure adding")
                 }
     }
+
+    fun updateWorkoutList(activity: Activity, userInfo: User) {
+        val docRef = mFireStore.collection(Constants.USERS).document(userInfo.id)
+        docRef.update("workoutList",userInfo.workoutList)
+    }
+
+    fun getSnapshot(userInfo: User)
+    {
+        val docRef = mFireStore.collection(Constants.USERS).document(userInfo.id)
+        docRef.get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        document.data
+                        Log.d("firestore", "DocumentSnapshot data: ${document.data}")
+                    } else {
+                        //Log.d(TAG, "No such document")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                   // Log.d(TAG, "get failed with ", exception)
+                }
+
+    }
+
 }

@@ -19,6 +19,8 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.lemedebug.personaltrainer.exercise.*
 import com.lemedebug.personaltrainer.firestore.FirestoreClass
+import com.lemedebug.personaltrainer.models.Exercise
+import com.lemedebug.personaltrainer.models.SelectedExercise
 import com.lemedebug.personaltrainer.models.User
 import com.lemedebug.personaltrainer.utils.Constants
 
@@ -41,17 +43,28 @@ class EditWorkoutFragment : Fragment() {
         activity.supportActionBar?.title = "EDIT WORKOUT"
 
         val viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
-        view.findViewById<TextView>(R.id.tv_workout_name_edit_fragment).text = viewModel.selectedWorkout?.name.toString()
+        var selExercise: SelectedExercise = SelectedExercise()
+        val sharedPreferences = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
+        val selectedexercise = sharedPreferences.getString(Constants.SELECTED_EXERCISE,"")
+        val sTypeExer = object : TypeToken<SelectedExercise>() { }.type
+        if (selectedexercise!!.isNotEmpty()) {
 
+                selExercise = Gson().fromJson<SelectedExercise>(selectedexercise,sTypeExer) as SelectedExercise
+        }
+
+
+        view.findViewById<TextView>(R.id.tv_workout_name_edit_fragment).text = viewModel.selectedWorkout?.name.toString()
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.rv_workout_specific_exercise_list)
         if (viewModel.selectedWorkout?.listSelectedExercises != null){
+            if (selExercise.exercise != null && selExercise.reps!! > 0){
+
+                viewModel.selectedWorkout?.listSelectedExercises?.add(selExercise)
+            }
             val adapter = EditWorkoutAdapter(viewModel.selectedWorkout!!.listSelectedExercises)
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
         }
-
-
 
         view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_create_workout).setNavigationOnClickListener {
             // Change it to required fragment back button
@@ -73,7 +86,7 @@ class EditWorkoutFragment : Fragment() {
 
         view.findViewById<FloatingActionButton>(R.id.btn_save_workout).setOnClickListener {
 
-            if (viewModel.selectedExercise?.exercise != null && viewModel.selectedExercise?.reps!=null){
+           // if (viewModel.selectedExercise?.exercise != null && viewModel.selectedExercise?.reps!=null){
 
                 val sharedPreferences = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
                 val user = sharedPreferences.getString(Constants.LOGGED_USER,"")
@@ -85,21 +98,28 @@ class EditWorkoutFragment : Fragment() {
                     Log.i("LOGGED USER","NOT FOUND")
                 }
 
-                for (w in loggedUser.workoutList){
-                    if (w.name.equals(viewModel.selectedWorkout?.name)){
-//                        selectedExerciseList = w.listSelectedExercises as ArrayList<SelectedExercise>
-                        viewModel.selectedWorkout?.listSelectedExercises?.addAll(w.listSelectedExercises)
-                        viewModel.selectedWorkout?.listSelectedExercises?.add(viewModel.selectedExercise)
 
+          //  if (viewModel.selectedExercise?.exercise != null && viewModel.selectedExercise?.reps!=null){
+              if(selExercise.exercise != null && selExercise.reps!=null){
+                if (loggedUser.workoutList.isEmpty()){
+                    viewModel.selectedWorkout?.listSelectedExercises?.add(selExercise)
+                    viewModel.selectedWorkout?.let { it1 -> loggedUser.workoutList.add(it1) }
+
+                    viewModel.user = loggedUser
+
+                    Log.e("USER", "$loggedUser")
+
+                    FirestoreClass().updateUser(activity,loggedUser)
+
+                }
+                else {
                         viewModel.selectedWorkout?.let { it1 -> loggedUser.workoutList.add(it1) }
 
                         viewModel.user = loggedUser
 
-                        Log.e("USER","$loggedUser")
+                        Log.e("USER", "$loggedUser")
+                        FirestoreClass().updateWorkoutList(activity,loggedUser)
 
-                        FirestoreClass().updateUser(activity,loggedUser)
-
-                    }
                 }
 
 
@@ -120,7 +140,6 @@ class EditWorkoutFragment : Fragment() {
                         .replace(R.id.exercise_view_container, AllWorkoutsFragment())
                         .commit()
 //            }
-
 
 
         }

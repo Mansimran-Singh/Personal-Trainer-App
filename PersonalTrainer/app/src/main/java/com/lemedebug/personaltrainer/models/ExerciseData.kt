@@ -15,14 +15,13 @@ data class ExerciseData(
 
 data class Workout(
         var name: String? = "",
-        val listSelectedExercises: ArrayList<SelectedExercise?> = ArrayList()
+        var listSelectedExercises: ArrayList<SelectedExercise?> = ArrayList()
 )
 
 data class SelectedExercise(
     var exercise: Exercise = Exercise(),
     var reps: Int? = -1
 )
-
 
 data class ExerciseModel(
     var id: Int,

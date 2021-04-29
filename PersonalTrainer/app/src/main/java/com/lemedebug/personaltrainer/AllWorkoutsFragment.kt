@@ -17,13 +17,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.lemedebug.personaltrainer.exercise.*
+import com.lemedebug.personaltrainer.firestore.FirestoreClass
+import com.lemedebug.personaltrainer.models.SelectedExercise
 import com.lemedebug.personaltrainer.models.User
 import com.lemedebug.personaltrainer.models.Workout
 import com.lemedebug.personaltrainer.utils.Constants
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AllWorkoutsFragment : Fragment() {
 
-
+    lateinit var viewModel: ExerciseViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -47,8 +51,16 @@ class AllWorkoutsFragment : Fragment() {
         val sType = object : TypeToken<User>() { }.type
         val loggedUser = Gson().fromJson<User>(user,sType) as User
 
-        val workoutList = loggedUser.workoutList as ArrayList<Workout>
+        val workoutList = loggedUser.workoutList
         val adapter = AllWorkoutsAdapter(workoutList)
+
+        viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
+        viewModel.user = loggedUser
+        var dummyWorkout:Workout = Workout()
+        dummyWorkout.name = ""
+        dummyWorkout.listSelectedExercises = ArrayList()
+        viewModel.selectedWorkout = dummyWorkout
+        FirestoreClass().getSnapshot(loggedUser)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.rv_all_workouts)
         recyclerView.adapter = adapter
@@ -64,15 +76,19 @@ class AllWorkoutsFragment : Fragment() {
 
         view.findViewById<FloatingActionButton>(R.id.btn_add_new_workout).setOnClickListener {
             showDialog(activity)
+
         }
 
         return view
     }
 
+    override fun onStart() {
+        super.onStart()
 
-    private fun showDialog(activity: AppCompatActivity) {
+    }
 
-        val viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
+   private fun showDialog(activity: AppCompatActivity) {
+       // viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
 
         val builder = AlertDialog.Builder(activity)
         val inflater = layoutInflater
@@ -85,18 +101,41 @@ class AllWorkoutsFragment : Fragment() {
                 if (editTextName.text.trim().isEmpty()){
                     Toast.makeText(requireContext(),"Please enter a valid workout name",Toast.LENGTH_SHORT).show()
                 }else{
-                    viewModel.selectedWorkout?.name = editTextName.text.toString()
+                    val toFind = editTextName.text.toString()
+                    var found: Boolean = false
+                    val sharedPreferences = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
+                    val user = sharedPreferences.getString(Constants.LOGGED_USER,"")
+                    val sType = object : TypeToken<User>() { }.type
+                    val loggedUser = Gson().fromJson<User>(user,sType) as User
+                    val sharedPreferences_list = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
+                    sharedPreferences_list.edit().remove(Constants.SELECTED_EXERCISE).commit();
+                    val workoutList = loggedUser.workoutList
+
+                    for (n in workoutList){
+                        if (toFind == n.name)
+                        {
+                            found = true
+                            break
+                        }
+                    }
+                    if (found)
+                    {
+                        Toast.makeText(requireContext(),"Please enter a different workout name. Entered workout already exists",Toast.LENGTH_SHORT).show()
+                    }
+                    else {
+                        viewModel.selectedWorkout?.name = editTextName.text.toString()
 //                    Log.d("TEXTTT",viewModel.selectedWorkoutID.toString())
 
-                    if (viewModel.selectedWorkout?.name.isNullOrEmpty()){
+                        if (viewModel.selectedWorkout?.name.isNullOrEmpty()) {
 
-                        val activity = requireActivity() as AppCompatActivity
+                            val activity = requireActivity() as AppCompatActivity
 
+                        }
+
+                        requireActivity().supportFragmentManager.beginTransaction()
+                                .replace(R.id.exercise_view_container, EditWorkoutFragment())
+                                .commit()
                     }
-
-                    requireActivity().supportFragmentManager.beginTransaction()
-                            .replace(R.id.exercise_view_container, EditWorkoutFragment())
-                            .commit()
 
 
                 }

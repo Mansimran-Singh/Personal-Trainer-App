@@ -38,6 +38,9 @@ class MainActivity : AppCompatActivity() {
         val sType = object : TypeToken<User>() { }.type
         val loggedUser = Gson().fromJson<User>(user,sType) as User
 
+        val sharedPreferences_list = getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
+        sharedPreferences_list.edit().remove(Constants.SELECTED_EXERCISE).commit();
+
         val viewModel = ViewModelProvider(this).get(ExerciseViewModel::class.java)
         viewModel.user = loggedUser
         main_title.text = "Welcome ${loggedUser.firstName}!"
