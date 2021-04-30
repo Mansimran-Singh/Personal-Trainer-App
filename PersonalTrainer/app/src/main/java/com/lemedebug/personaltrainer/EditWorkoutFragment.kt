@@ -31,8 +31,8 @@ class EditWorkoutFragment : Fragment() {
 
     @SuppressLint("CutPasteId")
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_edit_workout, container, false)
@@ -61,7 +61,7 @@ class EditWorkoutFragment : Fragment() {
         val sTypeExer = object : TypeToken<SelectedExercise>() { }.type
         if (selectedexercise!!.isNotEmpty()) {
 
-                selExercise = Gson().fromJson<SelectedExercise>(selectedexercise,sTypeExer) as SelectedExercise
+            selExercise = Gson().fromJson<SelectedExercise>(selectedexercise,sTypeExer) as SelectedExercise
         }
 
 
@@ -81,8 +81,8 @@ class EditWorkoutFragment : Fragment() {
         view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_create_workout).setNavigationOnClickListener {
             // Change it to required fragment back button
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.exercise_view_container, AllWorkoutsFragment())
-                .commit()
+                    .replace(R.id.exercise_view_container, AllWorkoutsFragment())
+                    .commit()
         }
 
 
@@ -90,18 +90,18 @@ class EditWorkoutFragment : Fragment() {
         view.findViewById<FloatingActionButton>(R.id.btn_show_all_exercises).setOnClickListener {
 
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.exercise_view_container, ViewAllExercisesFragment())
-                .commit()
+                    .replace(R.id.exercise_view_container, ViewAllExercisesFragment())
+                    .commit()
 
         }
 
 
         view.findViewById<FloatingActionButton>(R.id.btn_save_workout).setOnClickListener {
 
-           // if (viewModel.selectedExercise?.exercise != null && viewModel.selectedExercise?.reps!=null){
+            // if (viewModel.selectedExercise?.exercise != null && viewModel.selectedExercise?.reps!=null){
 
-          //  if (viewModel.selectedExercise?.exercise != null && viewModel.selectedExercise?.reps!=null){
-              if(selExercise.exercise != null && selExercise.reps!=null){
+            //  if (viewModel.selectedExercise?.exercise != null && viewModel.selectedExercise?.reps!=null){
+            if(selExercise.exercise != null && selExercise.reps!=null){
                 if (loggedUser.workoutList.isEmpty()){
                     //viewModel.selectedWorkout?.listSelectedExercises?.add(selExercise)
                     viewModel.selectedWorkout?.let { it1 -> loggedUser.workoutList.add(it1) }
@@ -116,12 +116,12 @@ class EditWorkoutFragment : Fragment() {
 
                 }
                 else {
-                        viewModel.selectedWorkout?.let { it1 -> loggedUser.workoutList.add(it1) }
+                    viewModel.selectedWorkout?.let { it1 -> loggedUser.workoutList.add(it1) }
 
-                        viewModel.user = loggedUser
+                    viewModel.user = loggedUser
 
-                        Log.e("USER", "$loggedUser")
-                        FirestoreClass().updateWorkoutList(activity,loggedUser)
+                    Log.e("USER", "$loggedUser")
+                    FirestoreClass().updateWorkoutList(activity,loggedUser)
                     val sharedPreferences_list = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
                     sharedPreferences_list.edit().remove(Constants.SELECTED_EXERCISE).commit();
 
@@ -140,10 +140,10 @@ class EditWorkoutFragment : Fragment() {
             textViewWorkOutName.text = viewModel.selectedWorkout?.name
 
 //            if(selectedExerciseList.isNotEmpty()){
-                Toast.makeText(requireContext(),"Saved Successfully",Toast.LENGTH_SHORT).show()
-                requireActivity().supportFragmentManager.beginTransaction()
-                        .replace(R.id.exercise_view_container, AllWorkoutsFragment())
-                        .commit()
+            Toast.makeText(requireContext(),"Saved Successfully",Toast.LENGTH_SHORT).show()
+            requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.exercise_view_container, AllWorkoutsFragment())
+                    .commit()
 //            }
 
 

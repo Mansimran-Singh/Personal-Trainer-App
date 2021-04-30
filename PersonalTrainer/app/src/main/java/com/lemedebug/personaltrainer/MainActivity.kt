@@ -83,35 +83,35 @@ class MainActivity : AppCompatActivity() {
 
         val exerciseList = ArrayList<Exercise>()
 
-            val retrofit = Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
+        val retrofit = Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
 
-            val randomExerciseAPI = retrofit.create(ExerciseService::class.java)
-            randomExerciseAPI.getExerciseList(2, 250).enqueue(object : Callback<ExerciseData> {
-                override fun onResponse(call: Call<ExerciseData>, response: Response<ExerciseData>) {
-                    Log.d("Main", "OnResponse: $response")
-                    val body = response.body()
-                    if (body == null) {
-                        Log.d("Main", "Invalid Response Found")
-                        return
-                    }
-
-                    exerciseList.addAll(body.results)
-
-                    body.results.forEach {
-                        FirestoreClass().addExerciseList(this@MainActivity, it)
-                    }
-
-
+        val randomExerciseAPI = retrofit.create(ExerciseService::class.java)
+        randomExerciseAPI.getExerciseList(2, 250).enqueue(object : Callback<ExerciseData> {
+            override fun onResponse(call: Call<ExerciseData>, response: Response<ExerciseData>) {
+                Log.d("Main", "OnResponse: $response")
+                val body = response.body()
+                if (body == null) {
+                    Log.d("Main", "Invalid Response Found")
+                    return
                 }
 
-                override fun onFailure(call: Call<ExerciseData>, t: Throwable) {
-                    Log.d("Main", "OnFailure: $t")
+                exerciseList.addAll(body.results)
+
+                body.results.forEach {
+                    FirestoreClass().addExerciseList(this@MainActivity, it)
                 }
 
-            })
+
+            }
+
+            override fun onFailure(call: Call<ExerciseData>, t: Throwable) {
+                Log.d("Main", "OnFailure: $t")
+            }
+
+        })
 
     }
 

@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FFFFFF"
     android:orientation="vertical"
-    android:background="#EFEEEF"
     tools:context=".BMIActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_bmi_activity"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:theme="@style/CustomToolbarStyle"
         android:background="@color/colorAccent"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:theme="@style/CustomToolbarStyle" />
+
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/fl_header_layout"
+        android:alpha="0.50" />
+
 
     <RadioGroup
         android:id="@+id/rgUnits"
@@ -59,6 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/rgUnits"
+        android:layout_alignParentBottom="true"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -131,10 +141,6 @@
                 android:baselineAligned="false"
                 android:orientation="horizontal">
 
-                <!--Here the BaselineAligned is When set to false, prevents the layout from aligning its children's
-                 baselines. This attribute is particularly useful when the children
-                 use different values for gravity. The default value is true.-->
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilUsUnitHeightFeet"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -172,11 +178,11 @@
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/llDiplayBMIResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_gravity="bottom"
             android:orientation="vertical"
             android:visibility="visible"
             tools:visibility="visible">
@@ -188,8 +194,9 @@
                 android:gravity="center"
                 android:text="YOUR BMI"
                 android:textAllCaps="true"
+                android:textSize="16sp"
                 android:visibility="invisible"
-                android:textSize="16sp" />
+                android:layout_below="@+id/fl_lottie_bmi"/>
 
             <TextView
                 android:id="@+id/tvBMIValue"
@@ -199,7 +206,8 @@
                 android:gravity="center"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                tools:text="15.00" />
+                tools:text="15.00"
+                android:layout_below="@+id/tvYourBMI"/>
 
             <TextView
                 android:id="@+id/tvBMIType"
@@ -208,7 +216,8 @@
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:textSize="18sp"
-                tools:text="Normal" />
+                tools:text="Normal"
+                android:layout_below="@+id/tvBMIValue"/>
 
             <TextView
                 android:id="@+id/tvBMIDescription"
@@ -217,20 +226,45 @@
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:textSize="18sp"
-                tools:text="Normal" />
-        </LinearLayout>
+                tools:text="Normal"
+                android:layout_below="@+id/tvBMIType"/>
 
 
-        <TextView
+            <FrameLayout
+                android:id="@+id/fl_lottie_bmi"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+
+                >
+                <ImageView
+                    android:id="@+id/lottie_bmi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="fitCenter"/>
+            </FrameLayout>
+
+
+        </RelativeLayout>
+
+
+        <Button
             android:id="@+id/btnCalculateUnits"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
-            android:layout_marginTop="35dp"
-            android:background="@drawable/item_circular_color_accent_background"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
             android:text="CALCULATE"
             android:textColor="#FFFFFF"
-            android:gravity="center"
             android:textSize="14sp" />
+
+
     </LinearLayout>
+
+
+
 </RelativeLayout>

@@ -6,10 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorBg"
     tools:context=".MainActivity">
-
-
-
 
     <FrameLayout
         android:id="@+id/fl_header_layout"
@@ -17,9 +15,6 @@
         android:layout_height="@dimen/auth_header_image_height"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true">
-
-
-
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -38,13 +33,6 @@
             app:lottie_loop="true" />
     </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg"
-        android:alpha="0.50"
-        android:layout_below="@+id/fl_header_layout"
-        />
 
 
     <TextView
@@ -62,102 +50,209 @@
         android:layout_below="@+id/fl_header_layout"
         />
 
-    <LinearLayout
-        android:id="@+id/btn_bmi_calculator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_above="@id/btn_workout"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="25dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="15dp"
-        >
-        <TextView
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:background="@drawable/ic_bmi"
-            android:gravity="center" />
 
-        <TextView
-            android:layout_width="match_parent"
+        <GridLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="CALCULATOR"
-            android:fontFamily="monospace"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:layout_gravity="center" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/btn_history"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_above="@id/btn_workout"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="25dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="15dp"
-        >
-
-        <TextView
-            android:layout_width="90dp"
-            android:layout_height="90dp"
+            android:columnCount="2"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@+id/main_title"
             android:layout_gravity="center"
-            android:background="@drawable/ic_history" />
+            android:useDefaultMargins="false"
+            >
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/colorLightAccent"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="#2FB6F400"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                android:layout_margin="8dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="HISTORY"
-            android:fontFamily="monospace"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+                <LinearLayout
+                    android:id="@+id/btn_bmi_calculator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="15dp"
+                    android:layout_margin="5dp"
+                    >
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:gravity="center"
+                        app:lottie_rawRes="@raw/ic_bmi"
+                        android:layout_gravity="center"
+                        android:contentDescription="BMI Calculator"
+                        android:scaleType="fitCenter"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="CALCULATOR"
+                        android:fontFamily="monospace"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="10dp"
+                        android:gravity="center"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
 
-    </LinearLayout>
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                app:cardBackgroundColor="@color/colorLightAccent"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="#2FB6F400"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                android:layout_margin="8dp">
+
+                <LinearLayout
+                    android:id="@+id/btn_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:layout_margin="5dp"
+                    >
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:gravity="center"
+                        app:lottie_rawRes="@raw/ic_history"
+                        android:layout_gravity="center"
+                        android:contentDescription="History"
+                        android:scaleType="fitCenter"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="HISTORY"
+                        android:fontFamily="monospace"
+                        android:textColor="@color/black"
+                        android:padding="10dp"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
 
+                </LinearLayout>
 
+            </androidx.cardview.widget.CardView>
 
-    <LinearLayout
-        android:id="@+id/btn_workout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_margin="20dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        >
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                app:cardBackgroundColor="@color/colorLightAccent"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="#2FB6F400"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                android:layout_margin="8dp">
 
-        <TextView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:background="@drawable/ic_workout"
-            android:gravity="center"
-            />
+                <LinearLayout
+                    android:id="@+id/btn_workout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:layout_margin="5dp"
+                    >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="WORKOUT"
-            android:fontFamily="monospace"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:gravity="center"
+                        app:lottie_rawRes="@raw/ic_workout"
+                        android:layout_gravity="center"
+                        android:contentDescription="Workout"
+                        android:scaleType="fitCenter"
+                        app:lottie_autoPlay="true"
+                        app:lottie_speed="5"
+                        app:lottie_loop="true"/>
 
-    </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="WORKOUT"
+                        android:fontFamily="monospace"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:padding="10dp"
+                        android:textStyle="bold"/>
 
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                app:cardBackgroundColor="@color/colorLightAccent"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="#2FB6F400"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                android:layout_margin="8dp">
 
+                <LinearLayout
+                    android:id="@+id/btn_get_inspired"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:layout_margin="5dp"
+                    >
 
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="GET INSPIRED"
+                        android:gravity="center"
+                        android:scaleType="fitCenter"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"
+                        app:lottie_rawRes="@raw/ic_login" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="GET INSPIRED"
+                        android:fontFamily="monospace"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:padding="10dp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </GridLayout>
 
 </RelativeLayout>

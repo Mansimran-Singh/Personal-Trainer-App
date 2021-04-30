@@ -99,8 +99,8 @@ class AllWorkoutsFragment : Fragment() {
     }
 
 
-   private fun showDialog(activity: AppCompatActivity) {
-       // viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
+    private fun showDialog(activity: AppCompatActivity) {
+        // viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
 
         val builder = AlertDialog.Builder(activity)
         val inflater = layoutInflater

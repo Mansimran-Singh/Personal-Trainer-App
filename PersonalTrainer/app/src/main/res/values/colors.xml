@@ -11,6 +11,8 @@
     <color name="colorPrimary">#ED2173</color>
     <color name="colorPrimaryDark">#222934</color>
     <color name="colorAccent">#ED2173</color>
+    <color name="colorDarkLightAccent">#E3D5DA</color>
+    <color name="colorLightAccent">#ECE8EA</color>
 
     <color name="colorThemePink">#ED2173</color>
     <color name="colorThemeOrange">#F4442d</color>
@@ -19,6 +21,7 @@
     <color name="colorSecondaryText">#989898</color>
 
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBg">#4AECF1E6</color>
 
     <color name="colorSnackBarSuccess">#8BC34A</color>
     <color name="colorSnackBarError">#F72400</color>

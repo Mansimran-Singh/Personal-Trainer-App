@@ -46,7 +46,7 @@ class SplashActivity : AppCompatActivity() {
                 Handler(Looper.getMainLooper()).postDelayed({
                     startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
                     finish()
-                }, 1000)
+                }, 2000)
             }
 
             override fun onAnimationRepeat(animation: Animation?) {

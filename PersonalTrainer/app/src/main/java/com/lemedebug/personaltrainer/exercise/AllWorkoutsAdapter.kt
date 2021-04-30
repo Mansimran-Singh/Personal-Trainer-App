@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -30,7 +31,10 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
         val name = workoutView.findViewById<TextView>(R.id.tv_workout_name)
         val exerciseCount = workoutView.findViewById<TextView>(R.id.tv_exercise_count)
         val playButton = workoutView.findViewById<LottieAnimationView>(R.id.btn_start_workout)
-        val editButton = workoutView.findViewById<FloatingActionButton>(R.id.btn_edit_workout)
+        val editButton = workoutView.findViewById<TextView>(R.id.btn_edit_workout)
+        val deleteButton = workoutView.findViewById<TextView>(R.id.btn_delete_workout)
+        val layoutUtilities = workoutView.findViewById<RelativeLayout>(R.id.rl_workout_options)
+        val reminderButton = workoutView.findViewById<TextView>(R.id.btn_reminder_workout)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllWorkoutsAdapterViewHolder {
@@ -59,9 +63,9 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
             viewModel.selectedWorkout = currentItem
             Log.i("PLAY EXERCISE", "Setting workout to ${viewModel.selectedWorkout}")
 
-            holder.cv.setCardBackgroundColor(Color.parseColor("#e6ffe6"))
+            holder.cv.setCardBackgroundColor(Color.parseColor("#E3D5DA"))
             holder.playButton.visibility = View.VISIBLE
-            holder.editButton.visibility = View.VISIBLE
+            holder.layoutUtilities.visibility = View.VISIBLE
 
             holder.playButton.setOnClickListener {
                 // START PLAY WORKOUT ACTIVITY
@@ -77,10 +81,18 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
                         .commit()
             }
 
+            holder.deleteButton.setOnClickListener {
+                // CODE FOR DELETING WORKOUT
+            }
+
+            holder.reminderButton.setOnClickListener {
+                // CODE FOR REMINDER WORKOUT
+            }
+
         }else{
             holder.cv.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
             holder.playButton.visibility = View.INVISIBLE
-            holder.editButton.visibility = View.INVISIBLE
+            holder.layoutUtilities.visibility = View.INVISIBLE
         }
 
         holder.cv.setOnClickListener {

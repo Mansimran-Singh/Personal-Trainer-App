@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.RadioGroup
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_bmi.*
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -182,6 +183,7 @@ class BMIActivity : AppCompatActivity() {
         if (java.lang.Float.compare(bmi, 15f) <= 0) {
             bmiLabel = "Very severely underweight"
             bmiDescription = "Oops! You really need to take care of your better! Eat more!"
+            lottie_bmi.visibility = View.INVISIBLE
         } else if (java.lang.Float.compare(bmi, 15f) > 0 && java.lang.Float.compare(
                         bmi,
                         16f
@@ -189,6 +191,7 @@ class BMIActivity : AppCompatActivity() {
         ) {
             bmiLabel = "Severely underweight"
             bmiDescription = "Oops! You really need to take care of your better! Eat more!"
+            lottie_bmi.visibility = View.INVISIBLE
         } else if (java.lang.Float.compare(bmi, 16f) > 0 && java.lang.Float.compare(
                         bmi,
                         18.5f
@@ -196,6 +199,7 @@ class BMIActivity : AppCompatActivity() {
         ) {
             bmiLabel = "Underweight"
             bmiDescription = "Oops! You really need to take care of your better! Eat more!"
+            lottie_bmi.visibility = View.INVISIBLE
         } else if (java.lang.Float.compare(bmi, 18.5f) > 0 && java.lang.Float.compare(
                         bmi,
                         25f
@@ -203,6 +207,8 @@ class BMIActivity : AppCompatActivity() {
         ) {
             bmiLabel = "Normal"
             bmiDescription = "Congratulations! You are in a good shape!"
+            lottie_bmi.visibility = View.VISIBLE
+            Glide.with(this).load(R.drawable.ic_normal).into(lottie_bmi)
         } else if (java.lang.Float.compare(bmi, 25f) > 0 && java.lang.Float.compare(
                         bmi,
                         30f
@@ -210,6 +216,8 @@ class BMIActivity : AppCompatActivity() {
         ) {
             bmiLabel = "Overweight"
             bmiDescription = "Oops! You really need to take care of your yourself! Workout maybe!"
+            lottie_bmi.visibility = View.VISIBLE
+            Glide.with(this).load(R.drawable.ic_overweight).into(lottie_bmi)
         } else if (java.lang.Float.compare(bmi, 30f) > 0 && java.lang.Float.compare(
                         bmi,
                         35f
@@ -217,6 +225,8 @@ class BMIActivity : AppCompatActivity() {
         ) {
             bmiLabel = "Obese Class | (Moderately obese)"
             bmiDescription = "Oops! You really need to take care of your yourself! Workout maybe!"
+            lottie_bmi.visibility = View.VISIBLE
+            Glide.with(this).load(R.drawable.ic_obese).into(lottie_bmi)
         } else if (java.lang.Float.compare(bmi, 35f) > 0 && java.lang.Float.compare(
                         bmi,
                         40f
@@ -224,9 +234,13 @@ class BMIActivity : AppCompatActivity() {
         ) {
             bmiLabel = "Obese Class || (Severely obese)"
             bmiDescription = "OMG! You are in a very dangerous condition! Act now!"
+            lottie_bmi.visibility = View.VISIBLE
+            Glide.with(this).load(R.drawable.ic_obese).into(lottie_bmi)
         } else {
             bmiLabel = "Obese Class ||| (Very Severely obese)"
             bmiDescription = "OMG! You are in a very dangerous condition! Act now!"
+            lottie_bmi.visibility = View.VISIBLE
+            Glide.with(this).load(R.drawable.ic_morbid_obesity).into(lottie_bmi)
         }
 
         tvYourBMI.visibility = View.VISIBLE

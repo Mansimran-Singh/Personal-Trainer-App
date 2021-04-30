@@ -39,17 +39,17 @@ class FirestoreClass {
 
     fun updateUser(activity: Activity, userInfo: User){
         mFireStore.collection(Constants.USERS)
-            // document UID
-            .document(userInfo.id)
-            // add whatever userInfo present
-            .set(userInfo, SetOptions.merge())
-            // On Success listener
-            .addOnSuccessListener {
-            }
-            // on fail
-            .addOnFailureListener {
-                Log.e("Register_Activity", "Error while registering")
-            }
+                // document UID
+                .document(userInfo.id)
+                // add whatever userInfo present
+                .set(userInfo, SetOptions.merge())
+                // On Success listener
+                .addOnSuccessListener {
+                }
+                // on fail
+                .addOnFailureListener {
+                    Log.e("Register_Activity", "Error while registering")
+                }
     }
 
     fun getCurrentUserID(): String {
