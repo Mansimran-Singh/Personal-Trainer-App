@@ -1,6 +1,7 @@
 package com.lemedebug.personaltrainer.exercise
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.util.Log
@@ -16,8 +17,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.lemedebug.personaltrainer.EditWorkoutFragment
 import com.lemedebug.personaltrainer.R
+import com.lemedebug.personaltrainer.firestore.FirestoreClass
+import com.lemedebug.personaltrainer.models.User
 import com.lemedebug.personaltrainer.models.Workout
 import com.lemedebug.personaltrainer.playworkout.ExerciseActivity
 import com.lemedebug.personaltrainer.utils.Constants
@@ -60,6 +64,13 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
 
 
         if (workout != null && currentItem == workout){
+            val sharedPreferences = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
+            val user = sharedPreferences.getString(Constants.LOGGED_USER, "")
+            val sType = object : TypeToken<User>() { }.type
+            val loggedUser = Gson().fromJson<User>(user, sType) as User
+
+            var workoutList = loggedUser.workoutList
+
             val viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
             viewModel.selectedWorkout = currentItem
             Log.i("PLAY EXERCISE", "Setting workout to ${viewModel.selectedWorkout}")
@@ -87,6 +98,10 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
 
             holder.deleteButton.setOnClickListener {
                 // CODE FOR DELETING WORKOUT
+               loggedUser.workoutList.removeAt(position)
+                notifyItemRemoved(position)
+                notifyDataSetChanged()
+                FirestoreClass().deleteWorkoutList(activity,loggedUser)
 
             }
 
