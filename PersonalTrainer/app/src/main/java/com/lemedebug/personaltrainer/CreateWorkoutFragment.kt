@@ -25,9 +25,8 @@ import com.lemedebug.personaltrainer.models.User
 import com.lemedebug.personaltrainer.models.Workout
 import com.lemedebug.personaltrainer.utils.Constants
 
-class EditWorkoutFragment : Fragment() {
-
-//    private var selectedExerciseList = ArrayList<SelectedExercise>()
+class CreateWorkoutFragment : Fragment() {
+    //    private var selectedExerciseList = ArrayList<SelectedExercise>()
 
     @SuppressLint("CutPasteId")
     override fun onCreateView(
@@ -35,13 +34,13 @@ class EditWorkoutFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_edit_workout, container, false)
+        val view = inflater.inflate(R.layout.fragment_create_workout, container, false)
 
         val activity = requireActivity() as AppCompatActivity
         activity.setSupportActionBar(view.findViewById(R.id.toolbar_create_workout))
         activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         activity.supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
-        activity.supportActionBar?.title = "EDIT WORKOUT"
+        activity.supportActionBar?.title = "CREATE WORKOUT"
 
         val sharedPreferences = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
         val user = sharedPreferences.getString(Constants.LOGGED_USER,"")
@@ -54,28 +53,29 @@ class EditWorkoutFragment : Fragment() {
         }else{
             Log.i("LOGGED USER","NOT FOUND")
         }
-        lateinit var adapter: EditWorkoutAdapter
+        lateinit var adapter: CreateWorkoutAdapter
         val viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
-        var selExercise: SelectedExercise = SelectedExercise()
-        val selectedexercise = sharedPreferences.getString(Constants.SELECTED_EXERCISE,"")
-        val sTypeExer = object : TypeToken<SelectedExercise>() { }.type
-        if (selectedexercise!!.isNotEmpty()) {
+        //var selExercise: SelectedExercise = SelectedExercise()
+        //val selectedexercise = sharedPreferences.getString(Constants.SELECTED_EXERCISE,"")
+       // val sTypeExer = object : TypeToken<SelectedExercise>() { }.type
+       /* if (selectedexercise!!.isNotEmpty()) {
 
             selExercise = Gson().fromJson<SelectedExercise>(selectedexercise,sTypeExer) as SelectedExercise
-        }
+        }*/
 
 
-        view.findViewById<TextView>(R.id.tv_workout_name_edit_fragment).text = viewModel.selectedWorkout?.name.toString()
+        view.findViewById<TextView>(R.id.tv_workout_name_create_fragment).text = viewModel.selectedWorkout?.name.toString()
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.rv_workout_specific_exercise_list)
         if (viewModel.selectedWorkout?.listSelectedExercises != null){
-            if (selExercise.exercise != null && selExercise.reps!! > 0){
+            /*if (selExercise.exercise != null && selExercise.reps!! > 0){
 
                 viewModel.selectedWorkout?.listSelectedExercises?.add(selExercise)
-            }
-            adapter = EditWorkoutAdapter(viewModel.selectedWorkout!!.listSelectedExercises)
-            recyclerView.adapter = adapter
-            recyclerView.layoutManager = LinearLayoutManager(requireContext())
+            }*/
+           // adapter = CreateWorkoutAdapter(viewModel.selectedWorkout!!.listSelectedExercises)
+             adapter = CreateWorkoutAdapter(viewModel.selectedWorkout!!.listSelectedExercises)
+             recyclerView.adapter = adapter
+             recyclerView.layoutManager = LinearLayoutManager(requireContext())
         }
 
         view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_create_workout).setNavigationOnClickListener {
@@ -95,10 +95,10 @@ class EditWorkoutFragment : Fragment() {
 
         }
 
+
         view.findViewById<FloatingActionButton>(R.id.btn_save_workout).setOnClickListener {
 
-            //if(selExercise.exercise != null && selExercise.reps!=null){
-            if(viewModel.selectedExercise.exercise != null && viewModel.selectedExercise.reps!=null){
+           // if(selExercise.exercise != null && selExercise.reps!=null){
                 if (loggedUser.workoutList.isEmpty()){
                     viewModel.selectedWorkout?.let { it1 -> loggedUser.workoutList.add(it1) }
 
@@ -113,39 +113,21 @@ class EditWorkoutFragment : Fragment() {
                 }
                 else {
 
-                    var found: Boolean = false
-                    val toFind = viewModel.selectedWorkout?.name
-                    for ((i,n) in loggedUser.workoutList.withIndex()){
-                        if (toFind == n.name)
-                        {
-                            found = true
 
-                            viewModel.selectedWorkout?.let { it1 -> loggedUser.workoutList.set(i,it1) }
-
-                            viewModel.user = loggedUser
-
-                            Log.e("USER", "$loggedUser")
-                            FirestoreClass().updateWorkoutList(activity,loggedUser)
-                            val sharedPreferences_list = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
-                            sharedPreferences_list.edit().remove(Constants.SELECTED_EXERCISE).commit();
-                            break
-                        }
-                    }
-                    if (!found)
-                    {
                         viewModel.selectedWorkout?.let { it1 -> loggedUser.workoutList.add(it1) }
 
-                    viewModel.user = loggedUser
+                        viewModel.user = loggedUser
 
-                    Log.e("USER", "$loggedUser")
-                    FirestoreClass().updateWorkoutList(activity,loggedUser)
-                    val sharedPreferences_list = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
-                    sharedPreferences_list.edit().remove(Constants.SELECTED_EXERCISE).commit();
                         Log.e("USER", "$loggedUser")
+
+                        FirestoreClass().updateUser(activity,loggedUser)
+                        val sharedPreferences_list = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
+                        sharedPreferences_list.edit().remove(Constants.SELECTED_EXERCISE).commit();
 
                     }
 
-                }
+
+
 
 
 //                selectedExerciseList.add(viewModel.selectedExercise)
@@ -154,9 +136,9 @@ class EditWorkoutFragment : Fragment() {
 //                workoutInfo.add(Workout(viewModel.selectedWorkout?.name,selectedExerciseList))
 
 
-            }
+          //  }
 
-            val textViewWorkOutName = view.findViewById<TextView>(R.id.tv_workout_name_edit_fragment)
+            val textViewWorkOutName = view.findViewById<TextView>(R.id.tv_workout_name_create_fragment)
             textViewWorkOutName.text = viewModel.selectedWorkout?.name
 
 //            if(selectedExerciseList.isNotEmpty()){
@@ -172,5 +154,4 @@ class EditWorkoutFragment : Fragment() {
 
         return view
     }
-
 }

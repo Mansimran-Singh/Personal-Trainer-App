@@ -177,6 +177,28 @@ class FirestoreClass {
     fun updateWorkoutList(activity: Activity, userInfo: User) {
         val docRef = mFireStore.collection(Constants.USERS).document(userInfo.id)
         docRef.update("workoutList",userInfo.workoutList)
+                // On Success listener
+                .addOnSuccessListener {
+//                    Log.e("ExerciseList","Successfully added")
+                }
+                // on fail
+                .addOnFailureListener {
+//                    Log.e("ExerciseList","Failure adding")
+                }
+    }
+
+    fun deleteWorkoutList(activity: Activity, userInfo: User) {
+        val docRef = mFireStore.collection(Constants.USERS).document(userInfo.id)
+
+        /*docRef.update("workoutList",userInfo.workoutList)
+            // On Success listener
+            .addOnSuccessListener {
+//                    Log.e("ExerciseList","Successfully added")
+            }
+            // on fail
+            .addOnFailureListener {
+//                    Log.e("ExerciseList","Failure adding")
+            }*/
     }
 
 

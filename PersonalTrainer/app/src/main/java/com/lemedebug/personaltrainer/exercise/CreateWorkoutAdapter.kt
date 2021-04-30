@@ -5,35 +5,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.lemedebug.personaltrainer.R
 import com.lemedebug.personaltrainer.models.SelectedExercise
+class CreateWorkoutAdapter (private var selectedExerciseList: ArrayList<SelectedExercise?>) : RecyclerView.Adapter<CreateWorkoutAdapter.CreateWorkoutAdapterViewHolder>() {
 
-class EditWorkoutAdapter(private var selectedExerciseList: ArrayList<SelectedExercise?>) : RecyclerView.Adapter<EditWorkoutAdapter.EditWorkoutAdapterViewHolder>() {
-
-    inner class EditWorkoutAdapterViewHolder(selectedExerciseView: View): RecyclerView.ViewHolder(selectedExerciseView){
+    inner class CreateWorkoutAdapterViewHolder(selectedExerciseView: View): RecyclerView.ViewHolder(selectedExerciseView){
         val name = selectedExerciseView.findViewById<TextView>(R.id.tv_exercise_name_edit_workout)
         val reps = selectedExerciseView.findViewById<TextView>(R.id.tv_exercise_reps_edit_workout)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EditWorkoutAdapterViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CreateWorkoutAdapterViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(
-                R.layout.selected_exercise_view,
-                parent,
-                false
+            R.layout.selected_exercise_view,
+            parent,
+            false
         )
 
-
-        return EditWorkoutAdapterViewHolder(view)
+        return CreateWorkoutAdapterViewHolder(view)
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: EditWorkoutAdapterViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CreateWorkoutAdapterViewHolder, position: Int) {
         val currentItem = selectedExerciseList[position]
 
         holder.name.text = currentItem?.exercise?.name
         holder.reps.text = currentItem?.reps.toString() + " Reps"
+
         holder.itemView.setOnLongClickListener {
 
             val selectedItem = position
@@ -43,7 +41,6 @@ class EditWorkoutAdapter(private var selectedExerciseList: ArrayList<SelectedExe
 
             return@setOnLongClickListener true
         }
-
     }
 
     override fun getItemCount(): Int {

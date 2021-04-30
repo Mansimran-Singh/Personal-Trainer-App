@@ -35,6 +35,7 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
         val deleteButton = workoutView.findViewById<TextView>(R.id.btn_delete_workout)
         val layoutUtilities = workoutView.findViewById<RelativeLayout>(R.id.rl_workout_options)
         val reminderButton = workoutView.findViewById<TextView>(R.id.btn_reminder_workout)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllWorkoutsAdapterViewHolder {
@@ -67,8 +68,10 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
             holder.playButton.visibility = View.VISIBLE
             holder.layoutUtilities.visibility = View.VISIBLE
 
+
             holder.playButton.setOnClickListener {
                 // START PLAY WORKOUT ACTIVITY
+
                 val intent = Intent(activity, ExerciseActivity::class.java)
                 val listSerializedToJson = Gson().toJson(viewModel.selectedWorkout)
                 intent.putExtra(Constants.WORKOUT_TO_PLAY,listSerializedToJson)
@@ -76,6 +79,7 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
             }
 
             holder.editButton.setOnClickListener {
+
                 activity.supportFragmentManager.beginTransaction()
                         .replace(R.id.exercise_view_container, EditWorkoutFragment())
                         .commit()
@@ -83,6 +87,7 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
 
             holder.deleteButton.setOnClickListener {
                 // CODE FOR DELETING WORKOUT
+
             }
 
             holder.reminderButton.setOnClickListener {
@@ -97,8 +102,8 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
 
         holder.cv.setOnClickListener {
             workout = currentItem
-            val viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
-            viewModel.selectedWorkout = workout
+            // val viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
+           // viewModel.selectedWorkout = workout
             notifyDataSetChanged()
         }
 

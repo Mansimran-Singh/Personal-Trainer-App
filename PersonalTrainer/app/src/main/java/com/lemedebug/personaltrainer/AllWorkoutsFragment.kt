@@ -1,15 +1,17 @@
 package com.lemedebug.personaltrainer
 
 import android.content.Context
+import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.os.Message
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import android.widget.EditText
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -21,10 +23,13 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.lemedebug.personaltrainer.exercise.*
 import com.lemedebug.personaltrainer.firestore.FirestoreClass
+import com.lemedebug.personaltrainer.models.SelectedExercise
 import com.lemedebug.personaltrainer.models.User
 import com.lemedebug.personaltrainer.models.Workout
 import com.lemedebug.personaltrainer.utils.Constants
+import java.nio.file.Files.size
 import java.util.*
+import java.util.stream.Collectors
 import kotlin.collections.ArrayList
 
 class AllWorkoutsFragment : Fragment() {
@@ -35,6 +40,7 @@ class AllWorkoutsFragment : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -54,7 +60,7 @@ class AllWorkoutsFragment : Fragment() {
         val loggedUser = Gson().fromJson<User>(user, sType) as User
 
         var workoutList = loggedUser.workoutList
-        val adapter = AllWorkoutsAdapter(workoutList)
+        var adapter = AllWorkoutsAdapter(workoutList)
 
         viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
         viewModel.user = loggedUser
@@ -63,7 +69,7 @@ class AllWorkoutsFragment : Fragment() {
         dummyWorkout.listSelectedExercises = ArrayList()
         viewModel.selectedWorkout = dummyWorkout
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.rv_all_workouts)
+        var recyclerView = view.findViewById<RecyclerView>(R.id.rv_all_workouts)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 //        getData()
@@ -84,9 +90,27 @@ class AllWorkoutsFragment : Fragment() {
         docRef.get()
         docRef.addSnapshotListener { snapshot, e ->
             if (snapshot != null) {
-                workoutList = snapshot.get("workoutList") as ArrayList<Workout>
-                // val adapter = AllWorkoutsAdapter(workoutList)
+
+                var tworkoutList = snapshot.toObject(User::class.java)
+
+                workoutList = tworkoutList!!.workoutList
+                adapter = AllWorkoutsAdapter(workoutList)
+                recyclerView.setAdapter(adapter)
                 adapter.notifyDataSetChanged()
+                loggedUser.workoutList = workoutList
+                val sharedPreferences =
+                        activity.getSharedPreferences(
+                                Constants.PT_PREFERENCES,
+                                Context.MODE_PRIVATE
+                        )
+
+                val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                val jsonArrayLoggedUser = Gson().toJson(loggedUser)
+                editor.putString(
+                        Constants.LOGGED_USER,
+                        jsonArrayLoggedUser
+                )
+                editor.apply()
 
                 Log.d("onstart", "DocumentSnapshot data: ${snapshot.data}")
             } else {
@@ -122,6 +146,9 @@ class AllWorkoutsFragment : Fragment() {
                     val sharedPreferences_list = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
                     sharedPreferences_list.edit().remove(Constants.SELECTED_EXERCISE).commit();
                     val workoutList = loggedUser.workoutList
+                    viewModelStore.clear()
+                    viewModel.selectedWorkout!!.name = editTextName.text.toString()
+                    viewModel.selectedWorkout!!.listSelectedExercises.clear()
 
                     for (n in workoutList){
                         if (toFind == n.name)
@@ -135,17 +162,15 @@ class AllWorkoutsFragment : Fragment() {
                         Toast.makeText(requireContext(), "Please enter a different workout name. Entered workout already exists", Toast.LENGTH_SHORT).show()
                     }
                     else {
-                        viewModel.selectedWorkout?.name = editTextName.text.toString()
-//                    Log.d("TEXTTT",viewModel.selectedWorkoutID.toString())
 
-                        if (viewModel.selectedWorkout?.name.isNullOrEmpty()) {
+                           if (toFind.isNullOrEmpty()){
 
                             val activity = requireActivity() as AppCompatActivity
 
                         }
 
                         requireActivity().supportFragmentManager.beginTransaction()
-                                .replace(R.id.exercise_view_container, EditWorkoutFragment())
+                                .replace(R.id.exercise_view_container, CreateWorkoutFragment())
                                 .commit()
                     }
 
