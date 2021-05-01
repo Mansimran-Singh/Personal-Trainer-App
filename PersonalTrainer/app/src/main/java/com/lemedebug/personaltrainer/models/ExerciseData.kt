@@ -8,6 +8,10 @@ data class User(
         var workoutList:ArrayList<Workout> = ArrayList()
 )
 
+data class RandomQuote(
+        val author:String,
+        val quote:String
+)
 
 data class ExerciseData(
         val results: List<Exercise>

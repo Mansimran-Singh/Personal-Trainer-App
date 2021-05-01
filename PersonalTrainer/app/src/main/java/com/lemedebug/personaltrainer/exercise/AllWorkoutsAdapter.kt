@@ -1,6 +1,7 @@
 package com.lemedebug.personaltrainer.exercise
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -25,6 +26,7 @@ import com.lemedebug.personaltrainer.models.User
 import com.lemedebug.personaltrainer.models.Workout
 import com.lemedebug.personaltrainer.playworkout.ExerciseActivity
 import com.lemedebug.personaltrainer.utils.Constants
+import kotlinx.android.synthetic.main.dialog_custom_back_confirmation.*
 
 
 class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : RecyclerView.Adapter<AllWorkoutsAdapter.AllWorkoutsAdapterViewHolder>() {
@@ -87,7 +89,10 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
                 val listSerializedToJson = Gson().toJson(viewModel.selectedWorkout)
                 intent.putExtra(Constants.WORKOUT_TO_PLAY,listSerializedToJson)
                 activity.startActivity(intent)
+                activity.finish()
             }
+
+
 
             holder.editButton.setOnClickListener {
 
@@ -97,11 +102,24 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
             }
 
             holder.deleteButton.setOnClickListener {
-                // CODE FOR DELETING WORKOUT
-               loggedUser.workoutList.removeAt(position)
-                notifyItemRemoved(position)
-                notifyDataSetChanged()
-                FirestoreClass().deleteWorkoutList(activity,loggedUser)
+                // Launch Dialog
+                val customDialog = Dialog(activity)
+                customDialog.setContentView(R.layout.dialog_custom_back_confirmation)
+                customDialog.tv_confirmation_detail.text = "This will delete the workout permanently"
+                customDialog.tvYes.setOnClickListener {
+                    // Delete workout
+                    loggedUser.workoutList.removeAt(position)
+                    notifyItemRemoved(position)
+                    notifyDataSetChanged()
+                    FirestoreClass().deleteWorkoutList(activity,loggedUser)
+
+                    customDialog.dismiss() // Dialog will be dismissed
+                }
+                customDialog.tvNo.setOnClickListener {
+                    customDialog.dismiss()
+                }
+                //Start the dialog and display it on screen.
+                customDialog.show()
 
             }
 
@@ -129,4 +147,5 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
     override fun getItemCount(): Int {
         return workoutList.size
     }
+
 }

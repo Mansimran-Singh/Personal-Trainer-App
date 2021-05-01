@@ -3,10 +3,12 @@ package com.lemedebug.personaltrainer
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.lemedebug.personaltrainer.models.Exercise
@@ -36,10 +38,10 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
         val user = sharedPreferences.getString(Constants.LOGGED_USER,"")
         val sType = object : TypeToken<User>() { }.type
-        val loggedUser = Gson().fromJson<User>(user,sType) as User
+        val loggedUser = Gson().fromJson(user,sType) as User
 
         val sharedPreferences_list = getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
-        sharedPreferences_list.edit().remove(Constants.SELECTED_EXERCISE).commit();
+        sharedPreferences_list.edit().remove(Constants.SELECTED_EXERCISE).apply();
 
         val viewModel = ViewModelProvider(this).get(ExerciseViewModel::class.java)
         viewModel.user = loggedUser
@@ -57,6 +59,23 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, WorkoutActivity::class.java)
             startActivity(intent)
         }
+
+        btn_get_inspired.setOnClickListener {
+            //Launching the Inspiration Activity
+            val intent = Intent(this, InspirationActivity::class.java)
+            startActivity(intent)
+        }
+
+        btn_log_out.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+
+            // Send the user to the splash activity
+            val intent = Intent(this, SplashActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            finish()
+        }
+
 
 //        updateExerciseDocument()
 

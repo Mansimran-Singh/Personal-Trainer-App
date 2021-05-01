@@ -183,7 +183,7 @@ class BMIActivity : AppCompatActivity() {
         if (java.lang.Float.compare(bmi, 15f) <= 0) {
             bmiLabel = "Very severely underweight"
             bmiDescription = "Oops! You really need to take care of your better! Eat more!"
-            lottie_bmi.visibility = View.INVISIBLE
+            lottie_bmi.visibility = View.GONE
         } else if (java.lang.Float.compare(bmi, 15f) > 0 && java.lang.Float.compare(
                         bmi,
                         16f
@@ -191,7 +191,7 @@ class BMIActivity : AppCompatActivity() {
         ) {
             bmiLabel = "Severely underweight"
             bmiDescription = "Oops! You really need to take care of your better! Eat more!"
-            lottie_bmi.visibility = View.INVISIBLE
+            lottie_bmi.visibility = View.GONE
         } else if (java.lang.Float.compare(bmi, 16f) > 0 && java.lang.Float.compare(
                         bmi,
                         18.5f
@@ -199,7 +199,7 @@ class BMIActivity : AppCompatActivity() {
         ) {
             bmiLabel = "Underweight"
             bmiDescription = "Oops! You really need to take care of your better! Eat more!"
-            lottie_bmi.visibility = View.INVISIBLE
+            lottie_bmi.visibility = View.GONE
         } else if (java.lang.Float.compare(bmi, 18.5f) > 0 && java.lang.Float.compare(
                         bmi,
                         25f

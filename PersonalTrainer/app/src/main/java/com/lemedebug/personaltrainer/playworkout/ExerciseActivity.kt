@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.app.Dialog
+import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -18,7 +19,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.lemedebug.personaltrainer.BMIActivity
+import com.lemedebug.personaltrainer.MainActivity
 import com.lemedebug.personaltrainer.R
+import com.lemedebug.personaltrainer.WorkoutActivity
 import com.lemedebug.personaltrainer.exercise.ExerciseViewModel
 import com.lemedebug.personaltrainer.models.ExerciseModel
 import com.lemedebug.personaltrainer.models.Workout
@@ -54,18 +58,22 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercise)
 
-
         val selectedStringWorkout = intent.getStringExtra(Constants.WORKOUT_TO_PLAY)
         val sType = object : TypeToken<Workout>() { }.type
         val selectedWorkout = Gson().fromJson<Workout>(selectedStringWorkout,sType) as Workout
 
 
         setSupportActionBar(toolbar_exercise_activity)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true) //set back button
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
+        supportActionBar?.title="EXERCISE"
+
+
         // Navigate the activity on click on back button of action bar.
         toolbar_exercise_activity.setNavigationOnClickListener {
-            customDialogForBackButton()
+            onBackPressed()
         }
+
 
         tts = TextToSpeech(this, this)
 
@@ -129,8 +137,6 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
 
     /**
      * This the TextToSpeech override function
-     *
-     * Called to signal the completion of the TextToSpeech engine initialization.
      */
     override fun onInit(status: Int) {
 
@@ -154,8 +160,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
 
         /**
          * Here the sound file is added in to "raw" folder in resources.
-         * And played using MediaPlayer. MediaPlayer class can be used to control playback
-         * of audio/video files and streams.
+         * And played using MediaPlayer
          */
         try {
             val soundURI =
@@ -323,10 +328,10 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
      */
     private fun customDialogForBackButton() {
         val customDialog = Dialog(this)
-        /*Set the screen content from a layout resource.
-         The resource will be inflated, adding all top-level views to the screen.*/
         customDialog.setContentView(R.layout.dialog_custom_back_confirmation)
         customDialog.tvYes.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
             finish()
             customDialog.dismiss() // Dialog will be dismissed
         }
@@ -363,7 +368,12 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
             }
         })
         mAnimationSet.start()
+    }
 
-
+    /**
+     * Overriding on Back Pressed
+     */
+    override fun onBackPressed() {
+        customDialogForBackButton()
     }
 }

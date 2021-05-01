@@ -80,9 +80,10 @@ class CreateWorkoutFragment : Fragment() {
 
         view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_create_workout).setNavigationOnClickListener {
             // Change it to required fragment back button
-            requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.exercise_view_container, AllWorkoutsFragment())
-                    .commit()
+//            requireActivity().supportFragmentManager.beginTransaction()
+//                    .replace(R.id.exercise_view_container, AllWorkoutsFragment())
+//                    .commit()
+            activity.onBackPressed()
         }
 
 
@@ -91,6 +92,7 @@ class CreateWorkoutFragment : Fragment() {
 
             requireActivity().supportFragmentManager.beginTransaction()
                     .replace(R.id.exercise_view_container, ViewAllExercisesFragment())
+                    .addToBackStack(null)
                     .commit()
 
         }
@@ -143,9 +145,10 @@ class CreateWorkoutFragment : Fragment() {
 
 //            if(selectedExerciseList.isNotEmpty()){
             Toast.makeText(requireContext(),"Saved Successfully",Toast.LENGTH_SHORT).show()
-            requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.exercise_view_container, AllWorkoutsFragment())
-                    .commit()
+//            requireActivity().supportFragmentManager.beginTransaction()
+//                    .replace(R.id.exercise_view_container, AllWorkoutsFragment())
+//                    .commit()
+            activity.onBackPressed()
 //            }
 
 

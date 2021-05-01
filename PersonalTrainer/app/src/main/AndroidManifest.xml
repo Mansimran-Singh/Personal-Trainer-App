@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PersonalTrainer">
-        <activity android:name=".playworkout.ExerciseActivity"></activity>
+        <activity android:name=".InspirationActivity"></activity>
+        <activity android:name=".playworkout.ExerciseActivity" />
         <activity android:name=".userlogin.RegisterActivity" />
         <activity android:name=".userlogin.ForgotPasswordActivity" />
         <activity android:name=".userlogin.LoginActivity" />

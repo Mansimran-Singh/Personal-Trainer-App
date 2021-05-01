@@ -16,6 +16,7 @@
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/tv_confirmation_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -38,12 +39,10 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
-            android:background="@color/colorAccent"
             android:gravity="center"
-            android:padding="8dp"
             android:text="YES"
             android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/tvNo"
@@ -51,11 +50,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_weight="1"
-            android:background="@color/colorAccent"
             android:gravity="center"
-            android:padding="8dp"
             android:text="NO"
             android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
     </LinearLayout>
 </LinearLayout>

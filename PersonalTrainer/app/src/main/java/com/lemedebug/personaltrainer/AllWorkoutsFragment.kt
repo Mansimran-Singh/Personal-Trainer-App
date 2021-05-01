@@ -1,6 +1,7 @@
 package com.lemedebug.personaltrainer
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
@@ -26,6 +27,7 @@ import com.lemedebug.personaltrainer.firestore.FirestoreClass
 import com.lemedebug.personaltrainer.models.SelectedExercise
 import com.lemedebug.personaltrainer.models.User
 import com.lemedebug.personaltrainer.models.Workout
+import com.lemedebug.personaltrainer.playworkout.ExerciseActivity
 import com.lemedebug.personaltrainer.utils.Constants
 import java.nio.file.Files.size
 import java.util.*
@@ -76,7 +78,9 @@ class AllWorkoutsFragment : Fragment() {
 
         view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_all_workouts).setNavigationOnClickListener {
             // Change it to required fragment back button
-            activity.onBackPressed()
+            val intent = Intent(activity, MainActivity::class.java)
+            activity.startActivity(intent)
+            activity.finish()
         }
 
 

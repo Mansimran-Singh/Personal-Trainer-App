@@ -79,7 +79,7 @@ class EditWorkoutFragment : Fragment() {
         }
 
         view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_create_workout).setNavigationOnClickListener {
-            // Change it to required fragment back button
+//             Change it to required fragment back button
             requireActivity().supportFragmentManager.beginTransaction()
                     .replace(R.id.exercise_view_container, AllWorkoutsFragment())
                     .commit()
@@ -164,8 +164,6 @@ class EditWorkoutFragment : Fragment() {
             requireActivity().supportFragmentManager.beginTransaction()
                     .replace(R.id.exercise_view_container, AllWorkoutsFragment())
                     .commit()
-//            }
-
 
         }
 
