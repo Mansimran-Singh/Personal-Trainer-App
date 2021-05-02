@@ -11,6 +11,7 @@ import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import com.lemedebug.personaltrainer.databinding.ActivitySplashBinding
+import com.lemedebug.personaltrainer.firestore.FirestoreClass
 import com.lemedebug.personaltrainer.userlogin.LoginActivity
 
 class SplashActivity : AppCompatActivity() {
@@ -44,7 +45,19 @@ class SplashActivity : AppCompatActivity() {
                 // "Add the code that you want to execute when animation ends")
 
                 Handler(Looper.getMainLooper()).postDelayed({
-                    startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+
+                    // Get the current user id
+                    val currentUserID = FirestoreClass().getCurrentUserID()
+                    // Start the Intro Activity
+
+                    if (currentUserID.isNotEmpty()) {
+                        // Start the Main Activity
+                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                    } else {
+                        // Start the Intro Activity
+                        startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+                    }
+
                     finish()
                 }, 2000)
             }
