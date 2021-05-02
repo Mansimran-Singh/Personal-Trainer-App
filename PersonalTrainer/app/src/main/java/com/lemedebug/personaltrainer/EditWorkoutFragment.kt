@@ -19,10 +19,8 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.lemedebug.personaltrainer.exercise.*
 import com.lemedebug.personaltrainer.firestore.FirestoreClass
-import com.lemedebug.personaltrainer.models.Exercise
 import com.lemedebug.personaltrainer.models.SelectedExercise
 import com.lemedebug.personaltrainer.models.User
-import com.lemedebug.personaltrainer.models.Workout
 import com.lemedebug.personaltrainer.utils.Constants
 
 class EditWorkoutFragment : Fragment() {
