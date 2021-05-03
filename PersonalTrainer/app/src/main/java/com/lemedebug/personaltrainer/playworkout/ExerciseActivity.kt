@@ -19,11 +19,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.lemedebug.personaltrainer.BMIActivity
-import com.lemedebug.personaltrainer.MainActivity
-import com.lemedebug.personaltrainer.R
-import com.lemedebug.personaltrainer.WorkoutActivity
+import com.lemedebug.personaltrainer.*
 import com.lemedebug.personaltrainer.exercise.ExerciseViewModel
+import com.lemedebug.personaltrainer.exercise.Utils
 import com.lemedebug.personaltrainer.models.ExerciseModel
 import com.lemedebug.personaltrainer.models.Workout
 import com.lemedebug.personaltrainer.utils.Constants
@@ -101,9 +99,12 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
         Log.i("PLAY EXERCISE",selectedExerciseList.toString())
         var i = 1
         for (e in selectedExerciseList){
-            val exerciseModel = ExerciseModel(i,e!!.exercise.name,e.exercise.images,false,false)
-            exList.add(exerciseModel)
-            i++
+            for (j in 1 ..e?.reps!!){
+                val exerciseModel = ExerciseModel(i,
+                    e.exercise.name,e.exercise.images,e.exercise.muscles,e.exercise.muscles_secondary,false,false)
+                exList.add(exerciseModel)
+                i++
+            }
         }
 
         return exList
@@ -246,6 +247,39 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
             exerciseProgress = 0
         }
 
+
+        Utils.fetchSvg(body_back.context, "https://wger.de/static/images/muscles/muscular_system_back.svg", body_back)
+        Utils.fetchSvg(body_front.context, "https://wger.de/static/images/muscles/muscular_system_front.svg", body_front)
+
+        if (exerciseList!![currentExercisePosition].muscles.isNotEmpty()){
+            for (i in exerciseList!![currentExercisePosition].muscles.indices){
+                val path =  "https://wger.de${exerciseList!![currentExercisePosition].muscles[i].image_url_main}"
+                Log.d("EXERCISE_ADAPTER", path)
+                if (exerciseList!![currentExercisePosition].muscles[i].is_front){
+                    Utils.fetchSvg(iv_muscle_front.context, path, iv_muscle_front)
+//                        Picasso.get().load(path).into(holder.muscleFront)
+                }else{
+                    Utils.fetchSvg(iv_muscle_back.context, path, iv_muscle_back)
+//                        Picasso.get().load(path).into(holder.muscleBack)
+                }
+            }
+        }
+
+
+        if (exerciseList!![currentExercisePosition].muscles_secondary.isNotEmpty()){
+            val path =  "https://wger.de${exerciseList!![currentExercisePosition].muscles_secondary[0].image_url_secondary}"
+            Log.d("EXERCISE_ADAPTER", path)
+            if (exerciseList!![currentExercisePosition].muscles_secondary[0].is_front){
+                Utils.fetchSvg(iv_muscle_front.context, path, iv_muscle_front)
+//                        Picasso.get().load(path).into(holder.muscleFront)
+            }else{
+                Utils.fetchSvg(iv_muscle_back.context, path, iv_muscle_back)
+//                        Picasso.get().load(path).into(holder.muscleBack)
+            }
+        }
+
+
+
         /**
          * Here current exercise name and image is set to exercise view.
          */
@@ -284,7 +318,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
                 exerciseList!![currentExercisePosition].isCompleted = true // updating in the list that this exercise is completed
                 exerciseAdapter!!.notifyDataSetChanged() // Notifying to adapter class.
 
-                if (currentExercisePosition < 11) {
+                if (currentExercisePosition < exerciseList!!.size-1) {
                     setupRestView()
                 } else {
 
@@ -294,6 +328,11 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
                             "Congratulations! ${viewModel.user.firstName} You have completed ${viewModel.selectedWorkout?.name} workout.",
                             Toast.LENGTH_SHORT
                     ).show()
+
+                    val intent = Intent(this@ExerciseActivity, FinishActivity::class.java)
+                    startActivity(intent)
+                    finish()
+
                 }
             }
         }.start()
