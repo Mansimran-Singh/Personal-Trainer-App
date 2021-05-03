@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
-import android.os.Message
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,14 +23,9 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.lemedebug.personaltrainer.exercise.*
 import com.lemedebug.personaltrainer.firestore.FirestoreClass
-import com.lemedebug.personaltrainer.models.SelectedExercise
 import com.lemedebug.personaltrainer.models.User
 import com.lemedebug.personaltrainer.models.Workout
-import com.lemedebug.personaltrainer.playworkout.ExerciseActivity
 import com.lemedebug.personaltrainer.utils.Constants
-import java.nio.file.Files.size
-import java.util.*
-import java.util.stream.Collectors
 import kotlin.collections.ArrayList
 
 class AllWorkoutsFragment : Fragment() {
@@ -147,8 +141,8 @@ class AllWorkoutsFragment : Fragment() {
                     val user = sharedPreferences.getString(Constants.LOGGED_USER, "")
                     val sType = object : TypeToken<User>() { }.type
                     val loggedUser = Gson().fromJson<User>(user, sType) as User
-                    val sharedPreferences_list = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
-                    sharedPreferences_list.edit().remove(Constants.SELECTED_EXERCISE).commit();
+                    val sharedPreferencesList = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
+                    sharedPreferencesList.edit().remove(Constants.SELECTED_EXERCISE).apply();
                     val workoutList = loggedUser.workoutList
                     viewModelStore.clear()
                     viewModel.selectedWorkout!!.name = editTextName.text.toString()

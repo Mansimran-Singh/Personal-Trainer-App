@@ -111,7 +111,7 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
                     loggedUser.workoutList.removeAt(position)
                     notifyItemRemoved(position)
                     notifyDataSetChanged()
-                    FirestoreClass().deleteWorkoutList(activity,loggedUser)
+                    FirestoreClass().updateWorkoutList(activity,loggedUser)
 
                     customDialog.dismiss() // Dialog will be dismissed
                 }

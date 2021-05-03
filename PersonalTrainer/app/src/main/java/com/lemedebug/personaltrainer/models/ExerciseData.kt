@@ -5,7 +5,8 @@ data class User(
         val firstName:String = "",
         val lastName:String = "",
         val email:String = "",
-        var workoutList:ArrayList<Workout> = ArrayList()
+        var workoutList:ArrayList<Workout> = ArrayList(),
+        var completedWorkoutList:ArrayList<CompletedWorkout> = ArrayList()
 )
 
 data class RandomQuote(
@@ -20,6 +21,11 @@ data class ExerciseData(
 data class Workout(
         var name: String? = "",
         var listSelectedExercises: ArrayList<SelectedExercise?> = ArrayList()
+)
+
+data class CompletedWorkout(
+        val workout: String? = "",
+        val date:String? =""
 )
 
 data class SelectedExercise(

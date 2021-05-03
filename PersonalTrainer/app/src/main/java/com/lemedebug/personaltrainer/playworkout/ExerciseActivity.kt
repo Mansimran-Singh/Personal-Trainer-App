@@ -52,13 +52,15 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
     // Declaring a exerciseAdapter object which will be initialized later.
     private var exerciseAdapter: ExerciseStatusAdapter? = null
 
+    private var selectedWorkout: Workout? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercise)
 
         val selectedStringWorkout = intent.getStringExtra(Constants.WORKOUT_TO_PLAY)
         val sType = object : TypeToken<Workout>() { }.type
-        val selectedWorkout = Gson().fromJson<Workout>(selectedStringWorkout,sType) as Workout
+        selectedWorkout = Gson().fromJson<Workout>(selectedStringWorkout,sType) as Workout
 
 
         setSupportActionBar(toolbar_exercise_activity)
@@ -75,7 +77,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
 
         tts = TextToSpeech(this, this)
 
-        exerciseList = defaultExerciseList(selectedWorkout)
+        exerciseList = defaultExerciseList(selectedWorkout!!)
 //
 //        val viewModel = ViewModelProvider(this@ExerciseActivity).get(ExerciseViewModel::class.java)
 //        val selectedExerciseList = viewModel.selectedWorkout?.listSelectedExercises
@@ -330,6 +332,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
                     ).show()
 
                     val intent = Intent(this@ExerciseActivity, FinishActivity::class.java)
+                    intent.putExtra(Constants.COMPLETED_WORKOUT, selectedWorkout!!.name)
                     startActivity(intent)
                     finish()
 
