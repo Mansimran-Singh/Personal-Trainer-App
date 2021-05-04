@@ -70,10 +70,6 @@ class HistoryActivity : AppCompatActivity() {
         sType = object : TypeToken<User>() {}.type
         loggedUser = Gson().fromJson(user, sType) as User
 
-        val viewModel = ViewModelProvider(this).get(ExerciseViewModel::class.java)
-        viewModel.user = loggedUser
-        main_title.text = "Workout History for  ${loggedUser.firstName}!"
-
         // variable for our bar chart
         var barChart: BarChart
         // variable for our bar data set.

@@ -15,73 +15,43 @@
         android:layout_height="@dimen/auth_header_image_height"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_history_activity"
-            android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize"
-            android:background="@color/colorAccent"
-            android:gravity="center"
-            android:theme="@style/CustomToolbarStyle"/>
-
-
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="142dp"
-            android:layout_marginTop="150px"
+            android:layout_height="match_parent"
             android:contentDescription="@string/content_description"
             android:scaleType="fitXY"
             android:src="@drawable/auth_screens_background" />
 
         <com.airbnb.lottie.LottieAnimationView
-            android:layout_width="217dp"
-            android:layout_height="144dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="150px"
+            android:layout_width="@dimen/auth_logo_width_size"
+            android:layout_height="150dp"
+            app:lottie_rawRes="@raw/ic_yoga"
+            android:layout_gravity="center"
             android:contentDescription="@string/app_name"
             android:scaleType="fitCenter"
             app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/ic_yoga" />
+            app:lottie_loop="true" />
     </FrameLayout>
 
 
-    <ScrollView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_history_activity"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/fl_header_layout"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/main_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="Workout History for John!"
-                android:textStyle="bold"
-                android:fontFamily="sans-serif-smallcaps"
-                android:textSize="28sp"
-                android:padding="10dp"
-                android:textColor="@color/colorPrimaryText"
-                android:gravity="center"
-                android:layout_below="@+id/fl_header_layout"
-                />
-
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/barchart"
-                android:layout_width="match_parent"
-                android:layout_height="336dp" />
+        android:layout_height="?android:attr/actionBarSize"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:theme="@style/CustomToolbarStyle"/>
 
 
-        </LinearLayout>
-
-
-
-    </ScrollView>
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/barchart"
+        android:layout_margin="15dp"
+        android:layout_below="@id/fl_header_layout"
+        android:layout_centerInParent="true"
+        android:padding="15dp"
+        android:elevation="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
 </RelativeLayout>
