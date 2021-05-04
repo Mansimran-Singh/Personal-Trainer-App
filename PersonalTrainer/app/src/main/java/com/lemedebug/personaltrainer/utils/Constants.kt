@@ -11,4 +11,5 @@ object Constants {
     const val WORKOUT_TO_PLAY: String = "WORKOUT_TO_PLAY"
     const val SELECTED_EXERCISE: String = "selected_exercise"
     const val COMPLETED_WORKOUT:String = "completed_workout"
+    const val TOTAL_EXERCISES:String = "total_exercises"
 }

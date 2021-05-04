@@ -25,6 +25,7 @@ data class Workout(
 
 data class CompletedWorkout(
         val workout: String? = "",
+        val totalExercises: String? = "0",
         val date:String? =""
 )
 

@@ -3,7 +3,6 @@ package com.lemedebug.personaltrainer
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -35,6 +34,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        FirestoreClass().getUserDetails(activity = this)
+
         val sharedPreferences = getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
         val user = sharedPreferences.getString(Constants.LOGGED_USER,"")
         val sType = object : TypeToken<User>() { }.type
@@ -51,6 +52,12 @@ class MainActivity : AppCompatActivity() {
         btn_bmi_calculator.setOnClickListener {
             // Launching the BMI Activity
             val intent = Intent(this, BMIActivity::class.java)
+            startActivity(intent)
+        }
+        btn_history.setOnClickListener {
+            //Launching the HistoryActivity
+            val intent = Intent(this, HistoryActivity::class.java)
+           // intent.putExtra(Constants.LOGGED_USER, loggedUser)
             startActivity(intent)
         }
 

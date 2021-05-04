@@ -2,32 +2,38 @@ package com.lemedebug.personaltrainer
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.lemedebug.personaltrainer.firestore.FirestoreClass
 import com.lemedebug.personaltrainer.models.CompletedWorkout
 import com.lemedebug.personaltrainer.models.User
 import com.lemedebug.personaltrainer.utils.Constants
-import kotlinx.android.synthetic.main.activity_exercise.*
 import kotlinx.android.synthetic.main.activity_finish.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 class FinishActivity : AppCompatActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_finish)
 
         val name = intent.getStringExtra(Constants.COMPLETED_WORKOUT)
+        val total = intent.getStringExtra(Constants.TOTAL_EXERCISES)
 
         val c = Calendar.getInstance() // Calender Current Instance
         val dateTime = c.time // Current Date and Time of the system.
         Log.e("Date : ", "" + dateTime)
 
+        //val sdf = SimpleDateFormat("EEE, d MMM yyyy HH:mm", Locale.getDefault()) // Date Formatter
+        //val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
+        //val date  = sdf.format(formatter)
         val sdf = SimpleDateFormat("EEE, d MMM yyyy HH:mm", Locale.getDefault()) // Date Formatter
         val date = sdf.format(dateTime) // dateTime is formatted in the given format.
         Log.e("Formatted Date : ", "" + date)
@@ -43,7 +49,7 @@ class FinishActivity : AppCompatActivity() {
         val sType = object : TypeToken<User>() { }.type
         val loggedUser = Gson().fromJson(user,sType) as User
 
-        val cWorkout = CompletedWorkout(name,date)
+        val cWorkout = CompletedWorkout(name,total,date)
         loggedUser.completedWorkoutList.add(cWorkout)
         FirestoreClass().updateCompletedWorkoutList(this,loggedUser)
 

@@ -5,15 +5,18 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,12 +26,16 @@ import com.lemedebug.personaltrainer.*
 import com.lemedebug.personaltrainer.exercise.ExerciseViewModel
 import com.lemedebug.personaltrainer.exercise.Utils
 import com.lemedebug.personaltrainer.models.ExerciseModel
+import com.lemedebug.personaltrainer.models.User
 import com.lemedebug.personaltrainer.models.Workout
 import com.lemedebug.personaltrainer.utils.Constants
 import com.sevenminuteworkout.ExerciseStatusAdapter
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_exercise.*
 import kotlinx.android.synthetic.main.dialog_custom_back_confirmation.*
+import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -61,7 +68,6 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
         val selectedStringWorkout = intent.getStringExtra(Constants.WORKOUT_TO_PLAY)
         val sType = object : TypeToken<Workout>() { }.type
         selectedWorkout = Gson().fromJson<Workout>(selectedStringWorkout,sType) as Workout
-
 
         setSupportActionBar(toolbar_exercise_activity)
         supportActionBar?.setDisplayHomeAsUpEnabled(true) //set back button
@@ -220,6 +226,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
                         (10 - restProgress).toString()  // Current progress is set to text view in terms of seconds.
             }
 
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onFinish() {
                 currentExercisePosition++
 
@@ -234,6 +241,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
     /**
      * Function is used to set the progress of timer using the progress for Exercise View.
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setupExerciseView() {
 
         // Here according to the view make it visible as this is Exercise View so exercise view is visible and rest view is not.
@@ -304,7 +312,9 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
     /**
      * Function is used to set the progress of timer using the progress for Exercise View for 30 Seconds
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setExerciseProgressBar() {
+
 
         progressBarExercise.progress = exerciseProgress
 
@@ -330,9 +340,11 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
                             "Congratulations! ${viewModel.user.firstName} You have completed ${viewModel.selectedWorkout?.name} workout.",
                             Toast.LENGTH_SHORT
                     ).show()
-
+                    val temp = currentExercisePosition + 1
+                    val total: String = temp.toString()
                     val intent = Intent(this@ExerciseActivity, FinishActivity::class.java)
                     intent.putExtra(Constants.COMPLETED_WORKOUT, selectedWorkout!!.name)
+                    intent.putExtra(Constants.TOTAL_EXERCISES, total)
                     startActivity(intent)
                     finish()
 
