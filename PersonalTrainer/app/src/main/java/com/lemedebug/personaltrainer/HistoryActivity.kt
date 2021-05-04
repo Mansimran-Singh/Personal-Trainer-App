@@ -5,21 +5,19 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.lemedebug.personaltrainer.exercise.ExerciseViewModel
 import com.lemedebug.personaltrainer.firestore.FirestoreClass
 import com.lemedebug.personaltrainer.models.User
 import com.lemedebug.personaltrainer.utils.Constants
 import kotlinx.android.synthetic.main.activity_history.*
-import kotlinx.android.synthetic.main.activity_main.main_title
 
 
 class HistoryActivity : AppCompatActivity() {
@@ -92,9 +90,11 @@ class HistoryActivity : AppCompatActivity() {
 
         barDataSet1 = BarDataSet(barEntries, "No of Exercises")
         barDataSet1.color = applicationContext.resources.getColor(R.color.purple_500)
+
         val data  = BarData(barDataSet1, barDataSet2)
         barChart.setData(data);
         barChart.getDescription().setEnabled(false);
+
         val xAxis = barChart.xAxis
         xAxis.setValueFormatter(IndexAxisValueFormatter(days));
         xAxis.setCenterAxisLabels(true);
@@ -104,6 +104,14 @@ class HistoryActivity : AppCompatActivity() {
         xAxis.textSize = 11f
         val leftAxis = barChart.getAxisLeft()
         leftAxis.textSize = 14f
+        leftAxis.setLabelCount(1, false)
+        leftAxis.axisMaximum = 10f
+        leftAxis.axisMinimum = 0f
+        leftAxis.setGranularity(1f)
+
+
+        val rAxis = barChart.axisRight
+        rAxis.setEnabled(false);
 
         barChart.setDragEnabled(true);
         barChart.setVisibleXRangeMaximum(3F);
