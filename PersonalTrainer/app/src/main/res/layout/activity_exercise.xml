@@ -12,14 +12,14 @@
         android:layout_height="?android:attr/actionBarSize"
         android:background="@color/colorAccent"
         android:gravity="center"
-        android:theme="@style/CustomToolbarStyle"/>
+        android:theme="@style/CustomToolbarStyle" />
 
     <LinearLayout
         android:id="@+id/llRestView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar_exercise_activity"
         android:layout_above="@id/rvExerciseStatus"
+        android:layout_below="@id/toolbar_exercise_activity"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="visible"
@@ -87,14 +87,15 @@
             android:textStyle="bold"
             tools:text="Exercise Name" />
 
+
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/llExerciseView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar_exercise_activity"
         android:layout_above="@id/rvExerciseStatus"
+        android:layout_below="@id/toolbar_exercise_activity"
         android:gravity="bottom|center_horizontal"
         android:orientation="vertical"
         android:visibility="gone"
@@ -111,21 +112,20 @@
                 android:id="@+id/iv_exercise_play_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
                 android:layout_above="@+id/ll_muscle_layout"
-                android:scaleType="fitCenter"
+                android:layout_alignParentStart="true"
                 android:contentDescription="ExerciseImage"
-                />
+                android:scaleType="fitCenter" />
+
 
             <ImageView
                 android:id="@+id/iv_exercise_play_image_second"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
                 android:layout_above="@+id/ll_muscle_layout"
-                android:scaleType="fitCenter"
+                android:layout_alignParentStart="true"
                 android:contentDescription="ExerciseImageBack"
-                />
+                android:scaleType="fitCenter" />
 
             <LinearLayout
                 android:id="@+id/ll_muscle_layout"
@@ -139,24 +139,27 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
                     android:layout_gravity="center"
-                    >
+                    android:layout_weight="1">
+
                     <FrameLayout
                         android:id="@+id/body_back"
                         android:layout_width="81dp"
                         android:layout_height="150dp"
                         android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        />
+                        android:layout_centerVertical="true" />
 
                     <ImageView
                         android:id="@+id/iv_muscle_back"
                         android:layout_width="81dp"
                         android:layout_height="150dp"
                         android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        ><tag android:id="@+id/zoomableBack" android:value="ZoomableViewTag" /></ImageView>
+                        android:layout_centerVertical="true">
+
+                        <tag
+                            android:id="@+id/zoomableBack"
+                            android:value="ZoomableViewTag" />
+                    </ImageView>
 
 
                 </RelativeLayout>
@@ -165,20 +168,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1">
+
                     <FrameLayout
                         android:id="@+id/body_front"
                         android:layout_width="81dp"
                         android:layout_height="150dp"
                         android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"/>
+                        android:layout_centerVertical="true" />
 
                     <ImageView
                         android:id="@+id/iv_muscle_front"
                         android:layout_width="81dp"
                         android:layout_height="150dp"
                         android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        ><tag android:id="@+id/zoomableFront" android:value="ZoomableViewTag" /></ImageView>
+                        android:layout_centerVertical="true">
+
+                        <tag
+                            android:id="@+id/zoomableFront"
+                            android:value="ZoomableViewTag" />
+                    </ImageView>
                 </RelativeLayout>
 
 
@@ -196,11 +204,35 @@
             android:textStyle="bold" />
 
         <FrameLayout
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
-            android:background="@drawable/item_circular_color_accent_border">
+            >
+
+            <Button
+                android:id="@+id/button_pause"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:gravity="end"
+                android:insetTop="6dp"
+                android:background="@drawable/ic_baseline_pause_circle_filled_24" />
+
+            <Button
+                android:id="@+id/button_resume"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:paddingLeft="150dp"
+                android:layout_gravity="right"
+                android:background="@drawable/ic_baseline_play_circle_filled_24" />
+
+        <FrameLayout
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:background="@drawable/item_circular_color_accent_border"
+                android:gravity="center">
+
 
             <ProgressBar
                 android:id="@+id/progressBarExercise"
@@ -214,6 +246,7 @@
                 android:progress="100"
                 android:progressDrawable="@drawable/circular_progress_bar"
                 android:rotation="-90" />
+
 
             <LinearLayout
                 android:layout_width="60dp"
@@ -231,6 +264,7 @@
                     android:textStyle="bold"
                     tools:text="30" />
             </LinearLayout>
+        </FrameLayout>
         </FrameLayout>
     </LinearLayout>
 

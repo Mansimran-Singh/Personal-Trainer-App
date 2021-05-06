@@ -60,6 +60,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
     private var exerciseAdapter: ExerciseStatusAdapter? = null
 
     private var selectedWorkout: Workout? = null
+    private var isPaused = false
+    private var resumeFromMillis:Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -233,6 +235,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
                 exerciseList!![currentExercisePosition].isSelected = true // Current Item is selected
                 exerciseAdapter!!.notifyDataSetChanged() // Notified the current item to adapter class to reflect it into UI.
 
+                resumeFromMillis =  30000
+                exerciseProgress = 0
                 setupExerciseView()
             }
         }.start()
@@ -306,6 +310,9 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
 
         speakOut(exerciseList!![currentExercisePosition].name)
 
+        resumeFromMillis =  30000
+        exerciseProgress = 0
+
         setExerciseProgressBar()
     }
 
@@ -315,14 +322,55 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setExerciseProgressBar() {
 
+        val millisInFuture:Long = 30000
+        val countDownInterval:Long = 1000
 
-        progressBarExercise.progress = exerciseProgress
+        button_pause.isEnabled = true
+        timer(millisInFuture,countDownInterval).start()
+        isPaused = false
+        button_pause.setOnClickListener(View.OnClickListener { v: View
+         ->
+            isPaused = true
+            button_resume.isEnabled = true
+            button_pause.isEnabled = false
+                    Toast.makeText(
+                    this@ExerciseActivity,
+                    "Workout is paused.",
+                    Toast.LENGTH_SHORT
+            ).show()
 
-        exerciseTimer = object : CountDownTimer(30000, 1000) {
+        })
+
+        button_resume.setOnClickListener(View.OnClickListener { v: View
+            ->
+
+            timer(resumeFromMillis,countDownInterval).start()
+            isPaused = false
+            button_pause.isEnabled = true
+            button_resume.isEnabled = false
+                    Toast.makeText(
+                    this@ExerciseActivity,
+                    "Workout is resumed.",
+                    Toast.LENGTH_SHORT
+            ).show()
+
+            })
+    }
+
+    private fun timer(millisInFuture:Long,countDownInterval:Long):CountDownTimer{
+        return object: CountDownTimer(millisInFuture,countDownInterval) {
+
             override fun onTick(millisUntilFinished: Long) {
-                exerciseProgress++
-                progressBarExercise.progress = 30 - exerciseProgress
-                tvExerciseTimer.text = (30 - exerciseProgress).toString()
+
+                if (isPaused) {
+                    resumeFromMillis = millisUntilFinished
+                    cancel()
+                } else {
+                    exerciseProgress++
+                    progressBarExercise.progress = 30 - exerciseProgress
+                    tvExerciseTimer.text = (30 - exerciseProgress).toString()
+                }
+
             }
 
             override fun onFinish() {
@@ -330,7 +378,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
                 exerciseList!![currentExercisePosition].isCompleted = true // updating in the list that this exercise is completed
                 exerciseAdapter!!.notifyDataSetChanged() // Notifying to adapter class.
 
-                if (currentExercisePosition < exerciseList!!.size-1) {
+                if (currentExercisePosition < exerciseList!!.size - 1) {
                     setupRestView()
                 } else {
 
@@ -350,7 +398,9 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
 
                 }
             }
-        }.start()
+
+
+        }
     }
 
     /**
