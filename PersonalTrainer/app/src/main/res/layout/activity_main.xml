@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/colorBg"
+    android:background="#E9EDF0"
     tools:context=".MainActivity">
 
     <FrameLayout
@@ -60,10 +60,12 @@
                 />
 
             <GridLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
                 android:columnCount="2"
                 android:useDefaultMargins="false">
 
@@ -71,15 +73,15 @@
                     android:id="@+id/btn_workout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_marginVertical="5dp"
-                    android:background="#2FB6F400"
+                    android:layout_margin="10dp"
+                    android:background="#CED6DD"
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardBackgroundColor="@color/colorLightAccent"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="10dp"
+                    android:padding="25dp">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -119,15 +121,15 @@
                     android:id="@+id/btn_get_inspired"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_marginVertical="5dp"
-                    android:background="#2FB6F400"
+                    android:layout_margin="10dp"
+                    android:background="#CED6DD"
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardBackgroundColor="@color/colorLightAccent"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="10dp"
+                    android:padding="25dp">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -166,15 +168,15 @@
                     android:id="@+id/btn_bmi_calculator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_marginVertical="5dp"
-                    android:background="#2FB6F400"
+                    android:layout_margin="10dp"
+                    android:background="#CED6DD"
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardBackgroundColor="@color/colorLightAccent"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="10dp"
+                    android:padding="25dp">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -213,15 +215,15 @@
                     android:id="@+id/btn_history"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_marginVertical="5dp"
-                    android:background="#2FB6F400"
+                    android:layout_margin="10dp"
+                    android:background="#CED6DD"
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardBackgroundColor="@color/colorLightAccent"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="10dp"
+                    android:padding="25dp">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -261,14 +263,14 @@
                     android:id="@+id/btn_log_out"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_marginVertical="5dp"
+                    android:layout_margin="10dp"
                     android:background="#2FB6F400"
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardBackgroundColor="@color/colorLightAccent"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="10dp"
+                    android:padding="25dp">
 
                     <LinearLayout
                         android:layout_width="wrap_content"

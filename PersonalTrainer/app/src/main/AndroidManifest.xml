@@ -11,32 +11,47 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PersonalTrainer">
-        <activity android:name=".HistoryActivity"></activity>
-        <activity android:name=".FinishActivity" />
-        <activity android:name=".InspirationActivity" />
-        <activity android:name=".playworkout.ExerciseActivity" />
-        <activity android:name=".userlogin.RegisterActivity" />
-        <activity android:name=".userlogin.ForgotPasswordActivity" />
-        <activity android:name=".userlogin.LoginActivity" />
+
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.PersonalTrainer.NoActionBar">
+            android:theme="@style/Theme.PersonalTrainer">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".WorkoutActivity"
+
+        <activity android:name=".HistoryActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".FinishActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".InspirationActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".playworkout.ExerciseActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".userlogin.RegisterActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".userlogin.ForgotPasswordActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".userlogin.LoginActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".WorkoutActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".BMIActivity"
+
+        <activity android:name=".BMIActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".MainActivity"
-            android:screenOrientation="portrait" />
+
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

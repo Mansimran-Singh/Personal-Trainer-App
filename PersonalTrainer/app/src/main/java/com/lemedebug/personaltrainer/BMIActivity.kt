@@ -119,6 +119,7 @@ class BMIActivity : AppCompatActivity() {
         tvBMIValue.visibility = View.INVISIBLE // Result is cleared and the labels are hidden
         tvBMIType.visibility = View.INVISIBLE // Result is cleared and the labels are hidden
         tvBMIDescription.visibility = View.INVISIBLE // Result is cleared and the labels are hidden
+        lottie_bmi.visibility = View.INVISIBLE // Result is cleared and the labels are hidden
     }
 
     /**
@@ -137,6 +138,7 @@ class BMIActivity : AppCompatActivity() {
         tvBMIValue.visibility = View.INVISIBLE // Result is cleared and the labels are hidden
         tvBMIType.visibility = View.INVISIBLE // Result is cleared and the labels are hidden
         tvBMIDescription.visibility = View.INVISIBLE // Result is cleared and the labels are hidden
+        lottie_bmi.visibility = View.INVISIBLE // Result is cleared and the labels are hidden
     }
     // END
 

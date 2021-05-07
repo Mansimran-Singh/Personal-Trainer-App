@@ -77,7 +77,7 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
             viewModel.selectedWorkout = currentItem
             Log.i("PLAY EXERCISE", "Setting workout to ${viewModel.selectedWorkout}")
 
-            holder.cv.setCardBackgroundColor(Color.parseColor("#E3D5DA"))
+            holder.cv.setCardBackgroundColor(Color.parseColor("#E9EDF0"))
             holder.playButton.visibility = View.VISIBLE
             holder.layoutUtilities.visibility = View.VISIBLE
 

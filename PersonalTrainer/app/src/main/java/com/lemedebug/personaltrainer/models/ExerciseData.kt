@@ -37,6 +37,7 @@ data class SelectedExercise(
 data class ExerciseModel(
         var id: Int,
         var name: String,
+        val description: String,
         val images:List<ExerciseImage>,
         val muscles: List<MainMuscles>,
         val muscles_secondary: List<SecondaryMuscles>,

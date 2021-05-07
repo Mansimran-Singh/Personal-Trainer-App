@@ -82,7 +82,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:textColor="#212121"
+            android:fontFamily="sans-serif-smallcaps"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="22sp"
             android:textStyle="bold"
             tools:text="Exercise Name" />
@@ -105,35 +106,63 @@
             android:id="@+id/image_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="25dp"
+            android:layout_marginHorizontal="25dp"
             android:layout_weight="1">
+
+
+            <TextView
+                android:id="@+id/tvExerciseName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:padding="8dp"
+                android:fontFamily="sans-serif-smallcaps"
+                android:text="Exercise Name"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/iv_exercise_play_image"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/ll_muscle_layout"
-                android:layout_alignParentStart="true"
+                android:layout_height="180dp"
+                android:layout_marginVertical="5dp"
+                android:layout_below="@+id/tvExerciseName"
                 android:contentDescription="ExerciseImage"
-                android:scaleType="fitCenter" />
+                android:scaleType="fitCenter"
+                android:visibility="visible"/>
 
 
             <ImageView
                 android:id="@+id/iv_exercise_play_image_second"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/ll_muscle_layout"
-                android:layout_alignParentStart="true"
+                android:layout_height="180dp"
+                android:layout_marginVertical="5dp"
+                android:layout_below="@+id/tvExerciseName"
                 android:contentDescription="ExerciseImageBack"
-                android:scaleType="fitCenter" />
+                android:scaleType="fitCenter"
+                android:visibility="visible"/>
+
+            <TextView
+                android:id="@+id/tv_play_exercise_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:layout_below="@+id/tvExerciseName"
+                android:visibility="gone"
+                tools:visibility="invisible"
+                />
+
 
             <LinearLayout
                 android:id="@+id/ll_muscle_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="150dp"
+                android:layout_below="@+id/iv_exercise_play_image_second"
+                android:orientation="horizontal"
                 android:layout_alignParentBottom="true"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
                 android:gravity="center_horizontal">
 
                 <RelativeLayout
@@ -155,10 +184,6 @@
                         android:layout_height="150dp"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true">
-
-                        <tag
-                            android:id="@+id/zoomableBack"
-                            android:value="ZoomableViewTag" />
                     </ImageView>
 
 
@@ -182,10 +207,6 @@
                         android:layout_height="150dp"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true">
-
-                        <tag
-                            android:id="@+id/zoomableFront"
-                            android:value="ZoomableViewTag" />
                     </ImageView>
                 </RelativeLayout>
 
@@ -194,78 +215,70 @@
 
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/tvExerciseName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Exercise Name"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
-            android:textStyle="bold" />
 
-        <FrameLayout
+        <RelativeLayout
             android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            >
+            android:layout_height="300dp">
 
             <Button
                 android:id="@+id/button_pause"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:gravity="end"
-                android:insetTop="6dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
                 android:background="@drawable/ic_baseline_pause_circle_filled_24" />
 
             <Button
                 android:id="@+id/button_resume"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:paddingLeft="150dp"
-                android:layout_gravity="right"
+                android:enabled="false"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
                 android:background="@drawable/ic_baseline_play_circle_filled_24" />
 
-        <FrameLayout
+            <FrameLayout
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
                 android:background="@drawable/item_circular_color_accent_border"
+                android:layout_above="@+id/button_pause"
+                android:layout_centerHorizontal="true"
                 android:gravity="center">
 
 
-            <ProgressBar
-                android:id="@+id/progressBarExercise"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center"
-                android:background="@drawable/circular_progress_gray"
-                android:indeterminate="false"
-                android:max="30"
-                android:progress="100"
-                android:progressDrawable="@drawable/circular_progress_bar"
-                android:rotation="-90" />
+                <ProgressBar
+                    android:id="@+id/progressBarExercise"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circular_progress_gray"
+                    android:indeterminate="false"
+                    android:max="30"
+                    android:progress="100"
+                    android:progressDrawable="@drawable/circular_progress_bar"
+                    android:rotation="-90" />
 
 
-            <LinearLayout
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center"
-                android:background="@drawable/item_circular_color_accent_background"
-                android:gravity="center">
+                <LinearLayout
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/item_circular_color_accent_background"
+                    android:gravity="center">
 
-                <TextView
-                    android:id="@+id/tvExerciseTimer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#FFFFFF"
-                    android:textSize="25sp"
-                    android:textStyle="bold"
-                    tools:text="30" />
-            </LinearLayout>
-        </FrameLayout>
-        </FrameLayout>
+                    <TextView
+                        android:id="@+id/tvExerciseTimer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#FFFFFF"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        tools:text="30" />
+                </LinearLayout>
+            </FrameLayout>
+        </RelativeLayout>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

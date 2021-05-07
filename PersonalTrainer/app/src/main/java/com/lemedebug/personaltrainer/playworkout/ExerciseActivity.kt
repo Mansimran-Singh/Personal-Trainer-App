@@ -13,6 +13,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.speech.tts.TextToSpeech
+import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -111,7 +112,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
         for (e in selectedExerciseList){
             for (j in 1 ..e?.reps!!){
                 val exerciseModel = ExerciseModel(i,
-                    e.exercise.name,e.exercise.images,e.exercise.muscles,e.exercise.muscles_secondary,false,false)
+                    e.exercise.name,e.exercise.description,e.exercise.images,e.exercise.muscles,e.exercise.muscles_secondary,false,false)
                 exList.add(exerciseModel)
                 i++
             }
@@ -125,6 +126,11 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
      * Here is Destroy function we will reset the rest timer to initial if it is running.
      */
     public override fun onDestroy() {
+        reset()
+        super.onDestroy()
+    }
+
+    private fun reset(){
         if (restTimer != null) {
             restTimer!!.cancel()
             restProgress = 0
@@ -143,8 +149,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
         if(player != null){
             player!!.stop()
         }
-        super.onDestroy()
     }
+
 
     /**
      * This the TextToSpeech override function
@@ -299,11 +305,21 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
          */
 //        ivImage.setImageResource(exerciseList!![currentExercisePosition].image)
         if (exerciseList!![currentExercisePosition].images.isNotEmpty()){
-
+            tv_play_exercise_description.visibility = View.INVISIBLE
+            iv_exercise_play_image.visibility = View.VISIBLE
+            iv_exercise_play_image_second.visibility = View.VISIBLE
             Picasso.get().load(exerciseList!![currentExercisePosition].images[0].image).into(iv_exercise_play_image)
             Picasso.get().load(exerciseList!![currentExercisePosition].images[1].image).into(iv_exercise_play_image_second)
             mainImageAnimation()
 
+        }else{
+            iv_exercise_play_image.visibility = View.INVISIBLE
+            iv_exercise_play_image_second.visibility = View.INVISIBLE
+            tv_play_exercise_description.visibility = View.VISIBLE
+            tv_play_exercise_description.text = Html.fromHtml(
+                exerciseList!![currentExercisePosition].description,
+                Html.FROM_HTML_MODE_COMPACT
+            )
         }
 
         tvExerciseName.text = exerciseList!![currentExercisePosition].name
@@ -338,7 +354,6 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
                     "Workout is paused.",
                     Toast.LENGTH_SHORT
             ).show()
-
         })
 
         button_resume.setOnClickListener(View.OnClickListener { v: View
@@ -353,7 +368,6 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
                     "Workout is resumed.",
                     Toast.LENGTH_SHORT
             ).show()
-
             })
     }
 
@@ -434,7 +448,9 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
         val customDialog = Dialog(this)
         customDialog.setContentView(R.layout.dialog_custom_back_confirmation)
         customDialog.tvYes.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
+            reset()
+            player = null
+            val intent = Intent(this, WorkoutActivity::class.java)
             startActivity(intent)
             finish()
             customDialog.dismiss() // Dialog will be dismissed
