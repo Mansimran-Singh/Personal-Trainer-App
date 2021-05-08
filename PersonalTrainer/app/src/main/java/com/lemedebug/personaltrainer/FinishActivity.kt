@@ -101,37 +101,6 @@ class FinishActivity : AppCompatActivity() {
     }
 
 
-    private fun save(workoutList:ArrayList<Workout>){
-        val docRef = FirestoreClass().mFireStore.collection(Constants.USERS).document(loggedUser.id)
-        docRef.get()
-        docRef.addSnapshotListener { snapshot, e ->
-            if (snapshot != null) {
-
-                var tworkoutList = snapshot.toObject(User::class.java)
-
-                workoutList = tworkoutList!!.workoutList
-                val adapter = AllWorkoutsAdapter(workoutList)
-                recyclerView.setAdapter(adapter)
-                adapter.notifyDataSetChanged()
-                loggedUser.workoutList = workoutList
-                val sharedPreferences =
-                        activity.getSharedPreferences(
-                                Constants.PT_PREFERENCES,
-                                Context.MODE_PRIVATE
-                        )
-
-                val editor: SharedPreferences.Editor = sharedPreferences.edit()
-                val jsonArrayLoggedUser = Gson().toJson(loggedUser)
-                editor.putString(
-                        Constants.LOGGED_USER,
-                        jsonArrayLoggedUser
-                )
-                editor.apply()
-
-                Log.d("onstart", "DocumentSnapshot data: ${snapshot.data}")
-            } else {
-                //Log.d(TAG, "No such document")
-            }
-        }
+    
     }
 }
