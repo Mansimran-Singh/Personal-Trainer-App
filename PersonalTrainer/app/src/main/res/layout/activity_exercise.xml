@@ -151,6 +151,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="5dp"
                 android:layout_below="@+id/tvExerciseName"
+                android:layout_above="@+id/ll_muscle_layout"
+                android:gravity="center_vertical"
+                android:fontFamily="monospace"
+                android:textColor="@color/colorPrimaryText"
                 android:visibility="gone"
                 tools:visibility="invisible"
                 />
@@ -178,13 +182,13 @@
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true" />
 
-                    <ImageView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/iv_muscle_back"
                         android:layout_width="81dp"
                         android:layout_height="150dp"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true">
-                    </ImageView>
+                    </androidx.recyclerview.widget.RecyclerView>
 
 
                 </RelativeLayout>
@@ -201,13 +205,13 @@
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true" />
 
-                    <ImageView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/iv_muscle_front"
                         android:layout_width="81dp"
                         android:layout_height="150dp"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true">
-                    </ImageView>
+                    </androidx.recyclerview.widget.RecyclerView>
                 </RelativeLayout>
 
 

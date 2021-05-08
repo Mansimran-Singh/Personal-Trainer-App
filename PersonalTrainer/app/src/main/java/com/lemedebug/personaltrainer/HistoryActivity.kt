@@ -64,6 +64,8 @@ class HistoryActivity : AppCompatActivity() {
             }
         }
 
+
+
         user = sharedPreferences.getString(Constants.LOGGED_USER, "")
         sType = object : TypeToken<User>() {}.type
         loggedUser = Gson().fromJson(user, sType) as User
@@ -79,7 +81,7 @@ class HistoryActivity : AppCompatActivity() {
         var days = ArrayList<String>()
         barChart = findViewById(R.id.barchart)
         barDataSet2 = BarDataSet(dummy, "")
-        barDataSet2.color = applicationContext.resources.getColor(R.color.purple_500)
+        barDataSet2.color = applicationContext.resources.getColor(R.color.colorPrimary)
 
         loggedUser.completedWorkoutList.reverse()
 
@@ -88,8 +90,8 @@ class HistoryActivity : AppCompatActivity() {
             days.add(i.date!!)
             }
 
-        barDataSet1 = BarDataSet(barEntries, "No of Exercises")
-        barDataSet1.color = applicationContext.resources.getColor(R.color.purple_500)
+        barDataSet1 = BarDataSet(barEntries, "Number of Exercises")
+        barDataSet1.color = applicationContext.resources.getColor(R.color.colorPrimary)
 
         val data  = BarData(barDataSet1, barDataSet2)
         barChart.setData(data);

@@ -21,16 +21,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.lemedebug.personaltrainer.EditWorkoutFragment
 import com.lemedebug.personaltrainer.R
-import com.lemedebug.personaltrainer.models.Exercise
-import com.lemedebug.personaltrainer.models.SelectedExercise
-import com.lemedebug.personaltrainer.models.User
-import com.lemedebug.personaltrainer.models.Workout
+import com.lemedebug.personaltrainer.models.*
 import com.lemedebug.personaltrainer.utils.Constants
 import com.squareup.picasso.Picasso
 import java.util.*
@@ -40,7 +38,9 @@ import kotlin.collections.ArrayList
 class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>(),Filterable {
 
     private var exercise: Exercise? = null
-    var tempexerciseList: ArrayList<Exercise> = exerciseList
+    private var tempexerciseList: ArrayList<Exercise> = exerciseList
+    private var arrayFrontMuscles = ArrayList<Muscles>()
+    private var arrayBackMuscles = ArrayList<Muscles>()
 
 
     inner class ExerciseViewHolder(exerciseView: View):RecyclerView.ViewHolder(exerciseView){
@@ -55,8 +55,9 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
 
         val comments: TextView = exerciseView.findViewById(R.id.tv_comments)
         val commentsLabel: TextView = exerciseView.findViewById(R.id.tv_comments_label)
-        val muscleFront: ImageView = exerciseView.findViewById(R.id.iv_muscle_front)
-        val muscleBack: ImageView = exerciseView.findViewById(R.id.iv_muscle_back)
+
+        val muscleFront: RecyclerView = exerciseView.findViewById(R.id.iv_muscle_front)
+        val muscleBack: RecyclerView = exerciseView.findViewById(R.id.iv_muscle_back)
 
         val bodyFront: FrameLayout = exerciseView.findViewById(R.id.body_front)
         val bodyBack: FrameLayout = exerciseView.findViewById(R.id.body_back)
@@ -122,50 +123,9 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
         holder.comments.text = comments.toString()
 
         if (currentItem.images.isNotEmpty()){
-
             Picasso.get().load(currentItem.images[0].image).into(holder.image)
             Picasso.get().load(currentItem.images[1].image).into(holder.imageSecond)
-
         }
-
-        if (currentItem.muscles.isNotEmpty()){
-            for (i in currentItem.muscles.indices){
-                val path =  "https://wger.de${currentItem.muscles[i].image_url_main}"
-                Log.d("EXERCISE_ADAPTER", path)
-                if (currentItem.muscles[i].is_front){
-                    Utils.fetchSvg(holder.muscleFront.context, path, holder.muscleFront)
-//                        Picasso.get().load(path).into(holder.muscleFront)
-                }else{
-                    Utils.fetchSvg(holder.muscleFront.context, path, holder.muscleBack)
-//                        Picasso.get().load(path).into(holder.muscleBack)
-                }
-            }
-        }
-
-//                    val path =  "https://wger.de${currentItem.muscles[0].image_url_main}"
-//                    Log.d("EXERCISE_ADAPTER", path)
-//                    if (currentItem.muscles[0].is_front){
-//                        Utils.fetchSvg(holder.muscleFront.context, path, holder.muscleFront)
-////                        Picasso.get().load(path).into(holder.muscleFront)
-//                    }else{
-//                        Utils.fetchSvg(holder.muscleFront.context, path, holder.muscleBack)
-////                        Picasso.get().load(path).into(holder.muscleBack)
-//                    }
-//                }
-
-        if (currentItem.muscles_secondary.isNotEmpty()){
-            val path =  "https://wger.de${currentItem.muscles_secondary[0].image_url_secondary}"
-            Log.d("EXERCISE_ADAPTER", path)
-            if (currentItem.muscles_secondary[0].is_front){
-                Utils.fetchSvg(holder.muscleFront.context, path, holder.muscleFront)
-//                        Picasso.get().load(path).into(holder.muscleFront)
-            }else{
-                Utils.fetchSvg(holder.muscleFront.context, path, holder.muscleBack)
-//                        Picasso.get().load(path).into(holder.muscleBack)
-            }
-        }
-
-
 
         if (currentItem.comments.isNullOrEmpty()){
             holder.comments.visibility = View.GONE
@@ -173,11 +133,56 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
         }
         Log.d("EXERCISE_ADAPTER", currentItem.name)
 
+
 //#F0EEFE
 
         val activity: AppCompatActivity = holder.expandedView.context as AppCompatActivity
         val selectedItemName: TextView = activity.findViewById(R.id.tv_selected_item)
         val viewModel_item = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
+
+
+        // MUSCLE RECYCLER VIEW
+        arrayFrontMuscles = ArrayList<Muscles>()
+        arrayBackMuscles = ArrayList<Muscles>()
+
+        for (i in currentItem.muscles.indices) {
+            val m = Muscles(currentItem.muscles[i].image_url_main,currentItem.muscles[i]._front)
+            Log.d("PATH_Main",currentItem.toString())
+            if (currentItem.muscles[i]._front == true) {
+                arrayFrontMuscles.add(m)
+            } else {
+                arrayBackMuscles.add(m)
+            }
+        }
+
+        for (i in currentItem.muscles_secondary.indices) {
+            val m = Muscles(currentItem.muscles_secondary[i].image_url_secondary,currentItem.muscles_secondary[i]._front)
+            Log.d("PATH_Secondary",currentItem.toString())
+            if (currentItem.muscles_secondary[i]._front == true) {
+                arrayFrontMuscles.add(m)
+            } else {
+                arrayBackMuscles.add(m)
+            }
+        }
+
+        val frontMuscleAdapter  = MuscleAdapter(arrayFrontMuscles)
+        frontMuscleAdapter.notifyDataSetChanged()
+
+        val backMuscleAdapter  = MuscleAdapter(arrayBackMuscles)
+        backMuscleAdapter.notifyDataSetChanged()
+
+
+        Log.d("PATH",arrayFrontMuscles.toString())
+        Log.d("PATH",arrayBackMuscles.toString())
+        holder.muscleFront.addItemDecoration(MuscleDecoration())
+        holder.muscleFront.layoutManager = LinearLayoutManager(holder.muscleFront.context)
+
+        holder.muscleBack.addItemDecoration(MuscleDecoration())
+        holder.muscleBack.layoutManager = LinearLayoutManager(holder.muscleBack.context)
+
+        holder.muscleBack.adapter = backMuscleAdapter
+        holder.muscleFront.adapter = frontMuscleAdapter
+
 
 
         holder.exerciseName.setOnClickListener {
@@ -191,7 +196,7 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
 
         if (exercise == exerciseList[position]){
             holder.expandedView.visibility =  View.VISIBLE
-            holder.cardView.setCardBackgroundColor(Color.parseColor("#e6ffe6"))
+            holder.cardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
 
 //            holder.image.animate().alpha(0F).setDuration(6000)
 //            holder.imageBehind.animate().alpha(1F).setDuration(6000)
@@ -204,7 +209,7 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
         }
         else{
             holder.expandedView.visibility =  View.GONE
-            holder.cardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
+            holder.cardView.setCardBackgroundColor(Color.parseColor("#E9EDF0"))
         }
 
         val addButton = activity.findViewById<FloatingActionButton>(R.id.btn_add_selected)

@@ -16,10 +16,11 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lemedebug.personaltrainer.R
 import com.lemedebug.personaltrainer.models.Exercise
+import com.lemedebug.personaltrainer.models.Muscles
 import com.lemedebug.personaltrainer.models.SelectedExercise
 import com.squareup.picasso.Picasso
 
@@ -42,8 +43,8 @@ class EditWorkoutAdapter(private var exerciseList: ArrayList<SelectedExercise?>)
 
         val comments: TextView = exerciseView.findViewById(R.id.tv_comments)
         val commentsLabel: TextView = exerciseView.findViewById(R.id.tv_comments_label)
-        val muscleFront: ImageView = exerciseView.findViewById(R.id.iv_muscle_front)
-        val muscleBack: ImageView = exerciseView.findViewById(R.id.iv_muscle_back)
+        val muscleFront: RecyclerView = exerciseView.findViewById(R.id.iv_muscle_front)
+        val muscleBack: RecyclerView = exerciseView.findViewById(R.id.iv_muscle_back)
 
         val bodyFront: FrameLayout = exerciseView.findViewById(R.id.body_front)
         val bodyBack: FrameLayout = exerciseView.findViewById(R.id.body_back)
@@ -114,42 +115,45 @@ class EditWorkoutAdapter(private var exerciseList: ArrayList<SelectedExercise?>)
 
         }
 
-        if (currentItem.muscles.isNotEmpty()){
-            for (i in currentItem.muscles.indices){
-                val path =  "https://wger.de${currentItem.muscles[i].image_url_main}"
-                Log.d("EXERCISE_ADAPTER", path)
-                if (currentItem.muscles[i].is_front){
-                    Utils.fetchSvg(holder.muscleFront.context, path, holder.muscleFront)
-//                        Picasso.get().load(path).into(holder.muscleFront)
-                }else{
-                    Utils.fetchSvg(holder.muscleFront.context, path, holder.muscleBack)
-//                        Picasso.get().load(path).into(holder.muscleBack)
-                }
+
+        val activity: AppCompatActivity = holder.expandedView.context as AppCompatActivity
+        // MUSCLE RECYCLER VIEW
+        val arrayFrontMuscles = ArrayList<Muscles>()
+        val arrayBackMuscles = ArrayList<Muscles>()
+
+        for (i in currentItem.muscles.indices) {
+            val m = Muscles(currentItem.muscles[i].image_url_main,currentItem.muscles[i]._front)
+            if (currentItem.muscles[i]._front == true) {
+                arrayFrontMuscles.add(m)
+            } else {
+                arrayBackMuscles.add(m)
             }
         }
 
-//                    val path =  "https://wger.de${currentItem.muscles[0].image_url_main}"
-//                    Log.d("EXERCISE_ADAPTER", path)
-//                    if (currentItem.muscles[0].is_front){
-//                        Utils.fetchSvg(holder.muscleFront.context, path, holder.muscleFront)
-////                        Picasso.get().load(path).into(holder.muscleFront)
-//                    }else{
-//                        Utils.fetchSvg(holder.muscleFront.context, path, holder.muscleBack)
-////                        Picasso.get().load(path).into(holder.muscleBack)
-//                    }
-//                }
-
-        if (currentItem.muscles_secondary.isNotEmpty()){
-            val path =  "https://wger.de${currentItem.muscles_secondary[0].image_url_secondary}"
-            Log.d("EXERCISE_ADAPTER", path)
-            if (currentItem.muscles_secondary[0].is_front){
-                Utils.fetchSvg(holder.muscleFront.context, path, holder.muscleFront)
-//                        Picasso.get().load(path).into(holder.muscleFront)
-            }else{
-                Utils.fetchSvg(holder.muscleFront.context, path, holder.muscleBack)
-//                        Picasso.get().load(path).into(holder.muscleBack)
+        for (i in currentItem.muscles_secondary.indices) {
+            val m = Muscles(currentItem.muscles_secondary[i].image_url_secondary,currentItem.muscles_secondary[i]._front)
+            if (currentItem.muscles_secondary[i]._front == true) {
+                arrayFrontMuscles.add(m)
+            } else {
+                arrayBackMuscles.add(m)
             }
         }
+
+        val frontMuscleAdapter  = MuscleAdapter(arrayFrontMuscles)
+        frontMuscleAdapter.notifyDataSetChanged()
+
+        val backMuscleAdapter  = MuscleAdapter(arrayBackMuscles)
+        backMuscleAdapter.notifyDataSetChanged()
+
+
+        holder.muscleFront.addItemDecoration(MuscleDecoration())
+        holder.muscleFront.layoutManager = LinearLayoutManager(holder.muscleFront.context)
+
+        holder.muscleBack.addItemDecoration(MuscleDecoration())
+        holder.muscleBack.layoutManager = LinearLayoutManager(holder.muscleBack.context)
+
+        holder.muscleBack.adapter = backMuscleAdapter
+        holder.muscleFront.adapter = frontMuscleAdapter
 
 
 
@@ -157,11 +161,9 @@ class EditWorkoutAdapter(private var exerciseList: ArrayList<SelectedExercise?>)
             holder.comments.visibility = View.GONE
             holder.commentsLabel.visibility = View.GONE
         }
-        Log.d("EXERCISE_ADAPTER", currentItem.name)
 
 //#F0EEFE
 
-        val activity: AppCompatActivity = holder.expandedView.context as AppCompatActivity
 
 
         holder.exerciseLinearLayout.setOnClickListener {
@@ -174,7 +176,7 @@ class EditWorkoutAdapter(private var exerciseList: ArrayList<SelectedExercise?>)
         if (exercise == exerciseList[position]?.exercise){
             holder.expandedView.visibility =  View.VISIBLE
             holder.removeButton.visibility = View.VISIBLE
-            holder.cardView.setCardBackgroundColor(Color.parseColor("#e6ffe6"))
+            holder.cardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
 
 //            holder.image.animate().alpha(0F).setDuration(6000)
 //            holder.imageBehind.animate().alpha(1F).setDuration(6000)
@@ -188,7 +190,7 @@ class EditWorkoutAdapter(private var exerciseList: ArrayList<SelectedExercise?>)
         else{
             holder.expandedView.visibility =  View.GONE
             holder.removeButton.visibility = View.GONE
-            holder.cardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
+            holder.cardView.setCardBackgroundColor(Color.parseColor("#E9EDF0"))
         }
 
 

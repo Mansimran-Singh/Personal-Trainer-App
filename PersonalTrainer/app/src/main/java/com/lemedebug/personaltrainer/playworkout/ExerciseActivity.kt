@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
@@ -19,24 +18,22 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.lemedebug.personaltrainer.*
-import com.lemedebug.personaltrainer.exercise.ExerciseViewModel
+import com.lemedebug.personaltrainer.exercise.MuscleAdapter
+import com.lemedebug.personaltrainer.exercise.MuscleDecoration
 import com.lemedebug.personaltrainer.exercise.Utils
 import com.lemedebug.personaltrainer.models.ExerciseModel
-import com.lemedebug.personaltrainer.models.User
+import com.lemedebug.personaltrainer.models.Muscles
 import com.lemedebug.personaltrainer.models.Workout
 import com.lemedebug.personaltrainer.utils.Constants
 import com.sevenminuteworkout.ExerciseStatusAdapter
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_exercise.*
 import kotlinx.android.synthetic.main.dialog_custom_back_confirmation.*
-import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
+import kotlinx.android.synthetic.main.exercise_image.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -274,8 +271,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
         if (exerciseList!![currentExercisePosition].muscles.isNotEmpty()){
             for (i in exerciseList!![currentExercisePosition].muscles.indices){
                 val path =  "https://wger.de${exerciseList!![currentExercisePosition].muscles[i].image_url_main}"
-                Log.d("EXERCISE_ADAPTER", path)
-                if (exerciseList!![currentExercisePosition].muscles[i].is_front){
+                if (exerciseList!![currentExercisePosition].muscles[i]._front == true){
                     Utils.fetchSvg(iv_muscle_front.context, path, iv_muscle_front)
 //                        Picasso.get().load(path).into(holder.muscleFront)
                 }else{
@@ -289,7 +285,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
         if (exerciseList!![currentExercisePosition].muscles_secondary.isNotEmpty()){
             val path =  "https://wger.de${exerciseList!![currentExercisePosition].muscles_secondary[0].image_url_secondary}"
             Log.d("EXERCISE_ADAPTER", path)
-            if (exerciseList!![currentExercisePosition].muscles_secondary[0].is_front){
+            if (exerciseList!![currentExercisePosition].muscles_secondary[0]._front == true){
                 Utils.fetchSvg(iv_muscle_front.context, path, iv_muscle_front)
 //                        Picasso.get().load(path).into(holder.muscleFront)
             }else{
@@ -297,6 +293,46 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
 //                        Picasso.get().load(path).into(holder.muscleBack)
             }
         }
+
+
+        // MUSCLE RECYCLER VIEW
+        val arrayFrontMuscles = ArrayList<Muscles>()
+        val arrayBackMuscles = ArrayList<Muscles>()
+
+        for (i in exerciseList!![currentExercisePosition].muscles.indices) {
+            val m = Muscles(exerciseList!![currentExercisePosition].muscles[i].image_url_main,exerciseList!![currentExercisePosition].muscles[i]._front)
+            if (exerciseList!![currentExercisePosition].muscles[i]._front == true) {
+                arrayFrontMuscles.add(m)
+            } else {
+                arrayBackMuscles.add(m)
+            }
+        }
+
+        for (i in exerciseList!![currentExercisePosition].muscles_secondary.indices) {
+            val m = Muscles( exerciseList!![currentExercisePosition].muscles_secondary[i].image_url_secondary, exerciseList!![currentExercisePosition].muscles_secondary[i]._front)
+            if ( exerciseList!![currentExercisePosition].muscles_secondary[i]._front == true) {
+                arrayFrontMuscles.add(m)
+            } else {
+                arrayBackMuscles.add(m)
+            }
+        }
+
+        val frontMuscleAdapter  = MuscleAdapter(arrayFrontMuscles)
+        frontMuscleAdapter.notifyDataSetChanged()
+
+        val backMuscleAdapter  = MuscleAdapter(arrayBackMuscles)
+        backMuscleAdapter.notifyDataSetChanged()
+
+        iv_muscle_front.addItemDecoration(MuscleDecoration())
+        iv_muscle_front.layoutManager = LinearLayoutManager(this@ExerciseActivity)
+
+        iv_muscle_back.addItemDecoration(MuscleDecoration())
+        iv_muscle_back.layoutManager = LinearLayoutManager(this@ExerciseActivity)
+
+        iv_muscle_back.adapter = backMuscleAdapter
+        iv_muscle_front.adapter = frontMuscleAdapter
+
+
 
 
 
@@ -395,11 +431,9 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
                 if (currentExercisePosition < exerciseList!!.size - 1) {
                     setupRestView()
                 } else {
-
-                    val viewModel = ViewModelProvider(this@ExerciseActivity).get(ExerciseViewModel::class.java)
                     Toast.makeText(
                             this@ExerciseActivity,
-                            "Congratulations! ${viewModel.user.firstName} You have completed ${viewModel.selectedWorkout?.name} workout.",
+                            "Congratulations! You have completed the workout.",
                             Toast.LENGTH_SHORT
                     ).show()
                     val temp = currentExercisePosition + 1
@@ -409,7 +443,6 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
                     intent.putExtra(Constants.TOTAL_EXERCISES, total)
                     startActivity(intent)
                     finish()
-
                 }
             }
 
@@ -450,9 +483,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
         customDialog.tvYes.setOnClickListener {
             reset()
             player = null
-            val intent = Intent(this, WorkoutActivity::class.java)
-            startActivity(intent)
-            finish()
+            super.onBackPressed()
             customDialog.dismiss() // Dialog will be dismissed
         }
         customDialog.tvNo.setOnClickListener {

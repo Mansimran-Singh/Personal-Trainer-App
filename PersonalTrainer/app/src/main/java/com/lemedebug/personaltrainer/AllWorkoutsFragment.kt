@@ -72,9 +72,7 @@ class AllWorkoutsFragment : Fragment() {
 
         view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_all_workouts).setNavigationOnClickListener {
             // Change it to required fragment back button
-            val intent = Intent(activity, MainActivity::class.java)
-            activity.startActivity(intent)
-            activity.finish()
+            requireActivity().finish()
         }
 
 
@@ -160,13 +158,6 @@ class AllWorkoutsFragment : Fragment() {
                         Toast.makeText(requireContext(), "Please enter a different workout name. Entered workout already exists", Toast.LENGTH_SHORT).show()
                     }
                     else {
-
-                           if (toFind.isNullOrEmpty()){
-
-                            val activity = requireActivity() as AppCompatActivity
-
-                        }
-
                         requireActivity().supportFragmentManager.beginTransaction()
                                 .replace(R.id.exercise_view_container, CreateWorkoutFragment())
                                 .commit()
@@ -177,6 +168,7 @@ class AllWorkoutsFragment : Fragment() {
             }
             setNegativeButton("CANCEL"){ dialog, which->
                 // DO NOTHING
+                dialog.dismiss()
             }
         }
 

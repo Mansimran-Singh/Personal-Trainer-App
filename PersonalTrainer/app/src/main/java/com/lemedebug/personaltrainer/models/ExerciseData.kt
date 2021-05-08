@@ -61,14 +61,19 @@ data class Category(
         val name: String = ""
 )
 
+data class Muscles(
+        val image_url: String = "",
+        val _front: Boolean? = null
+)
+
 data class MainMuscles(
         val image_url_main: String = "",
-        val is_front: Boolean = false
+        val _front: Boolean?= null
 )
 
 data class SecondaryMuscles(
         val image_url_secondary: String = "",
-        val is_front: Boolean = false
+        val _front: Boolean?= null
 )
 
 data class Equipment(
@@ -77,7 +82,7 @@ data class Equipment(
 
 data class ExerciseImage(
         val image: String = "",
-        val is_main: Boolean = false
+        val _main: Boolean = true
 )
 
 data class Comment(

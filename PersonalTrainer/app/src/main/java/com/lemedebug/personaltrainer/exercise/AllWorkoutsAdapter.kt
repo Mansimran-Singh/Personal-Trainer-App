@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
@@ -85,11 +86,16 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
             holder.playButton.setOnClickListener {
                 // START PLAY WORKOUT ACTIVITY
 
-                val intent = Intent(activity, ExerciseActivity::class.java)
-                val listSerializedToJson = Gson().toJson(viewModel.selectedWorkout)
-                intent.putExtra(Constants.WORKOUT_TO_PLAY,listSerializedToJson)
-                activity.startActivity(intent)
-                activity.finish()
+                if (viewModel.selectedWorkout == null || viewModel.selectedWorkout!!.listSelectedExercises.size < 1){
+                    Toast.makeText(activity, "Cannot play empty workout",Toast.LENGTH_SHORT).show()
+                }else{
+                    val intent = Intent(activity, ExerciseActivity::class.java)
+                    val listSerializedToJson = Gson().toJson(viewModel.selectedWorkout)
+                    intent.putExtra(Constants.WORKOUT_TO_PLAY,listSerializedToJson)
+                    activity.startActivity(intent)
+                    activity.finish()
+                }
+
             }
 
 
