@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.media.MediaPlayer
@@ -15,7 +16,6 @@ import android.speech.tts.TextToSpeech
 import android.text.Html
 import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -38,6 +38,7 @@ import kotlinx.android.synthetic.main.exercise_image.*
 import java.util.*
 import kotlin.collections.ArrayList
 
+
 class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
 
     private var restTimer: CountDownTimer? =
@@ -47,6 +48,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
 
     private var exerciseTimer: CountDownTimer? = null // Variable for Exercise Timer and later on we will initialize it.
     private var exerciseProgress = 0 // Variable for exercise timer progress. As initial the exercise progress is set to 0. As we are about to start.
+
+    private var recycleTimer: CountDownTimer? = null
 
     private var exerciseList: ArrayList<ExerciseModel>? = null // We will initialize the list later.
     private var currentExercisePosition = -1 // Current Position of Exercise.
@@ -65,11 +68,10 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercise)
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         val selectedStringWorkout = intent.getStringExtra(Constants.WORKOUT_TO_PLAY)
         val sType = object : TypeToken<Workout>() { }.type
-        selectedWorkout = Gson().fromJson<Workout>(selectedStringWorkout,sType) as Workout
+        selectedWorkout = Gson().fromJson<Workout>(selectedStringWorkout, sType) as Workout
 
         setSupportActionBar(toolbar_exercise_activity)
         supportActionBar?.setDisplayHomeAsUpEnabled(true) //set back button
@@ -86,13 +88,6 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
         tts = TextToSpeech(this, this)
 
         exerciseList = defaultExerciseList(selectedWorkout!!)
-//
-//        val viewModel = ViewModelProvider(this@ExerciseActivity).get(ExerciseViewModel::class.java)
-//        val selectedExerciseList = viewModel.selectedWorkout?.listSelectedExercises
-//        Log.i("PLAY EXERCISE viewmodel",viewModel.selectedWorkout?.listSelectedExercises.toString())
-
-
-
 
 
         setupRestView() // REST View is set in this function
@@ -106,12 +101,12 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
         val exList = ArrayList<ExerciseModel>()
         val selectedExerciseList = SelectedWork.listSelectedExercises
 
-        Log.i("PLAY EXERCISE",selectedExerciseList.toString())
+        Log.i("PLAY EXERCISE", selectedExerciseList.toString())
         var i = 1
         for (e in selectedExerciseList){
             for (j in 1 ..e?.reps!!){
                 val exerciseModel = ExerciseModel(i,
-                    e.exercise.name,e.exercise.description,e.exercise.images,e.exercise.muscles,e.exercise.muscles_secondary,false,false)
+                        e.exercise.name, e.exercise.description, e.exercise.images, e.exercise.muscles, e.exercise.muscles_secondary, false, false)
                 exList.add(exerciseModel)
                 i++
             }
@@ -130,6 +125,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
     }
 
     private fun reset(){
+        Log.d("PATH","RESETTING")
         if (restTimer != null) {
             restTimer!!.cancel()
             restProgress = 0
@@ -138,6 +134,10 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
         if (exerciseTimer != null) {
             exerciseTimer!!.cancel()
             exerciseProgress = 0
+        }
+
+        if(recycleTimer != null){
+            recycleTimer!!.cancel()
         }
 
         if (tts != null) {
@@ -180,7 +180,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
          */
         try {
             val soundURI =
-                    Uri.parse("android.resource://com.lemedebug.personaltrainer/"+R.raw.press_start)
+                    Uri.parse("android.resource://com.lemedebug.personaltrainer/" + R.raw.press_start)
             player = MediaPlayer.create(applicationContext, soundURI)
             player!!.isLooping = false // Sets the player to be looping or non-looping.
             player!!.start() // Starts Playback.
@@ -302,7 +302,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
         val arrayBackMuscles = ArrayList<Muscles>()
 
         for (i in exerciseList!![currentExercisePosition].muscles.indices) {
-            val m = Muscles(exerciseList!![currentExercisePosition].muscles[i].image_url_main,exerciseList!![currentExercisePosition].muscles[i]._front)
+            val m = Muscles(exerciseList!![currentExercisePosition].muscles[i].image_url_main, exerciseList!![currentExercisePosition].muscles[i]._front)
             if (exerciseList!![currentExercisePosition].muscles[i]._front == true) {
                 arrayFrontMuscles.add(m)
             } else {
@@ -311,7 +311,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
         }
 
         for (i in exerciseList!![currentExercisePosition].muscles_secondary.indices) {
-            val m = Muscles( exerciseList!![currentExercisePosition].muscles_secondary[i].image_url_secondary, exerciseList!![currentExercisePosition].muscles_secondary[i]._front)
+            val m = Muscles(exerciseList!![currentExercisePosition].muscles_secondary[i].image_url_secondary, exerciseList!![currentExercisePosition].muscles_secondary[i]._front)
             if ( exerciseList!![currentExercisePosition].muscles_secondary[i]._front == true) {
                 arrayFrontMuscles.add(m)
             } else {
@@ -355,8 +355,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
             iv_exercise_play_image_second.visibility = View.INVISIBLE
             tv_play_exercise_description.visibility = View.VISIBLE
             tv_play_exercise_description.text = Html.fromHtml(
-                exerciseList!![currentExercisePosition].description,
-                Html.FROM_HTML_MODE_COMPACT
+                    exerciseList!![currentExercisePosition].description,
+                    Html.FROM_HTML_MODE_COMPACT
             )
         }
 
@@ -380,14 +380,14 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
         val countDownInterval:Long = 1000
 
         button_pause.isEnabled = true
-        timer(millisInFuture,countDownInterval).start()
+        timer(millisInFuture, countDownInterval).start()
         isPaused = false
         button_pause.setOnClickListener(View.OnClickListener { v: View
-         ->
+            ->
             isPaused = true
             button_resume.isEnabled = true
             button_pause.isEnabled = false
-                    Toast.makeText(
+            Toast.makeText(
                     this@ExerciseActivity,
                     "Workout is paused.",
                     Toast.LENGTH_SHORT
@@ -397,20 +397,20 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
         button_resume.setOnClickListener(View.OnClickListener { v: View
             ->
 
-            timer(resumeFromMillis,countDownInterval).start()
+            timer(resumeFromMillis, countDownInterval).start()
             isPaused = false
             button_pause.isEnabled = true
             button_resume.isEnabled = false
-                    Toast.makeText(
+            Toast.makeText(
                     this@ExerciseActivity,
                     "Workout is resumed.",
                     Toast.LENGTH_SHORT
             ).show()
-            })
+        })
     }
 
-    private fun timer(millisInFuture:Long,countDownInterval:Long):CountDownTimer{
-        return object: CountDownTimer(millisInFuture,countDownInterval) {
+    private fun timer(millisInFuture: Long, countDownInterval: Long):CountDownTimer{
+        recycleTimer = object: CountDownTimer(millisInFuture, countDownInterval) {
 
             override fun onTick(millisUntilFinished: Long) {
 
@@ -447,9 +447,9 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
                     finish()
                 }
             }
-
-
         }
+
+        return recycleTimer as CountDownTimer
     }
 
     /**
@@ -483,16 +483,20 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
         val customDialog = Dialog(this)
         customDialog.setContentView(R.layout.dialog_custom_back_confirmation)
         customDialog.tvYes.setOnClickListener {
-            reset()
-            player = null
-            super.onBackPressed()
-            customDialog.dismiss() // Dialog will be dismissed
+            customDialog.dismiss()
+            backToWorkout()
         }
         customDialog.tvNo.setOnClickListener {
             customDialog.dismiss()
         }
         //Start the dialog and display it on screen.
         customDialog.show()
+    }
+
+    private fun backToWorkout(){
+        val intent = Intent(this@ExerciseActivity, WorkoutActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     /**

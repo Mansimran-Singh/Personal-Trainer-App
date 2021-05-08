@@ -98,6 +98,7 @@ class FinishActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
     }
 
 }

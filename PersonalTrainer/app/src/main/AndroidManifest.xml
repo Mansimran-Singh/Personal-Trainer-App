@@ -33,6 +33,7 @@
             android:screenOrientation="portrait"/>
 
         <activity android:name=".playworkout.ExerciseActivity"
+
             android:screenOrientation="portrait"/>
 
         <activity android:name=".userlogin.RegisterActivity"
