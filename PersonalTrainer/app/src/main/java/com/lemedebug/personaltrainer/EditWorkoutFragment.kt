@@ -113,34 +113,34 @@ class EditWorkoutFragment : Fragment() {
 
                     var found: Boolean = false
                     val toFind = viewModel.selectedWorkout?.name
-                    for ((i,n) in loggedUser.workoutList.withIndex()){
-                        if (toFind == n.name)
-                        {
-                            found = true
+                    if (viewModel.selectedWorkout?.listSelectedExercises!!.isNotEmpty()) {
+                        for ((i, n) in loggedUser.workoutList.withIndex()) {
+                            if (toFind == n.name) {
+                                found = true
 
-                            viewModel.selectedWorkout?.let { it1 -> loggedUser.workoutList.set(i,it1) }
+                                viewModel.selectedWorkout?.let { it1 -> loggedUser.workoutList.set(i, it1) }
+
+                                viewModel.user = loggedUser
+
+                                Log.e("USER", "$loggedUser")
+                                FirestoreClass().updateWorkoutList(activity, loggedUser)
+                                val sharedPreferences_list = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
+                                sharedPreferences_list.edit().remove(Constants.SELECTED_EXERCISE).commit();
+                                break
+                            }
+                        }
+                        if (!found) {
+                            viewModel.selectedWorkout?.let { it1 -> loggedUser.workoutList.add(it1) }
 
                             viewModel.user = loggedUser
 
                             Log.e("USER", "$loggedUser")
-                            FirestoreClass().updateWorkoutList(activity,loggedUser)
+                            FirestoreClass().updateWorkoutList(activity, loggedUser)
                             val sharedPreferences_list = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
                             sharedPreferences_list.edit().remove(Constants.SELECTED_EXERCISE).commit();
-                            break
+                            Log.e("USER", "$loggedUser")
+
                         }
-                    }
-                    if (!found)
-                    {
-                        viewModel.selectedWorkout?.let { it1 -> loggedUser.workoutList.add(it1) }
-
-                    viewModel.user = loggedUser
-
-                    Log.e("USER", "$loggedUser")
-                    FirestoreClass().updateWorkoutList(activity,loggedUser)
-                    val sharedPreferences_list = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
-                    sharedPreferences_list.edit().remove(Constants.SELECTED_EXERCISE).commit();
-                        Log.e("USER", "$loggedUser")
-
                     }
 
                 }

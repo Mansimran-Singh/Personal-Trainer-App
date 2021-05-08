@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.text.Html
@@ -18,15 +19,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.lemedebug.personaltrainer.R
+import com.lemedebug.personaltrainer.firestore.FirestoreClass
 import com.lemedebug.personaltrainer.models.Exercise
 import com.lemedebug.personaltrainer.models.Muscles
 import com.lemedebug.personaltrainer.models.SelectedExercise
+import com.lemedebug.personaltrainer.models.User
+import com.lemedebug.personaltrainer.utils.Constants
 import com.squareup.picasso.Picasso
 
 class EditWorkoutAdapter(private var exerciseList: ArrayList<SelectedExercise?>) : RecyclerView.Adapter<EditWorkoutAdapter.EditWorkoutAdapterViewHolder>() {
 
     private var exercise: Exercise? = null
+
 
     inner class EditWorkoutAdapterViewHolder(exerciseView: View): RecyclerView.ViewHolder(exerciseView){
         val removeButton = exerciseView.findViewById<TextView>(R.id.btn_remove_selected)
@@ -66,6 +73,13 @@ class EditWorkoutAdapter(private var exerciseList: ArrayList<SelectedExercise?>)
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: EditWorkoutAdapterViewHolder, position: Int) {
+        val Editactivity: AppCompatActivity = holder.expandedView.context as AppCompatActivity
+
+        val sharedPreferences = Editactivity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
+        val user = sharedPreferences.getString(Constants.LOGGED_USER, "")
+        val sType = object : TypeToken<User>() { }.type
+        val loggedUser = Gson().fromJson<User>(user, sType) as User
+
         val currentItem = exerciseList[position]!!.exercise
 
         holder.comments.visibility = View.VISIBLE
@@ -202,7 +216,11 @@ class EditWorkoutAdapter(private var exerciseList: ArrayList<SelectedExercise?>)
             val selectedItem = position
             exerciseList.removeAt(selectedItem)
             notifyItemRemoved(selectedItem)
+
             notifyDataSetChanged()
+
+            loggedUser.workoutList.removeAt(selectedItem)
+            FirestoreClass().updateWorkoutList(Editactivity,loggedUser)
         }
 
     }

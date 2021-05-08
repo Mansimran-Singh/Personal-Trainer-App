@@ -90,25 +90,32 @@ class CreateWorkoutFragment : Fragment() {
                    Toast.makeText(activity.baseContext,"Cannot save an empty workout. Maybe add exercises",Toast.LENGTH_SHORT).show()
                 }
                 else {
+                    if (viewModel.selectedWorkout?.listSelectedExercises!!.isNotEmpty()) {
                         viewModel.selectedWorkout?.let { it1 -> loggedUser.workoutList.add(it1) }
 
                         viewModel.user = loggedUser
 
                         Log.e("USER", "$loggedUser")
 
-                        FirestoreClass().updateUser(activity,loggedUser)
+                        FirestoreClass().updateUser(activity, loggedUser)
                         val sharedPreferences_list = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
                         sharedPreferences_list.edit().remove(Constants.SELECTED_EXERCISE).commit();
 
+                        val textViewWorkOutName = view.findViewById<TextView>(R.id.tv_workout_name_create_fragment)
+                        textViewWorkOutName.text = viewModel.selectedWorkout?.name
+
+                        Toast.makeText(requireContext(),"Saved Successfully",Toast.LENGTH_SHORT).show()
+                        requireActivity().supportFragmentManager.beginTransaction()
+                                .replace(R.id.exercise_view_container, AllWorkoutsFragment())
+                                .commit()
+                    }
+                    else
+                    {
+                        Toast.makeText(activity.baseContext,"Cannot save an empty workout. Maybe add exercises",Toast.LENGTH_SHORT).show()
                     }
 
-            val textViewWorkOutName = view.findViewById<TextView>(R.id.tv_workout_name_create_fragment)
-            textViewWorkOutName.text = viewModel.selectedWorkout?.name
+                    }
 
-            Toast.makeText(requireContext(),"Saved Successfully",Toast.LENGTH_SHORT).show()
-            requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.exercise_view_container, AllWorkoutsFragment())
-                    .commit()
         }
 
 
