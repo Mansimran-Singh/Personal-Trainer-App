@@ -42,6 +42,25 @@
         android:layout_alignParentTop="true"
         android:theme="@style/CustomToolbarStyle"/>
 
+    <FrameLayout
+        android:id="@+id/fl_body_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/auth_header_image_height"
+        android:layout_centerInParent="true"
+        android:alpha="0.5">
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            app:lottie_rawRes="@raw/ic_trophy"
+            android:layout_gravity="center"
+            android:contentDescription="HISTORY IMAGE"
+            android:gravity="center"
+            android:scaleType="centerCrop"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            />
+    </FrameLayout>
+
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/barchart"

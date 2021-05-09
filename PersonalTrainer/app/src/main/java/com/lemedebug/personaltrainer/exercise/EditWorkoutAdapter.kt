@@ -9,7 +9,6 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.text.Html
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -73,9 +72,9 @@ class EditWorkoutAdapter(private var exerciseList: ArrayList<SelectedExercise?>)
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: EditWorkoutAdapterViewHolder, position: Int) {
-        val Editactivity: AppCompatActivity = holder.expandedView.context as AppCompatActivity
+        val editActivity: AppCompatActivity = holder.expandedView.context as AppCompatActivity
 
-        val sharedPreferences = Editactivity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
+        val sharedPreferences = editActivity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
         val user = sharedPreferences.getString(Constants.LOGGED_USER, "")
         val sType = object : TypeToken<User>() { }.type
         val loggedUser = Gson().fromJson<User>(user, sType) as User
@@ -213,14 +212,15 @@ class EditWorkoutAdapter(private var exerciseList: ArrayList<SelectedExercise?>)
 //        holder.name.text = currentItem?.exercise?.name
         holder.reps.text = exerciseList[position]!!.reps.toString() + " Reps"
         holder.removeButton.setOnClickListener {
-            val selectedItem = position
-            exerciseList.removeAt(selectedItem)
-            notifyItemRemoved(selectedItem)
-
+            val selectedItem = exerciseList[position]
+            exerciseList.remove(selectedItem)
+//            notifyItemRemoved(selectedItem)
             notifyDataSetChanged()
 
-            loggedUser.workoutList.removeAt(selectedItem)
-            FirestoreClass().updateWorkoutList(Editactivity,loggedUser)
+            if (loggedUser.workoutList.contains(selectedItem)){
+                loggedUser.workoutList.remove(selectedItem)
+                FirestoreClass().updateWorkoutList(editActivity,loggedUser)
+            }
         }
 
     }

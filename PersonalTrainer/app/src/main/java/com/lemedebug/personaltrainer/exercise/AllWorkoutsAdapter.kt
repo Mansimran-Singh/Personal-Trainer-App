@@ -1,25 +1,22 @@
 package com.lemedebug.personaltrainer.exercise
 
 import android.annotation.SuppressLint
-import android.app.Dialog
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.RelativeLayout
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
+import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.lemedebug.personaltrainer.EditWorkoutFragment
@@ -30,6 +27,7 @@ import com.lemedebug.personaltrainer.models.Workout
 import com.lemedebug.personaltrainer.playworkout.ExerciseActivity
 import com.lemedebug.personaltrainer.utils.Constants
 import kotlinx.android.synthetic.main.dialog_custom_back_confirmation.*
+import kotlin.collections.ArrayList
 
 
 class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : RecyclerView.Adapter<AllWorkoutsAdapter.AllWorkoutsAdapterViewHolder>() {
@@ -43,7 +41,6 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
         val editButton = workoutView.findViewById<TextView>(R.id.btn_edit_workout)
         val deleteButton = workoutView.findViewById<TextView>(R.id.btn_delete_workout)
         val layoutUtilities = workoutView.findViewById<RelativeLayout>(R.id.rl_workout_options)
-        val reminderButton = workoutView.findViewById<TextView>(R.id.btn_reminder_workout)
 
     }
 
@@ -58,6 +55,7 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
         return AllWorkoutsAdapterViewHolder(view)
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: AllWorkoutsAdapterViewHolder, position: Int) {
 
@@ -73,8 +71,6 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
             val user = sharedPreferences.getString(Constants.LOGGED_USER, "")
             val sType = object : TypeToken<User>() { }.type
             val loggedUser = Gson().fromJson<User>(user, sType) as User
-
-            var workoutList = loggedUser.workoutList
 
             val viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
             viewModel.selectedWorkout = currentItem
@@ -131,28 +127,6 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
 
             }
 
-            holder.reminderButton.setOnClickListener {
-                // CODE FOR REMINDER WORKOUT
-                val builder = AlertDialog.Builder(activity)
-                with(builder){
-                    setTitle("REMINDER")
-                    setPositiveButton("One-time"){dialog, which ->
-
-                    }
-                    setNeutralButton("Repetitive"){dialog, which ->
-
-                    }
-                    setNegativeButton("Cancel"){ dialog, which->
-                        // DO NOTHING
-                        dialog.dismiss()
-                    }
-                }
-
-                // create the dialog and show it
-                val dialog = builder.create()
-                dialog.show()
-            }
-
         }else{
             holder.cv.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
             holder.playButton.visibility = View.INVISIBLE
@@ -161,8 +135,6 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
 
         holder.cv.setOnClickListener {
             workout = currentItem
-            // val viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
-           // viewModel.selectedWorkout = workout
             notifyDataSetChanged()
         }
 

@@ -53,6 +53,10 @@
 
         <activity android:name=".MainActivity"
             android:screenOrientation="portrait"/>
+
+        <receiver android:name=".alarmmanager.AlarmReceiver"/>
+        <service android:name=".alarmmanager.NotificationService"
+            android:enabled="true"/>
     </application>
 
 </manifest>

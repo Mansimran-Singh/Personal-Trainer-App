@@ -157,8 +157,12 @@ class EditWorkoutFragment : Fragment() {
             val textViewWorkOutName = view.findViewById<TextView>(R.id.tv_workout_name_edit_fragment)
             textViewWorkOutName.text = viewModel.selectedWorkout?.name
 
-//            if(selectedExerciseList.isNotEmpty()){
-            Toast.makeText(requireContext(),"Saved Successfully",Toast.LENGTH_SHORT).show()
+            if(viewModel.selectedWorkout?.listSelectedExercises.isNullOrEmpty()){
+                Toast.makeText(requireContext(),"Cannot save empty workout\nTry deleting workout instead",Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(requireContext(),"Saved Successfully",Toast.LENGTH_SHORT).show()
+            }
+
             requireActivity().supportFragmentManager.beginTransaction()
                     .replace(R.id.exercise_view_container, AllWorkoutsFragment())
                     .commit()
