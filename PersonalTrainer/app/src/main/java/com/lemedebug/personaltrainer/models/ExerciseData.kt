@@ -88,3 +88,9 @@ data class ExerciseImage(
 data class Comment(
         val comment:String = ""
 )
+
+data class TutorialItem(
+        val image:Int,
+        val title:String,
+        val description:String
+)

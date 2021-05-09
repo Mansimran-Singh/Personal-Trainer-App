@@ -85,6 +85,12 @@ class AllWorkoutsFragment : Fragment() {
 
         }
 
+        view.findViewById<FloatingActionButton>(R.id.btn_tutorial).setOnClickListener {
+            val intent = Intent(activity.applicationContext, TutorialActivity::class.java)
+            startActivity(intent)
+            activity.finish()
+        }
+
         val docRef = FirestoreClass().mFireStore.collection(Constants.USERS).document(loggedUser.id)
         docRef.get()
         docRef.addSnapshotListener { snapshot, e ->

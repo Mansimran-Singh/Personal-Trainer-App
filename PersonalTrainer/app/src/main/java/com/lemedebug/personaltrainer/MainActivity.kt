@@ -85,8 +85,6 @@ class MainActivity : AppCompatActivity() {
 
         btn_get_inspired.setOnClickListener {
             //Launching the Inspiration Activity
-//            val intent = Intent(this, InspirationActivity::class.java)
-//            startActivity(intent)
             customDialogForBuyCoffee()
         }
 

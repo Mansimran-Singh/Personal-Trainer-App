@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PersonalTrainer">
-
+        <activity android:name=".TutorialActivity"></activity>
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait"
@@ -23,36 +23,38 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".HistoryActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".FinishActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".playworkout.ExerciseActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".userlogin.RegisterActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".userlogin.ForgotPasswordActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".userlogin.LoginActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".WorkoutActivity"
+        <activity
+            android:name=".HistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FinishActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".playworkout.ExerciseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".userlogin.RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".userlogin.ForgotPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".userlogin.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WorkoutActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BMIActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".BMIActivity"
-            android:screenOrientation="portrait" />
+        <receiver android:name=".alarmmanager.AlarmReceiver" />
 
-        <activity android:name=".MainActivity"
-            android:screenOrientation="portrait"/>
-
-        <receiver android:name=".alarmmanager.AlarmReceiver"/>
-        <service android:name=".alarmmanager.NotificationService"
+        <service
+            android:name=".alarmmanager.NotificationService"
             android:enabled="true"
             tools:ignore="Instantiatable" />
     </application>

@@ -64,6 +64,8 @@ dependencies {
     def lottieVersion = "3.4.0"
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
+    // ViewPager
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
 
 
     // GSON
@@ -72,18 +74,21 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
-    implementation 'com.google.android.material:material:1.0.0'
-
+    // glide
     implementation 'com.github.bumptech.glide:glide:4.12.0'
 
+    // sharp
     implementation 'com.squareup.okhttp3:okhttp:3.14.9'
     implementation 'com.pixplicity.sharp:library:1.1.0'
 
+    //viewModel
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
 
+    // ion
     implementation "com.koushikdutta.ion:ion:3.1.0"
 
+    // piccaso
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

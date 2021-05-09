@@ -13,6 +13,7 @@
     <color name="colorAccent">#ED2173</color>
     <color name="colorDarkLightAccent">#E3D5DA</color>
     <color name="colorLightAccent">#ECE8EA</color>
+    <color name="colorInactive">#A8E671A0</color>
 
     <color name="colorThemePink">#ED2173</color>
     <color name="colorThemeOrange">#F4442d</color>
