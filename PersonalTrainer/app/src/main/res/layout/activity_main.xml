@@ -283,12 +283,12 @@
                             android:layout_width="120dp"
                             android:layout_height="120dp"
                             android:layout_gravity="center"
-                            android:contentDescription="GET INSPIRED"
+                            android:contentDescription="SUPPORT US"
                             android:gravity="center"
                             android:scaleType="fitCenter"
                             app:lottie_autoPlay="true"
                             app:lottie_loop="true"
-                            app:lottie_rawRes="@raw/ic_get_inspired" />
+                            app:lottie_rawRes="@raw/ic_support_us" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -296,7 +296,7 @@
                             android:fontFamily="monospace"
                             android:gravity="center"
                             android:padding="10dp"
-                            android:text="GET INSPIRED"
+                            android:text="SUPPORT US"
                             android:textColor="@color/black"
                             android:textSize="14sp"
                             android:textStyle="bold" />

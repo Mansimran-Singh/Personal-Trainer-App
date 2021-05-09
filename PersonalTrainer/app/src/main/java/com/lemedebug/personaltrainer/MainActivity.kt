@@ -2,12 +2,19 @@ package com.lemedebug.personaltrainer
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
+import android.view.View
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -23,6 +30,8 @@ import com.lemedebug.personaltrainer.models.User
 import com.lemedebug.personaltrainer.utils.Constants
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.dialog_custom_back_confirmation.*
+import kotlinx.android.synthetic.main.layout_buy_coffee.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -76,8 +85,9 @@ class MainActivity : AppCompatActivity() {
 
         btn_get_inspired.setOnClickListener {
             //Launching the Inspiration Activity
-            val intent = Intent(this, InspirationActivity::class.java)
-            startActivity(intent)
+//            val intent = Intent(this, InspirationActivity::class.java)
+//            startActivity(intent)
+            customDialogForBuyCoffee()
         }
 
         btn_log_out.setOnClickListener {
@@ -194,6 +204,67 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Function is used to launch the custom buy me coffee layout.
+     */
+    @SuppressLint("SetJavaScriptEnabled")
+    private fun customDialogForBuyCoffee() {
+        val customDialog = Dialog(this)
+        customDialog.setContentView(R.layout.layout_buy_coffee)
 
+        setSupportActionBar(customDialog.toolbar_buy_coffee)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true) //set back button
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
+        supportActionBar?.title="SUPPORT US"
+
+        customDialog.toolbar_buy_coffee.setNavigationOnClickListener {
+            customDialog.dismiss()
+        }
+
+
+        customDialog.web_view.loadUrl("https://www.buymeacoffee.com/MansimranSingh")
+        customDialog.web_view.settings.javaScriptEnabled = true
+
+
+        // If you want more control over where a clicked link loads,
+        // create your own WebViewClient that overrides the shouldOverrideUrlLoading() method.
+        customDialog.web_view.webViewClient = object : WebViewClient(){
+
+            // shouldOverrideUrlLoading() checks whether the URL host matches a specific domain
+            // If it matches, then the method returns false in order to not override the URL loading
+            // (it allows the WebView to load the URL as usual).
+            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                view?.loadUrl(request?.url.toString())
+                return true
+            }
+
+            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                super.onPageStarted(view, url, favicon)
+                // show the progress bar
+                customDialog.progress_bar.visibility = View.VISIBLE
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                // hide the progress bar
+                customDialog.progress_bar.visibility = View.GONE
+            }
+        }
+
+        //Start the dialog and display it on screen.
+        customDialog.show()
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        // Check if the key event was the Back button and if there's history
+        if (keyCode == KeyEvent.KEYCODE_BACK && web_view.canGoBack()) {
+            web_view.goBack()
+            return true
+        }
+        // If it wasn't the Back key or there's no web page history, bubble up to the default
+        // system behavior (probably exit the activity)
+        return super.onKeyDown(keyCode, event)
+    }
 
 }
