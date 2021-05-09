@@ -106,8 +106,8 @@ class HistoryActivity : AppCompatActivity() {
         xAxis.textSize = 11f
         val leftAxis = barChart.getAxisLeft()
         leftAxis.textSize = 14f
-        leftAxis.setLabelCount(1, false)
-        leftAxis.axisMaximum = 10f
+        leftAxis.setLabelCount(4, false)
+        leftAxis.axisMaximum = 20f
         leftAxis.axisMinimum = 0f
         leftAxis.setGranularity(1f)
 
@@ -116,7 +116,7 @@ class HistoryActivity : AppCompatActivity() {
         rAxis.setEnabled(false);
 
         barChart.setDragEnabled(true);
-        barChart.setVisibleXRangeMaximum(3F);
+        barChart.setVisibleXRangeMaximum(2F);
         val barSpace = 0.1f
         val groupSpace = 0.5f
         data.setBarWidth(0.15f);

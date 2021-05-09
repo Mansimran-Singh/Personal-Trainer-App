@@ -53,13 +53,9 @@ class InspirationActivity : AppCompatActivity() {
                     val body = response?.body()?.string() ?: return@post
                     val gsonBody = GsonBuilder().create()
                     val randomQuote = gsonBody.fromJson(body, RandomQuote::class.java)
+                    tv_quote.text = randomQuote.quote
+                    tv_author_name.text = "- ${randomQuote.author}"
 
-                    if (randomQuote==null){
-                        tv_quote.text = "Come Back Later"
-                    }else{
-                        tv_quote.text = randomQuote.quote
-                        tv_author_name.text = "- ${randomQuote.author}"
-                    }
                 }
             }
         })

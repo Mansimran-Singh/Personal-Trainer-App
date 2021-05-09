@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.lemedebug.personaltrainer">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -33,7 +34,6 @@
             android:screenOrientation="portrait"/>
 
         <activity android:name=".playworkout.ExerciseActivity"
-
             android:screenOrientation="portrait"/>
 
         <activity android:name=".userlogin.RegisterActivity"
@@ -56,7 +56,8 @@
 
         <receiver android:name=".alarmmanager.AlarmReceiver"/>
         <service android:name=".alarmmanager.NotificationService"
-            android:enabled="true"/>
+            android:enabled="true"
+            tools:ignore="Instantiatable" />
     </application>
 
 </manifest>

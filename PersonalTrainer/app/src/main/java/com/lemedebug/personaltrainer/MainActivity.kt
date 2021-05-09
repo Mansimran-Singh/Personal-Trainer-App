@@ -8,6 +8,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
@@ -118,6 +119,7 @@ class MainActivity : AppCompatActivity() {
                             this.set(Calendar.HOUR_OF_DAY, hour)
                             this.set(Calendar.MINUTE, minute)
                             callback(this.timeInMillis)
+                            Toast.makeText(this@MainActivity,"Successfully Scheduled a Recurring Reminder",Toast.LENGTH_SHORT).show()
                         },
                         this.get(Calendar.HOUR_OF_DAY),
                         this.get(Calendar.MINUTE),
@@ -168,7 +170,7 @@ class MainActivity : AppCompatActivity() {
         val randomExerciseAPI = retrofit.create(ExerciseService::class.java)
         randomExerciseAPI.getExerciseList(2, 250).enqueue(object : Callback<ExerciseData> {
             override fun onResponse(call: Call<ExerciseData>, response: Response<ExerciseData>) {
-                Log.d("Main", "OnResponse: $response")
+//                Log.d("Main", "OnResponse: $response")
                 val body = response.body()
                 if (body == null) {
                     Log.d("Main", "Invalid Response Found")

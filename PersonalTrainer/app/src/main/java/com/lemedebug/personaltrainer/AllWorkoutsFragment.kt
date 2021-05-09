@@ -111,7 +111,7 @@ class AllWorkoutsFragment : Fragment() {
                 )
                 editor.apply()
 
-                Log.d("onstart", "DocumentSnapshot data: ${snapshot.data}")
+//                Log.d("onstart", "DocumentSnapshot data: ${snapshot.data}")
             } else {
                 //Log.d(TAG, "No such document")
             }
