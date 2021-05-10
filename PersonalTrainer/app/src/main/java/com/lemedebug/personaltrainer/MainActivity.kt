@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // signout activity
+        // sign out activity
         btn_log_out.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
 
@@ -102,6 +102,11 @@ class MainActivity : AppCompatActivity() {
         btn_reminder.setOnClickListener{
             alarmService = NotificationService(this)
             setAlarm() { alarmService.setRepetitiveAlarm(it) }
+        }
+
+        btn_get_inspired.setOnClickListener {
+            //Launching the support dialog
+            customDialogForBuyCoffee()
         }
 
 

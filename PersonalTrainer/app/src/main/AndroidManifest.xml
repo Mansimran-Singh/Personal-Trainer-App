@@ -46,6 +46,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".BMIActivity"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"

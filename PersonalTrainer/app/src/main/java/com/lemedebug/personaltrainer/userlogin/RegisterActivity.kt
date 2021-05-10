@@ -1,8 +1,16 @@
 package com.lemedebug.personaltrainer.userlogin
 
+import android.annotation.SuppressLint
+import android.app.Dialog
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.KeyEvent
+import android.view.View
 import android.view.WindowManager
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Toast
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
@@ -12,6 +20,7 @@ import com.lemedebug.personaltrainer.R
 import com.lemedebug.personaltrainer.models.User
 import com.lemedebug.personaltrainer.firestore.FirestoreClass
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.layout_buy_coffee.*
 
 @Suppress("DEPRECATION")
 class RegisterActivity : BaseActivity() {
@@ -37,6 +46,10 @@ class RegisterActivity : BaseActivity() {
         tv_login.setOnClickListener{
 
             onBackPressed()
+        }
+
+        tv_terms_condition.setOnClickListener {
+            customDialogForTermsAndConditions()
         }
     }
 
@@ -176,6 +189,71 @@ class RegisterActivity : BaseActivity() {
         // Finish the Sign-Up Screen
         finish()
 
+    }
+
+
+
+    /**
+     * Function is used to launch the terms and conditions.
+     */
+    @SuppressLint("SetJavaScriptEnabled")
+    private fun customDialogForTermsAndConditions() {
+        val customDialog = Dialog(this)
+        customDialog.setContentView(R.layout.layout_buy_coffee)
+
+        setSupportActionBar(customDialog.toolbar_buy_coffee)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true) //set back button
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
+        supportActionBar?.title="TERMS & CONDITIONS"
+
+        customDialog.toolbar_buy_coffee.setNavigationOnClickListener {
+            customDialog.dismiss()
+        }
+
+
+        customDialog.web_view.loadUrl("https://www.termsfeed.com/live/3d289b25-008b-4aaa-9004-ef4f46ce3b8f")
+        customDialog.web_view.settings.javaScriptEnabled = true
+
+
+        // If you want more control over where a clicked link loads,
+        // create your own WebViewClient that overrides the shouldOverrideUrlLoading() method.
+        customDialog.web_view.webViewClient = object : WebViewClient(){
+
+            // shouldOverrideUrlLoading() checks whether the URL host matches a specific domain
+            // If it matches, then the method returns false in order to not override the URL loading
+            // (it allows the WebView to load the URL as usual).
+            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                view?.loadUrl(request?.url.toString())
+                return true
+            }
+
+            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                super.onPageStarted(view, url, favicon)
+                // show the progress bar
+                customDialog.progress_bar.visibility = View.VISIBLE
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                // hide the progress bar
+                customDialog.progress_bar.visibility = View.GONE
+            }
+        }
+
+        //Start the dialog and display it on screen.
+        customDialog.show()
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        // Check if the key event was the Back button and if there's history
+        if (keyCode == KeyEvent.KEYCODE_BACK && web_view.canGoBack()) {
+            web_view.goBack()
+            return true
+        }
+        // If it wasn't the Back key or there's no web page history, bubble up to the default
+        // system behavior (probably exit the activity)
+        return super.onKeyDown(keyCode, event)
     }
 
 }
