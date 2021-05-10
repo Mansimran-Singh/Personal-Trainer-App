@@ -15,12 +15,14 @@ import com.lemedebug.personaltrainer.R
 
 class AlarmReceiver: BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        // set alarm time
         val timeInMillis = intent.getLongExtra(Constants.EXTRA_EXACT_ALARM_TIME, 0L)
         when (intent.action) {
             Constants.ACTION_SET_EXACT -> {
                 buildNotification(context, "Set Exact Time", convertDate(timeInMillis))
             }
 
+            // build notification for workout reminder
             Constants.ACTION_SET_REPETITIVE_EXACT -> {
                 setRepetitiveAlarm(NotificationService(context))
                 buildNotification(context, "Workout Reminder", convertDate(timeInMillis))
@@ -28,6 +30,7 @@ class AlarmReceiver: BroadcastReceiver() {
         }
     }
 
+    // build notification
     private fun buildNotification(context: Context, title: String, message: String) {
         Notify
                 .with(context)
@@ -48,6 +51,7 @@ class AlarmReceiver: BroadcastReceiver() {
                 .show()
     }
 
+    // repeat alarm
     private fun setRepetitiveAlarm(alarmService: NotificationService) {
         val cal = Calendar.getInstance().apply {
             this.timeInMillis = timeInMillis + TimeUnit.DAYS.toMillis(1)

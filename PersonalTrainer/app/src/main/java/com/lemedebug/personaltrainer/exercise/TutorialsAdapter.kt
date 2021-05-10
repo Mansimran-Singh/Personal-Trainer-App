@@ -27,6 +27,7 @@ class TutorialsAdapter(private val tutorialList:ArrayList<TutorialItem>): Recycl
         return TutorialsViewHolder(view)
     }
 
+    // tutorials display
     override fun onBindViewHolder(holder: TutorialsViewHolder, position: Int) {
         val activity: AppCompatActivity = holder.textTitle.context as AppCompatActivity
 

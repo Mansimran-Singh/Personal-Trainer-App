@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lemedebug.personaltrainer.R
 import com.lemedebug.personaltrainer.models.SelectedExercise
 class CreateWorkoutAdapter (private var selectedExerciseList: ArrayList<SelectedExercise?>) : RecyclerView.Adapter<CreateWorkoutAdapter.CreateWorkoutAdapterViewHolder>() {
-
+    // variables declaration for exercise name and repetation
     inner class CreateWorkoutAdapterViewHolder(selectedExerciseView: View): RecyclerView.ViewHolder(selectedExerciseView){
         val name = selectedExerciseView.findViewById<TextView>(R.id.tv_exercise_name_edit_workout)
         val reps = selectedExerciseView.findViewById<TextView>(R.id.tv_exercise_reps_edit_workout)

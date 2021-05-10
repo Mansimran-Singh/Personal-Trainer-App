@@ -33,7 +33,7 @@ class EditWorkoutAdapter(private var exerciseList: ArrayList<SelectedExercise?>)
 
     private var exercise: Exercise? = null
 
-
+    //variable declaration
     inner class EditWorkoutAdapterViewHolder(exerciseView: View): RecyclerView.ViewHolder(exerciseView){
         val removeButton = exerciseView.findViewById<TextView>(R.id.btn_remove_selected)
         val name = exerciseView.findViewById<TextView>(R.id.tv_exercise_name_edit_workout)
@@ -73,12 +73,13 @@ class EditWorkoutAdapter(private var exerciseList: ArrayList<SelectedExercise?>)
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: EditWorkoutAdapterViewHolder, position: Int) {
         val editActivity: AppCompatActivity = holder.expandedView.context as AppCompatActivity
-
+        //shared pref for the logged user
         val sharedPreferences = editActivity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
         val user = sharedPreferences.getString(Constants.LOGGED_USER, "")
         val sType = object : TypeToken<User>() { }.type
         val loggedUser = Gson().fromJson<User>(user, sType) as User
 
+        // fill details on view with current workout with back and front muscle images , details , comments ., equipment
         val currentItem = exerciseList[position]!!.exercise
 
         holder.comments.visibility = View.VISIBLE
@@ -142,7 +143,7 @@ class EditWorkoutAdapter(private var exerciseList: ArrayList<SelectedExercise?>)
                 arrayBackMuscles.add(m)
             }
         }
-
+        // display muscles SVG
         for (i in currentItem.muscles_secondary.indices) {
             val m = Muscles(currentItem.muscles_secondary[i].image_url_secondary,currentItem.muscles_secondary[i]._front)
             if (currentItem.muscles_secondary[i]._front == true) {
@@ -174,11 +175,6 @@ class EditWorkoutAdapter(private var exerciseList: ArrayList<SelectedExercise?>)
             holder.comments.visibility = View.GONE
             holder.commentsLabel.visibility = View.GONE
         }
-
-//#F0EEFE
-
-
-
         holder.exerciseLinearLayout.setOnClickListener {
             notifyDataSetChanged()
             exercise = exerciseList[position]?.exercise
@@ -186,13 +182,13 @@ class EditWorkoutAdapter(private var exerciseList: ArrayList<SelectedExercise?>)
 
 
 
+        // add visibility of expand view and remove button
+
         if (exercise == exerciseList[position]?.exercise){
             holder.expandedView.visibility =  View.VISIBLE
             holder.removeButton.visibility = View.VISIBLE
             holder.cardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
 
-//            holder.image.animate().alpha(0F).setDuration(6000)
-//            holder.imageBehind.animate().alpha(1F).setDuration(6000)
             if (currentItem.images.isNotEmpty()){
                 holder.exerciseImageLayout.visibility = View.VISIBLE
                 mainImageAnimation(holder)
@@ -206,20 +202,17 @@ class EditWorkoutAdapter(private var exerciseList: ArrayList<SelectedExercise?>)
             holder.cardView.setCardBackgroundColor(Color.parseColor("#E9EDF0"))
         }
 
-
-
-
-//        holder.name.text = currentItem?.exercise?.name
+        // remove selected exercise from list and notify recycler view and Firestore
         holder.reps.text = exerciseList[position]!!.reps.toString() + " Reps"
         holder.removeButton.setOnClickListener {
             val selectedItem = exerciseList[position]
             exerciseList.remove(selectedItem)
-//            notifyItemRemoved(selectedItem)
             notifyDataSetChanged()
 
             if (loggedUser.workoutList.contains(selectedItem)){
                 loggedUser.workoutList.remove(selectedItem)
                 FirestoreClass().updateWorkoutList(editActivity,loggedUser)
+
             }
         }
 

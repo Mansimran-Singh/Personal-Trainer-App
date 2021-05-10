@@ -60,12 +60,12 @@ class HistoryActivity : AppCompatActivity() {
 
                 Log.d("onstart", "DocumentSnapshot data: ${snapshot.data}")
             } else {
-                //Log.d(TAG, "No such document")
+
             }
         }
 
 
-
+       // add bar chart of the completed workouts
         user = sharedPreferences.getString(Constants.LOGGED_USER, "")
         sType = object : TypeToken<User>() {}.type
         loggedUser = Gson().fromJson(user, sType) as User
@@ -97,6 +97,7 @@ class HistoryActivity : AppCompatActivity() {
         barChart.setData(data);
         barChart.getDescription().setEnabled(false);
 
+        // X and Y axis variables
         val xAxis = barChart.xAxis
         xAxis.setValueFormatter(IndexAxisValueFormatter(days));
         xAxis.setCenterAxisLabels(true);

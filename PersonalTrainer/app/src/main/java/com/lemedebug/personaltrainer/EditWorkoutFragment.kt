@@ -63,6 +63,7 @@ class EditWorkoutFragment : Fragment() {
         }
 
 
+
         view.findViewById<TextView>(R.id.tv_workout_name_edit_fragment).text = viewModel.selectedWorkout?.name.toString()
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.rv_workout_specific_exercise_list)
@@ -95,7 +96,9 @@ class EditWorkoutFragment : Fragment() {
 
         view.findViewById<FloatingActionButton>(R.id.btn_save_workout).setOnClickListener {
 
-            //if(selExercise.exercise != null && selExercise.reps!=null){
+           // check if exercise list is null
+            // if so give a message and dont save
+            // if exercise exists in list then save list
             if(viewModel.selectedExercise.exercise != null && viewModel.selectedExercise.reps!=null){
                 if (loggedUser.workoutList.isEmpty()){
                     viewModel.selectedWorkout?.let { it1 -> loggedUser.workoutList.add(it1) }
@@ -145,14 +148,9 @@ class EditWorkoutFragment : Fragment() {
 
                 }
 
-
-//                selectedExerciseList.add(viewModel.selectedExercise)
-//
-//                val workoutInfo = loggedUser.workoutList as ArrayList<Workout>
-//                workoutInfo.add(Workout(viewModel.selectedWorkout?.name,selectedExerciseList))
-
-
             }
+
+
 
             val textViewWorkOutName = view.findViewById<TextView>(R.id.tv_workout_name_edit_fragment)
             textViewWorkOutName.text = viewModel.selectedWorkout?.name

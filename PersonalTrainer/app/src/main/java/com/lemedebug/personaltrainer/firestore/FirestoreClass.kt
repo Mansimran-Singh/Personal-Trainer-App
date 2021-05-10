@@ -20,6 +20,7 @@ class FirestoreClass {
 
     val mFireStore = FirebaseFirestore.getInstance()
 
+    // register user to Firestor at registration activity
     fun registerUser(activity: RegisterActivity, userInfo: User){
         mFireStore.collection(Constants.USERS)
                 // document UID
@@ -37,6 +38,7 @@ class FirestoreClass {
                 }
     }
 
+    // updated logged in user
     fun updateUser(activity: Activity, userInfo: User){
         mFireStore.collection(Constants.USERS)
                 // document UID
@@ -52,6 +54,7 @@ class FirestoreClass {
                 }
     }
 
+    // get current logged in user id from Firestore
     fun getCurrentUserID(): String {
 
         val currentUser = FirebaseAuth.getInstance().currentUser
@@ -63,6 +66,7 @@ class FirestoreClass {
         return currentUserID
     }
 
+    // get user details from Firestore
     fun getUserDetails(activity: AppCompatActivity){
         mFireStore.collection(Constants.USERS)
                 .document(getCurrentUserID())
@@ -79,14 +83,6 @@ class FirestoreClass {
                             )
 
                     val editor: SharedPreferences.Editor = sharedPreferences.edit()
-//                    editor.putString(
-//                            Constants.LOGGED_IN_USERNAME,
-//                            "${user.firstName} ${user.lastName}"
-//                    )
-//                    editor.apply()
-
-//                    val viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
-////                    viewModel.user = user
 
                     // Convert Workouts to json
                     val jsonArrayLoggedUser = Gson().toJson(user)
@@ -95,10 +91,6 @@ class FirestoreClass {
                             jsonArrayLoggedUser
                     )
                     editor.apply()
-
-//
-//                    Log.e("USER","${viewModel.user}")
-//                    Log.e("USER","${user}")
 
                     // Convert Workouts to json
                     val jsonArrayWorkouts = Gson().toJson(user.workoutList)
@@ -119,6 +111,8 @@ class FirestoreClass {
                 }
     }
 
+
+    // get all exercise list from Firestore
     fun getExerciseList(activity: Activity){
 
         val sharedPreferences = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
@@ -129,7 +123,7 @@ class FirestoreClass {
 
             mFireStore.collection(Constants.EXERCISES)
                     .orderBy("name")  // Here you can also use orderBy to sort the results based on a field such as id
-                    //.orderBy("id", Query.Direction.DESCENDING)  // this would be used to orderBy in DESCENDING order
+
                     .get()
                     .addOnSuccessListener { documents ->
 
@@ -157,7 +151,7 @@ class FirestoreClass {
 
     }
 
-
+    // add exercise to Firestore
     fun addExerciseList(activity: Activity, exerciseInfo: Exercise){
         mFireStore.collection(Constants.EXERCISES)
                 // document UID
@@ -166,37 +160,38 @@ class FirestoreClass {
                 .set(exerciseInfo, SetOptions.merge())
                 // On Success listener
                 .addOnSuccessListener {
-//                    Log.e("ExerciseList","Successfully added")
+
                 }
                 // on fail
                 .addOnFailureListener {
-//                    Log.e("ExerciseList","Failure adding")
+
                 }
     }
 
+    // update selected workout for user
     fun updateWorkoutList(activity: Activity, userInfo: User) {
         val docRef = mFireStore.collection(Constants.USERS).document(userInfo.id)
         docRef.update("workoutList",userInfo.workoutList)
                 // On Success listener
                 .addOnSuccessListener {
-//                    Log.e("ExerciseList","Successfully added")
                 }
                 // on fail
                 .addOnFailureListener {
-//                    Log.e("ExerciseList","Failure adding")
+
                 }
     }
 
+    // add completed workout to user list
     fun updateCompletedWorkoutList(activity: Activity, userInfo: User) {
         val docRef = mFireStore.collection(Constants.USERS).document(userInfo.id)
         docRef.update("completedWorkoutList",userInfo.completedWorkoutList)
             // On Success listener
             .addOnSuccessListener {
-//                    Log.e("ExerciseList","Successfully added")
+
             }
             // on fail
             .addOnFailureListener {
-//                    Log.e("ExerciseList","Failure adding")
+
             }
     }
 

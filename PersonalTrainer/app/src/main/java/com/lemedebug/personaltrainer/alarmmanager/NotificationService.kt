@@ -12,7 +12,7 @@ class NotificationService(private val context: Context) {
             context.getSystemService(Context.ALARM_SERVICE) as AlarmManager?
 
 
-    //Every Day
+    //Every Day Alarm
     fun setRepetitiveAlarm(timeInMills: Long){
         setAlarm(
                 timeInMills,
@@ -25,6 +25,7 @@ class NotificationService(private val context: Context) {
         )
     }
 
+    // set Alarm
     private fun setAlarm(timeInMills: Long, pendingIntent: PendingIntent){
         alarmManager?.let {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){

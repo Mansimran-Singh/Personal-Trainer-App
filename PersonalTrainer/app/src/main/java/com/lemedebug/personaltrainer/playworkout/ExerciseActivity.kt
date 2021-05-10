@@ -275,10 +275,10 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
                 val path =  "https://wger.de${exerciseList!![currentExercisePosition].muscles[i].image_url_main}"
                 if (exerciseList!![currentExercisePosition].muscles[i]._front == true){
                     Utils.fetchSvg(iv_muscle_front.context, path, iv_muscle_front)
-//                        Picasso.get().load(path).into(holder.muscleFront)
+
                 }else{
                     Utils.fetchSvg(iv_muscle_back.context, path, iv_muscle_back)
-//                        Picasso.get().load(path).into(holder.muscleBack)
+
                 }
             }
         }
@@ -289,10 +289,10 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
             Log.d("EXERCISE_ADAPTER", path)
             if (exerciseList!![currentExercisePosition].muscles_secondary[0]._front == true){
                 Utils.fetchSvg(iv_muscle_front.context, path, iv_muscle_front)
-//                        Picasso.get().load(path).into(holder.muscleFront)
+
             }else{
                 Utils.fetchSvg(iv_muscle_back.context, path, iv_muscle_back)
-//                        Picasso.get().load(path).into(holder.muscleBack)
+
             }
         }
 

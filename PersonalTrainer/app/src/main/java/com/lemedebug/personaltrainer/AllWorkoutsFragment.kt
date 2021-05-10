@@ -71,7 +71,6 @@ class AllWorkoutsFragment : Fragment() {
         var recyclerView = view.findViewById<RecyclerView>(R.id.rv_all_workouts)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-//        getData()
 
         view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_all_workouts).setNavigationOnClickListener {
             // Change it to required fragment back button
@@ -79,18 +78,18 @@ class AllWorkoutsFragment : Fragment() {
         }
 
 
-
+       // add new workout button code
         view.findViewById<FloatingActionButton>(R.id.btn_add_new_workout).setOnClickListener {
             showDialog(activity)
 
         }
-
+       // tutorial for workout
         view.findViewById<FloatingActionButton>(R.id.btn_tutorial).setOnClickListener {
             val intent = Intent(activity.applicationContext, TutorialActivity::class.java)
             startActivity(intent)
             activity.finish()
         }
-
+        // get snapshot of live data from Firestore
         val docRef = FirestoreClass().mFireStore.collection(Constants.USERS).document(loggedUser.id)
         docRef.get()
         docRef.addSnapshotListener { snapshot, e ->
@@ -116,10 +115,8 @@ class AllWorkoutsFragment : Fragment() {
                         jsonArrayLoggedUser
                 )
                 editor.apply()
-
-//                Log.d("onstart", "DocumentSnapshot data: ${snapshot.data}")
             } else {
-                //Log.d(TAG, "No such document")
+
             }
         }
 
@@ -129,8 +126,10 @@ class AllWorkoutsFragment : Fragment() {
 
 
     private fun showDialog(activity: AppCompatActivity) {
-        // viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
-
+       // dialog for Create workout
+        // check if name of workout already exists if so give message
+        // if name does not exists then create new workout
+        // save data to firestore
         val builder = AlertDialog.Builder(activity)
         val inflater = layoutInflater
         val dialogLayout = inflater.inflate(R.layout.edittext_workout_name, null)

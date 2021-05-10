@@ -36,13 +36,13 @@ import kotlin.collections.ArrayList
 
 
 class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>(),Filterable {
-
+    // variable declaration
     private var exercise: Exercise? = null
     private var tempexerciseList: ArrayList<Exercise> = exerciseList
     private var arrayFrontMuscles = ArrayList<Muscles>()
     private var arrayBackMuscles = ArrayList<Muscles>()
 
-
+    // get data from view items
     inner class ExerciseViewHolder(exerciseView: View):RecyclerView.ViewHolder(exerciseView){
         val expandedView: LinearLayout = exerciseView.findViewById(R.id.expanded_view)
         val exerciseName: TextView = exerciseView.findViewById(R.id.tv_name)
@@ -80,7 +80,7 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
     override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
 
 
-
+        // display front and back muscles, details, equipment, comments of selected exercise
         holder.comments.visibility = View.VISIBLE
         holder.commentsLabel.visibility = View.VISIBLE
 
@@ -133,9 +133,6 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
         }
         Log.d("EXERCISE_ADAPTER", currentItem.name)
 
-
-//#F0EEFE
-
         val activity: AppCompatActivity = holder.expandedView.context as AppCompatActivity
         val selectedItemName: TextView = activity.findViewById(R.id.tv_selected_item)
         val viewModel_item = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
@@ -165,6 +162,7 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
             }
         }
 
+        // display muscles SVGs
         val frontMuscleAdapter  = MuscleAdapter(arrayFrontMuscles)
         frontMuscleAdapter.notifyDataSetChanged()
 
@@ -198,8 +196,6 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
             holder.expandedView.visibility =  View.VISIBLE
             holder.cardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
 
-//            holder.image.animate().alpha(0F).setDuration(6000)
-//            holder.imageBehind.animate().alpha(1F).setDuration(6000)
             if (currentItem.images.isNotEmpty()){
                 holder.exerciseImageLayout.visibility = View.VISIBLE
                 mainImageAnimation(holder)
@@ -212,6 +208,7 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
             holder.cardView.setCardBackgroundColor(Color.parseColor("#E9EDF0"))
         }
 
+        // add exercise to created or selected list when add button pressed
         val addButton = activity.findViewById<FloatingActionButton>(R.id.btn_add_selected)
         addButton.setOnClickListener {
             if(exercise==null){
@@ -237,7 +234,6 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
                 editor.apply()
 
                 showDialog(activity)
-//                handleImageView(holder,exercise!!.images)
 
             }
 
@@ -270,7 +266,6 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
             if (selectedReps<1){
                 Toast.makeText(activity.applicationContext, "Please select Reps to add", Toast.LENGTH_SHORT).show()
             }else{
-                //viewModel.selectedExercise!!.reps = selectedReps
 
                 selExercise.reps = selectedReps
 
@@ -294,7 +289,7 @@ class ExerciseAdapter(private var exerciseList: ArrayList<Exercise>) : RecyclerV
             }
         }
         builder.setNeutralButton("Cancel"){ dialog, which ->
-            //viewModel.selectedExercise?.reps = null
+
         }
 
 

@@ -65,11 +65,14 @@ class MainActivity : AppCompatActivity() {
         main_title.text = "Welcome ${loggedUser.firstName}!"
 
 
+        //bmi activity
         btn_bmi_calculator.setOnClickListener {
             // Launching the BMI Activity
             val intent = Intent(this, BMIActivity::class.java)
             startActivity(intent)
         }
+
+        //History activity
         btn_history.setOnClickListener {
             //Launching the HistoryActivity
             val intent = Intent(this, HistoryActivity::class.java)
@@ -77,17 +80,14 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // workout activity
         btn_workout.setOnClickListener {
             //Launching the WorkoutActivity
             val intent = Intent(this, WorkoutActivity::class.java)
             startActivity(intent)
         }
 
-        btn_get_inspired.setOnClickListener {
-            //Launching the Inspiration Activity
-            customDialogForBuyCoffee()
-        }
-
+        // signout activity
         btn_log_out.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
 
@@ -98,17 +98,16 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
+        //notification service call
         btn_reminder.setOnClickListener{
             alarmService = NotificationService(this)
             setAlarm() { alarmService.setRepetitiveAlarm(it) }
         }
 
 
-//        updateExerciseDocument()
-
     }
 
-
+    // reminder activity
     private fun setAlarm(callback: (Long) -> Unit) {
         Calendar.getInstance().apply {
             this.set(Calendar.SECOND, 0)

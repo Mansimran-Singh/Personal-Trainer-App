@@ -35,9 +35,6 @@ class FinishActivity : AppCompatActivity() {
         val dateTime = c.time // Current Date and Time of the system.
         Log.e("Date : ", "" + dateTime)
 
-        //val sdf = SimpleDateFormat("EEE, d MMM yyyy HH:mm", Locale.getDefault()) // Date Formatter
-        //val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
-        //val date  = sdf.format(formatter)
         val sdf = SimpleDateFormat("EEE, d MMM yyyy HH:mm", Locale.getDefault()) // Date Formatter
         val date = sdf.format(dateTime) // dateTime is formatted in the given format.
         Log.e("Formatted Date : ", "" + date)
@@ -47,7 +44,7 @@ class FinishActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
         supportActionBar?.title="FINISHED"
 
-
+        // save details f completed workout list, date and time and no of exercises to user document in Firestore
         val sharedPreferences = getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
         val user = sharedPreferences.getString(Constants.LOGGED_USER,"")
         val sType = object : TypeToken<User>() { }.type
@@ -82,7 +79,7 @@ class FinishActivity : AppCompatActivity() {
 
                 Log.d("onstart", "DocumentSnapshot data: ${snapshot.data}")
             } else {
-                //Log.d(TAG, "No such document")
+
             }
         }
 

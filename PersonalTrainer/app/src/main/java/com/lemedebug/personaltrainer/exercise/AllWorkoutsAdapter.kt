@@ -32,6 +32,7 @@ import kotlin.collections.ArrayList
 
 class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : RecyclerView.Adapter<AllWorkoutsAdapter.AllWorkoutsAdapterViewHolder>() {
 
+    // variable declaration for workouts
     private var workout:Workout? = null
     inner class AllWorkoutsAdapterViewHolder(workoutView: View): RecyclerView.ViewHolder(workoutView){
         val cv = workoutView.findViewById<CardView>(R.id.cv_workout_short)
@@ -58,14 +59,15 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: AllWorkoutsAdapterViewHolder, position: Int) {
-
+       // get the selected workout in current item
         val activity: AppCompatActivity = holder.cv.context as AppCompatActivity
 
         val currentItem = workoutList[position]
         holder.name.text = currentItem.name
         holder.exerciseCount.text = currentItem.listSelectedExercises.size.toString() + " Exercises"
 
-
+        // check if workout has any exercises
+        // if null give message else play workout
         if (workout != null && currentItem == workout){
             val sharedPreferences = activity.getSharedPreferences(Constants.PT_PREFERENCES, Context.MODE_PRIVATE)
             val user = sharedPreferences.getString(Constants.LOGGED_USER, "")
@@ -97,7 +99,7 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
             }
 
 
-
+            // edit workout button press to selected edit workout
             holder.editButton.setOnClickListener {
 
                 activity.supportFragmentManager.beginTransaction()
@@ -105,6 +107,7 @@ class AllWorkoutsAdapter(private var workoutList: ArrayList<Workout>) : Recycler
                         .commit()
             }
 
+            // delete workout from recycler view and Firestore
             holder.deleteButton.setOnClickListener {
                 // Launch Dialog
                 val customDialog = Dialog(activity)

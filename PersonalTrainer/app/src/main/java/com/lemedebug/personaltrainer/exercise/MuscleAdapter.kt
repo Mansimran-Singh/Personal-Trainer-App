@@ -24,7 +24,7 @@ class MuscleAdapter(private var muscleList: ArrayList<Muscles>) : RecyclerView.A
         )
         return MuscleAdapterViewHolder(view)
     }
-
+    // get muscles from URL
     override fun onBindViewHolder(holder: MuscleAdapterViewHolder, position: Int) {
         val currentItem = muscleList[position]
         val path = "https://wger.de${currentItem.image_url}"

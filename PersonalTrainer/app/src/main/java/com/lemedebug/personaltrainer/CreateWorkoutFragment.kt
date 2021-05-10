@@ -56,6 +56,7 @@ class CreateWorkoutFragment : Fragment() {
         lateinit var adapter: CreateWorkoutAdapter
         val viewModel = ViewModelProvider(activity).get(ExerciseViewModel::class.java)
 
+        //
         view.findViewById<TextView>(R.id.tv_workout_name_create_fragment).text = viewModel.selectedWorkout?.name.toString()
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.rv_workout_specific_exercise_list)
@@ -73,7 +74,7 @@ class CreateWorkoutFragment : Fragment() {
         }
 
 
-
+        // call view all exercise fragment
         view.findViewById<FloatingActionButton>(R.id.btn_show_all_exercises).setOnClickListener {
 
             requireActivity().supportFragmentManager.beginTransaction()
@@ -83,7 +84,7 @@ class CreateWorkoutFragment : Fragment() {
 
         }
 
-
+        // save workout to firestore and list
         view.findViewById<FloatingActionButton>(R.id.btn_save_workout).setOnClickListener {
 
                 if (loggedUser.workoutList.isEmpty()){

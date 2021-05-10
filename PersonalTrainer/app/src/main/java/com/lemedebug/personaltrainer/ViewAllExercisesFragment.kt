@@ -30,7 +30,7 @@ class ViewAllExercisesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        getData()
+
 
     }
 
@@ -77,7 +77,7 @@ class ViewAllExercisesFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
-
+            // spinner list filter
             override fun onQueryTextChange(newText: String?): Boolean {
                 exerciseList = tempList
                 spinner_category.setSelection(0)
@@ -107,7 +107,7 @@ class ViewAllExercisesFragment : Fragment() {
 
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                //val selectedItem = parent?.getItemAtPosition(position).toString()
+                // spinner search filter
                 val spinner_List = resources.getStringArray(R.array.filterList)
                 var newText = spinner_List[position]
                 if (newText == "None")
