@@ -1,10 +1,13 @@
 <h1>
 Personal Trainer APP :
 </h1>
-<h3>
+<p align="center">
+<img src="https://github.com/Mansimran-Singh/Repo_GIFs/blob/master/Demo_Personal_Trainer_APP.gif?raw=true" width="250"/>
+</p>
+<h2>
 Special instruction:
 To make Text to speech feature work, please enable TTS on device.
-</h3>
+</h2>
 
 <body>
 
@@ -27,9 +30,9 @@ To make Text to speech feature work, please enable TTS on device.
 <li>User can support us with a coffee if he wants.</li>
 
 
-<h3>
-Instructions to run app:
-</h3>
+<h2>
+Instructions to run app :
+</h2>
 <li>Register yourself with email id and personal details.</li>
 <li>Login with credentials.</li>
 <li>Add new workout with create workout button.</li>
@@ -41,11 +44,8 @@ Instructions to run app:
 <li>Support us with a coffee.</li>
 <li>Log out whenever you want.</li>
 
-<h3>
-Public API used:
-</h3>
+<h2>
+Public API used :
+</h2>
 <li>wger.de/api/v2/exerciseinfo/</li>
-
-<h3>
-Demo:
-</h3>
+</body>
